@@ -1,0 +1,15 @@
+Logging to: cluster-setup-20260424-210156.log
+Started at: Fri Apr 24 21:01:56 UTC 2026
+
+[0;34m[INFO][0m 2026-04-24 21:01:56 - Laptop IP: 73.132.70.173
+
+[0;32m========================================[0m
+[0;32mPart 1: Checking Prerequisites[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:01:56 - Getting EC2 instance public IP...
+[0;32m[SUCCESS][0m 2026-04-24 21:01:56 - EC2 Instance IP: 3.93.149.175
+[0;32m[SUCCESS][0m 2026-04-24 21:01:56 - Laptop IP: 73.132.70.173
+[0;34m[INFO][0m 2026-04-24 21:01:56 - AWS Region: us-east-1
+[0;34m[INFO][0m 2026-04-24 21:01:56 - Checking AWS CLI...
+[0;32m[SUCCESS][0m 2026-04-24 21:01:58 - AWS CLI found: aws-cli/2.34.31 Python/3.14.4 Linux/6.17.0-1012-aws exe/x86_64.ubuntu.24
+[0;31m[ERROR][0m 2026-04-24 21:01:58 - cluster-files directory not found. Please run this script from the lab-spark-cluster directory.

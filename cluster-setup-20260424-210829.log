@@ -1,0 +1,2074 @@
+Logging to: cluster-setup-20260424-210829.log
+Started at: Fri Apr 24 21:08:29 UTC 2026
+
+[0;34m[INFO][0m 2026-04-24 21:08:29 - Laptop IP: 73.132.70.173
+
+[0;32m========================================[0m
+[0;32mPart 1: Checking Prerequisites[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:08:29 - Getting EC2 instance public IP...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:29 - EC2 Instance IP: 3.93.149.175
+[0;32m[SUCCESS][0m 2026-04-24 21:08:29 - Laptop IP: 73.132.70.173
+[0;34m[INFO][0m 2026-04-24 21:08:29 - AWS Region: us-east-1
+[0;34m[INFO][0m 2026-04-24 21:08:29 - Checking AWS CLI...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:31 - AWS CLI found: aws-cli/2.34.31 Python/3.14.4 Linux/6.17.0-1012-aws exe/x86_64.ubuntu.24
+[0;32m[SUCCESS][0m 2026-04-24 21:08:31 - cluster-files directory found
+[0;34m[INFO][0m 2026-04-24 21:08:31 - Auto-detecting IAM Instance Profile...
+[0;34m[INFO][0m 2026-04-24 21:08:31 - Current instance ID: i-0ba2410eb077cdf5b
+[0;32m[SUCCESS][0m 2026-04-24 21:08:33 - Detected IAM Instance Profile: LabInstanceProfile
+
+[0;32m========================================[0m
+[0;32mPart 2: Creating Security Group[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:08:33 - Checking for existing security groups...
+[0;34m[INFO][0m 2026-04-24 21:08:36 - Creating security group...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:38 - Security Group ID: sg-0f3258d15be39b1d4
+[0;34m[INFO][0m 2026-04-24 21:08:40 - Configuring security group rules...
+[0;34m[INFO][0m 2026-04-24 21:08:40 - Allowing intra-cluster communication...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:42 - Intra-cluster communication enabled
+[0;34m[INFO][0m 2026-04-24 21:08:42 - Allowing SSH from EC2 instance (3.93.149.175)...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:45 - SSH access from EC2 enabled
+[0;34m[INFO][0m 2026-04-24 21:08:45 - Allowing SSH from laptop (73.132.70.173)...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:47 - SSH access from laptop enabled
+[0;34m[INFO][0m 2026-04-24 21:08:47 - Allowing Spark Web UI access from EC2...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:50 - Spark Web UI access from EC2 enabled
+[0;34m[INFO][0m 2026-04-24 21:08:50 - Allowing Spark Web UI access from laptop...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:52 - Spark Web UI access from laptop enabled
+[0;34m[INFO][0m 2026-04-24 21:08:52 - Allowing Spark Application UI from EC2...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:54 - Spark Application UI from EC2 enabled
+[0;34m[INFO][0m 2026-04-24 21:08:54 - Allowing Spark Application UI from laptop...
+[0;32m[SUCCESS][0m 2026-04-24 21:08:57 - Spark Application UI from laptop enabled
+
+[0;32m========================================[0m
+[0;32mPart 3: Creating SSH Key Pair[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:08:57 - Checking for existing key pairs...
+[0;34m[INFO][0m 2026-04-24 21:08:59 - Creating key pair: spark-cluster-key-1777064937...
+[0;32m[SUCCESS][0m 2026-04-24 21:09:02 - Key pair created and saved to spark-cluster-key-1777064937.pem
+
+[0;32m========================================[0m
+[0;32mPart 4: Launching EC2 Instances[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:09:02 - Finding Ubuntu 22.04 AMI...
+[0;32m[SUCCESS][0m 2026-04-24 21:09:04 - AMI ID: ami-0ff290337e78c83bf
+[0;34m[INFO][0m 2026-04-24 21:09:04 - Launching master node...
+[0;34m[INFO][0m 2026-04-24 21:09:04 - Using IAM Instance Profile: LabInstanceProfile
+[0;32m[SUCCESS][0m 2026-04-24 21:09:09 - Master instance launched: i-00548e03c5fa641cc
+[0;34m[INFO][0m 2026-04-24 21:09:09 - Launching 3 worker nodes...
+[0;32m[SUCCESS][0m 2026-04-24 21:09:13 - Worker 1 instance launched: i-01514c26bdb01b41c
+[0;32m[SUCCESS][0m 2026-04-24 21:09:13 - Worker 2 instance launched: i-0c5d7e14886217a77
+[0;32m[SUCCESS][0m 2026-04-24 21:09:13 - Worker 3 instance launched: i-0b9f3cf970aec30f2
+[0;34m[INFO][0m 2026-04-24 21:09:13 - Waiting for instances to be in running state...
+[0;32m[SUCCESS][0m 2026-04-24 21:09:30 - All instances are running
+[0;34m[INFO][0m 2026-04-24 21:09:30 - Waiting 30 seconds for SSH to be ready...
+
+[0;32m========================================[0m
+[0;32mPart 5: Getting Instance IP Addresses[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:10:00 - Retrieving IP addresses...
+[0;32m[SUCCESS][0m 2026-04-24 21:10:17 - Master: 54.208.63.13 (public) / 172.31.21.206 (private)
+[0;32m[SUCCESS][0m 2026-04-24 21:10:17 - Worker 1: 100.54.86.13 (public) / 172.31.19.142 (private)
+[0;32m[SUCCESS][0m 2026-04-24 21:10:17 - Worker 2: 107.22.97.102 (public) / 172.31.25.226 (private)
+[0;32m[SUCCESS][0m 2026-04-24 21:10:17 - Worker 3: 54.226.51.45 (public) / 172.31.22.225 (private)
+[0;34m[INFO][0m 2026-04-24 21:10:17 - Saving cluster configuration...
+[0;32m[SUCCESS][0m 2026-04-24 21:10:17 - Configuration saved to cluster-config.txt and cluster-ips.txt
+[0;34m[INFO][0m 2026-04-24 21:10:17 - Creating SSH helper script...
+[0;32m[SUCCESS][0m 2026-04-24 21:10:17 - SSH helper script created: ssh_to_master_node.sh
+
+[0;32m========================================[0m
+[0;32mPart 6: Copying Files to All Nodes[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:10:17 - Copying files to Master (54.208.63.13)...
+[0;32m[SUCCESS][0m 2026-04-24 21:10:21 - Files copied to Master
+[0;34m[INFO][0m 2026-04-24 21:10:21 - Copying files to Worker 1 (100.54.86.13)...
+[0;32m[SUCCESS][0m 2026-04-24 21:10:24 - Files copied to Worker 1
+[0;34m[INFO][0m 2026-04-24 21:10:24 - Copying files to Worker 2 (107.22.97.102)...
+[0;32m[SUCCESS][0m 2026-04-24 21:10:26 - Files copied to Worker 2
+[0;34m[INFO][0m 2026-04-24 21:10:26 - Copying files to Worker 3 (54.226.51.45)...
+[0;32m[SUCCESS][0m 2026-04-24 21:10:28 - Files copied to Worker 3
+
+[0;32m========================================[0m
+[0;32mPart 7: Setting Up Master Node[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:10:29 - Configuring master node...
+[Master Setup] Installing system packages...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+All packages are up to date.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.23).
+curl set to manually installed.
+wget is already the newest version (1.21.2-2ubuntu1.1).
+wget set to manually installed.
+The following additional packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jre-headless python3-dev python3-pip-whl python3-setuptools-whl
+  python3-wheel python3.10-dev python3.10-venv rpcsvc-proto zlib1g-dev
+Suggested packages:
+  bzip2-doc cpp-doc gcc-11-locales debian-keyring g++-multilib g++-11-multilib
+  gcc-11-doc gcc-multilib autoconf automake libtool flex bison gdb gcc-doc
+  gcc-11-multilib default-jre apache2 | lighttpd | httpd libasound2-plugins
+  alsa-utils glibc-doc cups-common bzr libgd-tools liblcms2-utils pcscd
+  libstdc++-11-doc make-doc openjdk-17-demo openjdk-17-source libnss-mdns
+  fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho
+  fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic zip
+The following NEW packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jdk-headless openjdk-17-jre-headless python3-dev python3-pip
+  python3-pip-whl python3-setuptools-whl python3-venv python3-wheel
+  python3.10-dev python3.10-venv rpcsvc-proto unzip zlib1g-dev
+0 upgraded, 85 newly installed, 0 to remove and 0 not upgraded.
+Need to get 195 MB of archives.
+After this operation, 520 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 alsa-topology-conf all 1.2.5.1-2 [15.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2-data all 1.2.6.1-1ubuntu1.1 [19.3 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2 amd64 1.2.6.1-1ubuntu1.1 [391 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 alsa-ucm-conf all 1.2.6.3-1ubuntu1.12 [43.5 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.13 [20.3 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 linux-libc-dev amd64 5.15.0-176.186 [1327 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libcrypt-dev amd64 1:4.4.27-1 [112 kB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu6 [68.5 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtirpc-dev amd64 1.3.2-2ubuntu0.1 [192 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libnsl-dev amd64 1.3.0-2build2 [71.3 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.13 [2101 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-base amd64 11.4.0-1ubuntu1~22.04.3 [216 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libisl23 amd64 0.24-2build1 [727 kB]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libmpc3 amd64 1.2.1-2build1 [46.9 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 cpp-11 amd64 11.4.0-1ubuntu1~22.04.3 [10.0 MB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 cpp amd64 4:11.2.0-1ubuntu1 [27.7 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcc1-0 amd64 12.3.0-1ubuntu1~22.04.3 [48.3 kB]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgomp1 amd64 12.3.0-1ubuntu1~22.04.3 [127 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libitm1 amd64 12.3.0-1ubuntu1~22.04.3 [30.2 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libatomic1 amd64 12.3.0-1ubuntu1~22.04.3 [10.5 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasan6 amd64 11.4.0-1ubuntu1~22.04.3 [2283 kB]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 liblsan0 amd64 12.3.0-1ubuntu1~22.04.3 [1069 kB]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtsan0 amd64 11.4.0-1ubuntu1~22.04.3 [2260 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libubsan1 amd64 12.3.0-1ubuntu1~22.04.3 [976 kB]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libquadmath0 amd64 12.3.0-1ubuntu1~22.04.3 [154 kB]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2517 kB]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11 amd64 11.4.0-1ubuntu1~22.04.3 [20.1 MB]
+Get:28 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 gcc amd64 4:11.2.0-1ubuntu1 [5112 B]
+Get:29 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2101 kB]
+Get:30 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11 amd64 11.4.0-1ubuntu1~22.04.3 [11.4 MB]
+Get:31 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 g++ amd64 4:11.2.0-1ubuntu1 [1412 B]
+Get:32 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 make amd64 4.3-4.1build1 [180 kB]
+Get:33 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdpkg-perl all 1.21.1ubuntu2.6 [237 kB]
+Get:34 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 bzip2 amd64 1.0.8-5build1 [34.8 kB]
+Get:35 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 lto-disabled-list all 24 [12.5 kB]
+Get:36 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 dpkg-dev all 1.21.1ubuntu2.6 [922 kB]
+Get:37 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 build-essential amd64 12.9ubuntu3 [4744 B]
+Get:38 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 java-common all 0.72build2 [6782 B]
+Get:39 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common-data amd64 0.8-5ubuntu5.4 [24.0 kB]
+Get:40 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common3 amd64 0.8-5ubuntu5.4 [23.9 kB]
+Get:41 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-client3 amd64 0.8-5ubuntu5.4 [28.0 kB]
+Get:42 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcups2 amd64 2.4.1op1-1ubuntu4.16 [264 kB]
+Get:43 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fonts-dejavu-core all 2.37-2build1 [1041 kB]
+Get:44 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fontconfig-config all 2.13.1-4.2ubuntu5 [29.1 kB]
+Get:45 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfontconfig1 amd64 2.13.1-4.2ubuntu5 [131 kB]
+Get:46 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 liblcms2-2 amd64 2.12~rc1-2build2 [159 kB]
+Get:47 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg-turbo8 amd64 2.1.2-0ubuntu1 [134 kB]
+Get:48 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg8 amd64 8c-2ubuntu10 [2264 B]
+Get:49 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libgraphite2-3 amd64 1.3.14-1build2 [71.3 kB]
+Get:50 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libharfbuzz0b amd64 2.7.4-1ubuntu3.2 [353 kB]
+Get:51 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpcsclite1 amd64 1.9.5-3ubuntu1 [19.8 kB]
+Get:52 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jre-headless amd64 17.0.18+8-1~22.04.1 [48.4 MB]
+Get:53 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates-java all 20190909ubuntu1.3 [12.3 kB]
+Get:54 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfakeroot amd64 1.28-1ubuntu1 [31.5 kB]
+Get:55 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fakeroot amd64 1.28-1ubuntu1 [60.4 kB]
+Get:56 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 javascript-common all 11+nmu1 [5936 B]
+Get:57 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-perl all 1.201-1 [41.8 kB]
+Get:58 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-xs-perl amd64 0.04-6build3 [11.9 kB]
+Get:59 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+Get:60 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libdeflate0 amd64 1.10-2 [70.9 kB]
+Get:61 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.22.04.1 [29.2 kB]
+Get:62 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libwebp7 amd64 1.2.2-2ubuntu0.22.04.2 [206 kB]
+Get:63 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtiff5 amd64 4.3.0-6ubuntu0.13 [185 kB]
+Get:64 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxpm4 amd64 1:3.5.12-1ubuntu0.22.04.2 [36.7 kB]
+Get:65 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgd3 amd64 2.3.0-2ubuntu2.3 [129 kB]
+Get:66 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-devtools amd64 2.35-0ubuntu3.13 [29.0 kB]
+Get:67 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1-dev amd64 2.4.7-1ubuntu0.7 [148 kB]
+Get:68 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfile-fcntllock-perl amd64 0.22-3build7 [33.9 kB]
+Get:69 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-jquery all 3.6.0+dfsg+~3.5.13-1 [321 kB]
+Get:70 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-underscore all 1.13.2~dfsg-2 [118 kB]
+Get:71 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-sphinxdoc all 4.3.2-1 [139 kB]
+Get:72 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-2ubuntu9.2 [164 kB]
+Get:73 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-dev amd64 3.10.12-1~22.04.15 [4764 kB]
+Get:74 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-dev amd64 3.10.6-1~22.04.1 [7064 B]
+Get:75 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 manpages-dev all 5.10-1ubuntu1 [2309 kB]
+Get:76 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jdk-headless amd64 17.0.18+8-1~22.04.1 [71.4 MB]
+Get:77 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-dev amd64 3.10.12-1~22.04.15 [508 kB]
+Get:78 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-dev amd64 3.10.6-1~22.04.1 [26.0 kB]
+Get:79 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
+Get:80 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
+Get:81 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip-whl all 22.0.2+dfsg-1ubuntu0.7 [1683 kB]
+Get:82 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-setuptools-whl all 59.6.0-1.2ubuntu0.22.04.3 [789 kB]
+Get:83 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3.10-venv amd64 3.10.12-1~22.04.15 [5714 B]
+Get:84 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-venv amd64 3.10.6-1~22.04.1 [1042 B]
+Get:85 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 unzip amd64 6.0-26ubuntu3.2 [175 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 195 MB in 6s (35.4 MB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 66037 files and directories currently installed.)
+Setting up javascript-common (11+nmu1) ...
+Setting up libgraphite2-3:amd64 (1.3.14-1build2) ...
+Setting up liblcms2-2:amd64 (2.12~rc1-2build2) ...
+Setting up gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up manpages-dev (5.10-1ubuntu1) ...
+Setting up python3-setuptools-whl (59.6.0-1.2ubuntu0.22.04.3) ...
+Setting up lto-disabled-list (24) ...
+Setting up libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+Setting up java-common (0.72build2) ...
+Setting up libfile-fcntllock-perl (0.22-3build7) ...
+Setting up python3-pip-whl (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libalgorithm-diff-perl (1.201-1) ...
+Setting up unzip (6.0-26ubuntu3.2) ...
+Setting up libdeflate0:amd64 (1.10-2) ...
+Setting up linux-libc-dev:amd64 (5.15.0-176.186) ...
+Setting up libgomp1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up bzip2 (1.0.8-5build1) ...
+Setting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Setting up libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+Setting up libfakeroot:amd64 (1.28-1ubuntu1) ...
+Setting up libasan6:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up fakeroot (1.28-1ubuntu1) ...
+update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+Setting up libasound2-data (1.2.6.1-1ubuntu1.1) ...
+Setting up libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Setting up rpcsvc-proto (1.4.2-0ubuntu6) ...
+Setting up make (4.3-4.1build1) ...
+Setting up libavahi-common-data:amd64 (0.8-5ubuntu5.4) ...
+Setting up libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libmpc3:amd64 (1.2.1-2build1) ...
+Setting up libatomic1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up fonts-dejavu-core (2.37-2build1) ...
+Setting up libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+Setting up python3-pip (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+Setting up libdpkg-perl (1.21.1ubuntu2.6) ...
+Setting up libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+Setting up libubsan1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up alsa-topology-conf (1.2.5.1-2) ...
+Setting up libnsl-dev:amd64 (1.3.0-2build2) ...
+Setting up libcrypt-dev:amd64 (1:4.4.27-1) ...
+Setting up libasound2:amd64 (1.2.6.1-1ubuntu1.1) ...
+Setting up libharfbuzz0b:amd64 (2.7.4-1ubuntu3.2) ...
+Setting up libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Setting up libisl23:amd64 (0.24-2build1) ...
+Setting up libc-dev-bin (2.35-0ubuntu3.13) ...
+Setting up libalgorithm-diff-xs-perl (0.04-6build3) ...
+Setting up libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up liblsan0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libitm1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libjs-underscore (1.13.2~dfsg-2) ...
+Setting up libalgorithm-merge-perl (0.08-3) ...
+Setting up libtsan0:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libjpeg8:amd64 (8c-2ubuntu10) ...
+Setting up cpp-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up python3.10-venv (3.10.12-1~22.04.15) ...
+Setting up alsa-ucm-conf (1.2.6.3-1ubuntu1.12) ...
+Setting up fontconfig-config (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-common3:amd64 (0.8-5ubuntu5.4) ...
+Setting up dpkg-dev (1.21.1ubuntu2.6) ...
+Setting up python3-venv (3.10.6-1~22.04.1) ...
+Setting up libjs-sphinxdoc (4.3.2-1) ...
+Setting up libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up gcc-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up cpp (4:11.2.0-1ubuntu1) ...
+Setting up libc6-dev:amd64 (2.35-0ubuntu3.13) ...
+Setting up libtiff5:amd64 (4.3.0-6ubuntu0.13) ...
+Setting up libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-client3:amd64 (0.8-5ubuntu5.4) ...
+Setting up gcc (4:11.2.0-1ubuntu1) ...
+Setting up libexpat1-dev:amd64 (2.4.7-1ubuntu0.7) ...
+Setting up libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+Setting up libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libcups2:amd64 (2.4.1op1-1ubuntu4.16) ...
+Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Setting up libc-devtools (2.35-0ubuntu3.13) ...
+Setting up g++-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libpython3.10-dev:amd64 (3.10.12-1~22.04.15) ...
+Setting up python3.10-dev (3.10.12-1~22.04.15) ...
+Setting up g++ (4:11.2.0-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up build-essential (12.9ubuntu3) ...
+Setting up libpython3-dev:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-dev (3.10.6-1~22.04.1) ...
+Setting up openjdk-17-jre-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jpackage to provide /usr/bin/jpackage (jpackage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/keytool to provide /usr/bin/keytool (keytool) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/rmiregistry to provide /usr/bin/rmiregistry (rmiregistry) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/lib/jexec to provide /usr/bin/jexec (jexec) in auto mode
+Setting up ca-certificates-java (20190909ubuntu1.3) ...
+head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
+Adding debian:DigiCert_TLS_RSA4096_Root_G5.pem
+Adding debian:HARICA_TLS_ECC_Root_CA_2021.pem
+Adding debian:GlobalSign_Root_E46.pem
+Adding debian:D-TRUST_EV_Root_CA_1_2020.pem
+Adding debian:Entrust.net_Premium_2048_Secure_Server_CA.pem
+Adding debian:BJCA_Global_Root_CA1.pem
+Adding debian:Security_Communication_Root_CA.pem
+Adding debian:DigiCert_Assured_ID_Root_CA.pem
+Adding debian:emSign_ECC_Root_CA_-_C3.pem
+Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+Adding debian:GTS_Root_R2.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+Adding debian:Trustwave_Global_ECC_P256_Certification_Authority.pem
+Adding debian:XRamp_Global_CA_Root.pem
+Adding debian:Certainly_Root_R1.pem
+Adding debian:GlobalSign_Root_CA.pem
+Adding debian:DigiCert_Global_Root_CA.pem
+Adding debian:TWCA_Global_Root_CA.pem
+Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+Adding debian:SZAFIR_ROOT_CA2.pem
+Adding debian:UCA_Global_G2_Root.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G2.pem
+Adding debian:GLOBALTRUST_2020.pem
+Adding debian:BJCA_Global_Root_CA2.pem
+Adding debian:SSL.com_TLS_ECC_Root_CA_2022.pem
+Adding debian:ISRG_Root_X1.pem
+Adding debian:AC_RAIZ_FNMT-RCM.pem
+Adding debian:Security_Communication_ECC_RootCA1.pem
+Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+Adding debian:HiPKI_Root_CA_-_G1.pem
+Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+Adding debian:TrustAsia_Global_Root_CA_G3.pem
+Adding debian:vTrus_Root_CA.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+Adding debian:Buypass_Class_3_Root_CA.pem
+Adding debian:UCA_Extended_Validation_Root.pem
+Adding debian:Certainly_Root_E1.pem
+Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+Adding debian:D-TRUST_BR_Root_CA_1_2020.pem
+Adding debian:Actalis_Authentication_Root_CA.pem
+Adding debian:DigiCert_TLS_ECC_P384_Root_G5.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+Adding debian:Baltimore_CyberTrust_Root.pem
+Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+Adding debian:GlobalSign_Root_CA_-_R3.pem
+Adding debian:Certigna_Root_CA.pem
+Adding debian:AffirmTrust_Premium.pem
+Adding debian:Izenpe.com.pem
+Adding debian:DigiCert_Assured_ID_Root_G2.pem
+Adding debian:COMODO_ECC_Certification_Authority.pem
+Adding debian:Trustwave_Global_Certification_Authority.pem
+Adding debian:QuoVadis_Root_CA_3_G3.pem
+Adding debian:Amazon_Root_CA_3.pem
+Adding debian:e-Szigno_Root_CA_2017.pem
+Adding debian:Certum_Trusted_Root_CA.pem
+Adding debian:emSign_Root_CA_-_G1.pem
+Adding debian:GlobalSign_Root_CA_-_R6.pem
+Adding debian:Amazon_Root_CA_1.pem
+Adding debian:DigiCert_Global_Root_G3.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-02.pem
+Adding debian:DigiCert_Global_Root_G2.pem
+Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+Adding debian:TeliaSonera_Root_CA_v1.pem
+Adding debian:emSign_ECC_Root_CA_-_G3.pem
+Adding debian:Trustwave_Global_ECC_P384_Certification_Authority.pem
+Adding debian:USERTrust_ECC_Certification_Authority.pem
+Adding debian:Entrust_Root_Certification_Authority.pem
+Adding debian:Buypass_Class_2_Root_CA.pem
+Adding debian:Telia_Root_CA_v2.pem
+Adding debian:ACCVRAIZ1.pem
+Adding debian:SwissSign_Gold_CA_-_G2.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+Adding debian:Security_Communication_RootCA2.pem
+Adding debian:NAVER_Global_Root_Certification_Authority.pem
+Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+Adding debian:COMODO_Certification_Authority.pem
+Adding debian:Go_Daddy_Class_2_CA.pem
+Adding debian:Amazon_Root_CA_4.pem
+Adding debian:TWCA_Root_Certification_Authority.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+Adding debian:ISRG_Root_X2.pem
+Adding debian:Hongkong_Post_Root_CA_3.pem
+Adding debian:DigiCert_Assured_ID_Root_G3.pem
+Adding debian:TrustAsia_Global_Root_CA_G4.pem
+Adding debian:Amazon_Root_CA_2.pem
+Adding debian:Certum_EC-384_CA.pem
+Adding debian:GTS_Root_R3.pem
+Adding debian:Atos_TrustedRoot_Root_CA_ECC_TLS_2021.pem
+Adding debian:GlobalSign_Root_R46.pem
+Adding debian:Atos_TrustedRoot_Root_CA_RSA_TLS_2021.pem
+Adding debian:Atos_TrustedRoot_2011.pem
+Adding debian:ANF_Secure_Server_Root_CA.pem
+Adding debian:CA_Disig_Root_R2.pem
+Adding debian:certSIGN_ROOT_CA.pem
+Adding debian:Security_Communication_RootCA3.pem
+Adding debian:GTS_Root_R4.pem
+Adding debian:GTS_Root_R1.pem
+Adding debian:DigiCert_Trusted_Root_G4.pem
+Adding debian:TunTrust_Root_CA.pem
+Adding debian:QuoVadis_Root_CA_1_G3.pem
+Adding debian:COMODO_RSA_Certification_Authority.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-02.pem
+Adding debian:vTrus_ECC_Root_CA.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_E46.pem
+Adding debian:SSL.com_TLS_RSA_Root_CA_2022.pem
+Adding debian:Secure_Global_CA.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+Adding debian:AffirmTrust_Commercial.pem
+Adding debian:QuoVadis_Root_CA_2_G3.pem
+Adding debian:Certum_Trusted_Network_CA_2.pem
+Adding debian:USERTrust_RSA_Certification_Authority.pem
+Adding debian:SwissSign_Silver_CA_-_G2.pem
+Adding debian:Certigna.pem
+Adding debian:emSign_Root_CA_-_C1.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-01.pem
+Adding debian:certSIGN_Root_CA_G2.pem
+Adding debian:AffirmTrust_Premium_ECC.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+Adding debian:AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G4.pem
+Adding debian:Certum_Trusted_Network_CA.pem
+Adding debian:QuoVadis_Root_CA_3.pem
+Adding debian:QuoVadis_Root_CA_2.pem
+Adding debian:Entrust_Root_Certification_Authority_-_EC1.pem
+Adding debian:CFCA_EV_ROOT.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-01.pem
+Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+Adding debian:ePKI_Root_Certification_Authority.pem
+Adding debian:DigiCert_High_Assurance_EV_Root_CA.pem
+Adding debian:Starfield_Class_2_CA.pem
+Adding debian:HARICA_TLS_RSA_Root_CA_2021.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_R46.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+Adding debian:SecureTrust_CA.pem
+Adding debian:SecureSign_RootCA11.pem
+Adding debian:Comodo_AAA_Services_root.pem
+Adding debian:AffirmTrust_Networking.pem
+done.
+Setting up openjdk-17-jdk-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jar to provide /usr/bin/jar (jar) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jarsigner to provide /usr/bin/jarsigner (jarsigner) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javac to provide /usr/bin/javac (javac) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc to provide /usr/bin/javadoc (javadoc) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javap to provide /usr/bin/javap (javap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jcmd to provide /usr/bin/jcmd (jcmd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdb to provide /usr/bin/jdb (jdb) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeprscan to provide /usr/bin/jdeprscan (jdeprscan) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeps to provide /usr/bin/jdeps (jdeps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jfr to provide /usr/bin/jfr (jfr) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jimage to provide /usr/bin/jimage (jimage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jinfo to provide /usr/bin/jinfo (jinfo) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jlink to provide /usr/bin/jlink (jlink) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmap to provide /usr/bin/jmap (jmap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmod to provide /usr/bin/jmod (jmod) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jps to provide /usr/bin/jps (jps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jrunscript to provide /usr/bin/jrunscript (jrunscript) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jshell to provide /usr/bin/jshell (jshell) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstack to provide /usr/bin/jstack (jstack) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstat to provide /usr/bin/jstat (jstat) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstatd to provide /usr/bin/jstatd (jstatd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/serialver to provide /usr/bin/serialver (serialver) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jhsdb to provide /usr/bin/jhsdb (jhsdb) in auto mode
+Processing triggers for libc-bin (2.35-0ubuntu3.13) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for ca-certificates (20240203~22.04.1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+
+done.
+done.
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+[Master Setup] Installing uv...
+downloading uv 0.11.7 x86_64-unknown-linux-gnu
+installing to /home/ubuntu/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+[Master Setup] Installing Python dependencies...
+ + wcwidth==0.2.14
+ + webcolors==24.11.1
+ + webencodings==0.5.1
+ + websocket-client==1.8.0
+ + widgetsnbextension==4.0.14
+[Master Setup] Downloading Spark 3.4.4...
+  - Downloading from Apache archive...
+
+2026-04-24 21:12:57 (25.2 MB/s) - ‘spark-3.4.4-bin-hadoop3.tgz’ saved [388988563/388988563]
+
+  - Extracting...
+[Master Setup] Downloading AWS JARs (Hadoop 3.3.4 for Spark 3.4.4)...
+  - Downloading hadoop-aws 3.3.4...
+  - Downloading aws-java-sdk-bundle 1.12.262...
+[Master Setup] Configuring environment variables...
+[Master Setup] Master node setup complete!
+[0;32m[SUCCESS][0m 2026-04-24 21:13:07 - Master node configured
+
+[0;32m========================================[0m
+[0;32mPart 8: Setting Up Worker Nodes[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:13:07 - Configuring Worker 1 (100.54.86.13)...
+[Worker 1 Setup] Installing system packages...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+All packages are up to date.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.23).
+curl set to manually installed.
+wget is already the newest version (1.21.2-2ubuntu1.1).
+wget set to manually installed.
+The following additional packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jre-headless python3-dev python3-pip-whl python3-setuptools-whl
+  python3-wheel python3.10-dev python3.10-venv rpcsvc-proto zlib1g-dev
+Suggested packages:
+  bzip2-doc cpp-doc gcc-11-locales debian-keyring g++-multilib g++-11-multilib
+  gcc-11-doc gcc-multilib autoconf automake libtool flex bison gdb gcc-doc
+  gcc-11-multilib default-jre apache2 | lighttpd | httpd libasound2-plugins
+  alsa-utils glibc-doc cups-common bzr libgd-tools liblcms2-utils pcscd
+  libstdc++-11-doc make-doc openjdk-17-demo openjdk-17-source libnss-mdns
+  fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho
+  fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic zip
+The following NEW packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jdk-headless openjdk-17-jre-headless python3-dev python3-pip
+  python3-pip-whl python3-setuptools-whl python3-venv python3-wheel
+  python3.10-dev python3.10-venv rpcsvc-proto unzip zlib1g-dev
+0 upgraded, 85 newly installed, 0 to remove and 0 not upgraded.
+Need to get 195 MB of archives.
+After this operation, 520 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 alsa-topology-conf all 1.2.5.1-2 [15.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2-data all 1.2.6.1-1ubuntu1.1 [19.3 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2 amd64 1.2.6.1-1ubuntu1.1 [391 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 alsa-ucm-conf all 1.2.6.3-1ubuntu1.12 [43.5 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.13 [20.3 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 linux-libc-dev amd64 5.15.0-176.186 [1327 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libcrypt-dev amd64 1:4.4.27-1 [112 kB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu6 [68.5 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtirpc-dev amd64 1.3.2-2ubuntu0.1 [192 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libnsl-dev amd64 1.3.0-2build2 [71.3 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.13 [2101 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-base amd64 11.4.0-1ubuntu1~22.04.3 [216 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libisl23 amd64 0.24-2build1 [727 kB]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libmpc3 amd64 1.2.1-2build1 [46.9 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 cpp-11 amd64 11.4.0-1ubuntu1~22.04.3 [10.0 MB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 cpp amd64 4:11.2.0-1ubuntu1 [27.7 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcc1-0 amd64 12.3.0-1ubuntu1~22.04.3 [48.3 kB]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgomp1 amd64 12.3.0-1ubuntu1~22.04.3 [127 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libitm1 amd64 12.3.0-1ubuntu1~22.04.3 [30.2 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libatomic1 amd64 12.3.0-1ubuntu1~22.04.3 [10.5 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasan6 amd64 11.4.0-1ubuntu1~22.04.3 [2283 kB]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 liblsan0 amd64 12.3.0-1ubuntu1~22.04.3 [1069 kB]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtsan0 amd64 11.4.0-1ubuntu1~22.04.3 [2260 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libubsan1 amd64 12.3.0-1ubuntu1~22.04.3 [976 kB]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libquadmath0 amd64 12.3.0-1ubuntu1~22.04.3 [154 kB]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2517 kB]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11 amd64 11.4.0-1ubuntu1~22.04.3 [20.1 MB]
+Get:28 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 gcc amd64 4:11.2.0-1ubuntu1 [5112 B]
+Get:29 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2101 kB]
+Get:30 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11 amd64 11.4.0-1ubuntu1~22.04.3 [11.4 MB]
+Get:31 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 g++ amd64 4:11.2.0-1ubuntu1 [1412 B]
+Get:32 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 make amd64 4.3-4.1build1 [180 kB]
+Get:33 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdpkg-perl all 1.21.1ubuntu2.6 [237 kB]
+Get:34 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 bzip2 amd64 1.0.8-5build1 [34.8 kB]
+Get:35 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 lto-disabled-list all 24 [12.5 kB]
+Get:36 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 dpkg-dev all 1.21.1ubuntu2.6 [922 kB]
+Get:37 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 build-essential amd64 12.9ubuntu3 [4744 B]
+Get:38 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 java-common all 0.72build2 [6782 B]
+Get:39 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common-data amd64 0.8-5ubuntu5.4 [24.0 kB]
+Get:40 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common3 amd64 0.8-5ubuntu5.4 [23.9 kB]
+Get:41 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-client3 amd64 0.8-5ubuntu5.4 [28.0 kB]
+Get:42 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcups2 amd64 2.4.1op1-1ubuntu4.16 [264 kB]
+Get:43 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fonts-dejavu-core all 2.37-2build1 [1041 kB]
+Get:44 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fontconfig-config all 2.13.1-4.2ubuntu5 [29.1 kB]
+Get:45 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfontconfig1 amd64 2.13.1-4.2ubuntu5 [131 kB]
+Get:46 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 liblcms2-2 amd64 2.12~rc1-2build2 [159 kB]
+Get:47 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg-turbo8 amd64 2.1.2-0ubuntu1 [134 kB]
+Get:48 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg8 amd64 8c-2ubuntu10 [2264 B]
+Get:49 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libgraphite2-3 amd64 1.3.14-1build2 [71.3 kB]
+Get:50 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libharfbuzz0b amd64 2.7.4-1ubuntu3.2 [353 kB]
+Get:51 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpcsclite1 amd64 1.9.5-3ubuntu1 [19.8 kB]
+Get:52 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jre-headless amd64 17.0.18+8-1~22.04.1 [48.4 MB]
+Get:53 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates-java all 20190909ubuntu1.3 [12.3 kB]
+Get:54 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfakeroot amd64 1.28-1ubuntu1 [31.5 kB]
+Get:55 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fakeroot amd64 1.28-1ubuntu1 [60.4 kB]
+Get:56 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 javascript-common all 11+nmu1 [5936 B]
+Get:57 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-perl all 1.201-1 [41.8 kB]
+Get:58 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-xs-perl amd64 0.04-6build3 [11.9 kB]
+Get:59 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+Get:60 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libdeflate0 amd64 1.10-2 [70.9 kB]
+Get:61 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.22.04.1 [29.2 kB]
+Get:62 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libwebp7 amd64 1.2.2-2ubuntu0.22.04.2 [206 kB]
+Get:63 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtiff5 amd64 4.3.0-6ubuntu0.13 [185 kB]
+Get:64 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxpm4 amd64 1:3.5.12-1ubuntu0.22.04.2 [36.7 kB]
+Get:65 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgd3 amd64 2.3.0-2ubuntu2.3 [129 kB]
+Get:66 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-devtools amd64 2.35-0ubuntu3.13 [29.0 kB]
+Get:67 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1-dev amd64 2.4.7-1ubuntu0.7 [148 kB]
+Get:68 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfile-fcntllock-perl amd64 0.22-3build7 [33.9 kB]
+Get:69 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-jquery all 3.6.0+dfsg+~3.5.13-1 [321 kB]
+Get:70 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-underscore all 1.13.2~dfsg-2 [118 kB]
+Get:71 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-sphinxdoc all 4.3.2-1 [139 kB]
+Get:72 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-2ubuntu9.2 [164 kB]
+Get:73 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-dev amd64 3.10.12-1~22.04.15 [4764 kB]
+Get:74 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-dev amd64 3.10.6-1~22.04.1 [7064 B]
+Get:75 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 manpages-dev all 5.10-1ubuntu1 [2309 kB]
+Get:76 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jdk-headless amd64 17.0.18+8-1~22.04.1 [71.4 MB]
+Get:77 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-dev amd64 3.10.12-1~22.04.15 [508 kB]
+Get:78 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-dev amd64 3.10.6-1~22.04.1 [26.0 kB]
+Get:79 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
+Get:80 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
+Get:81 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip-whl all 22.0.2+dfsg-1ubuntu0.7 [1683 kB]
+Get:82 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-setuptools-whl all 59.6.0-1.2ubuntu0.22.04.3 [789 kB]
+Get:83 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3.10-venv amd64 3.10.12-1~22.04.15 [5714 B]
+Get:84 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-venv amd64 3.10.6-1~22.04.1 [1042 B]
+Get:85 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 unzip amd64 6.0-26ubuntu3.2 [175 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 195 MB in 3s (67.2 MB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 66037 files and directories currently installed.)
+Setting up javascript-common (11+nmu1) ...
+Setting up libgraphite2-3:amd64 (1.3.14-1build2) ...
+Setting up liblcms2-2:amd64 (2.12~rc1-2build2) ...
+Setting up gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up manpages-dev (5.10-1ubuntu1) ...
+Setting up python3-setuptools-whl (59.6.0-1.2ubuntu0.22.04.3) ...
+Setting up lto-disabled-list (24) ...
+Setting up libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+Setting up java-common (0.72build2) ...
+Setting up libfile-fcntllock-perl (0.22-3build7) ...
+Setting up python3-pip-whl (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libalgorithm-diff-perl (1.201-1) ...
+Setting up unzip (6.0-26ubuntu3.2) ...
+Setting up libdeflate0:amd64 (1.10-2) ...
+Setting up linux-libc-dev:amd64 (5.15.0-176.186) ...
+Setting up libgomp1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up bzip2 (1.0.8-5build1) ...
+Setting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Setting up libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+Setting up libfakeroot:amd64 (1.28-1ubuntu1) ...
+Setting up libasan6:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up fakeroot (1.28-1ubuntu1) ...
+update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+Setting up libasound2-data (1.2.6.1-1ubuntu1.1) ...
+Setting up libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Setting up rpcsvc-proto (1.4.2-0ubuntu6) ...
+Setting up make (4.3-4.1build1) ...
+Setting up libavahi-common-data:amd64 (0.8-5ubuntu5.4) ...
+Setting up libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libmpc3:amd64 (1.2.1-2build1) ...
+Setting up libatomic1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up fonts-dejavu-core (2.37-2build1) ...
+Setting up libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+Setting up python3-pip (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+Setting up libdpkg-perl (1.21.1ubuntu2.6) ...
+Setting up libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+Setting up libubsan1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up alsa-topology-conf (1.2.5.1-2) ...
+Setting up libnsl-dev:amd64 (1.3.0-2build2) ...
+Setting up libcrypt-dev:amd64 (1:4.4.27-1) ...
+Setting up libasound2:amd64 (1.2.6.1-1ubuntu1.1) ...
+Setting up libharfbuzz0b:amd64 (2.7.4-1ubuntu3.2) ...
+Setting up libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Setting up libisl23:amd64 (0.24-2build1) ...
+Setting up libc-dev-bin (2.35-0ubuntu3.13) ...
+Setting up libalgorithm-diff-xs-perl (0.04-6build3) ...
+Setting up libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up liblsan0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libitm1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libjs-underscore (1.13.2~dfsg-2) ...
+Setting up libalgorithm-merge-perl (0.08-3) ...
+Setting up libtsan0:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libjpeg8:amd64 (8c-2ubuntu10) ...
+Setting up cpp-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up python3.10-venv (3.10.12-1~22.04.15) ...
+Setting up alsa-ucm-conf (1.2.6.3-1ubuntu1.12) ...
+Setting up fontconfig-config (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-common3:amd64 (0.8-5ubuntu5.4) ...
+Setting up dpkg-dev (1.21.1ubuntu2.6) ...
+Setting up python3-venv (3.10.6-1~22.04.1) ...
+Setting up libjs-sphinxdoc (4.3.2-1) ...
+Setting up libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up gcc-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up cpp (4:11.2.0-1ubuntu1) ...
+Setting up libc6-dev:amd64 (2.35-0ubuntu3.13) ...
+Setting up libtiff5:amd64 (4.3.0-6ubuntu0.13) ...
+Setting up libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-client3:amd64 (0.8-5ubuntu5.4) ...
+Setting up gcc (4:11.2.0-1ubuntu1) ...
+Setting up libexpat1-dev:amd64 (2.4.7-1ubuntu0.7) ...
+Setting up libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+Setting up libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libcups2:amd64 (2.4.1op1-1ubuntu4.16) ...
+Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Setting up libc-devtools (2.35-0ubuntu3.13) ...
+Setting up g++-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libpython3.10-dev:amd64 (3.10.12-1~22.04.15) ...
+Setting up python3.10-dev (3.10.12-1~22.04.15) ...
+Setting up g++ (4:11.2.0-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up build-essential (12.9ubuntu3) ...
+Setting up libpython3-dev:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-dev (3.10.6-1~22.04.1) ...
+Setting up openjdk-17-jre-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jpackage to provide /usr/bin/jpackage (jpackage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/keytool to provide /usr/bin/keytool (keytool) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/rmiregistry to provide /usr/bin/rmiregistry (rmiregistry) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/lib/jexec to provide /usr/bin/jexec (jexec) in auto mode
+Setting up ca-certificates-java (20190909ubuntu1.3) ...
+head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
+Adding debian:DigiCert_TLS_RSA4096_Root_G5.pem
+Adding debian:HARICA_TLS_ECC_Root_CA_2021.pem
+Adding debian:GlobalSign_Root_E46.pem
+Adding debian:D-TRUST_EV_Root_CA_1_2020.pem
+Adding debian:Entrust.net_Premium_2048_Secure_Server_CA.pem
+Adding debian:BJCA_Global_Root_CA1.pem
+Adding debian:Security_Communication_Root_CA.pem
+Adding debian:DigiCert_Assured_ID_Root_CA.pem
+Adding debian:emSign_ECC_Root_CA_-_C3.pem
+Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+Adding debian:GTS_Root_R2.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+Adding debian:Trustwave_Global_ECC_P256_Certification_Authority.pem
+Adding debian:XRamp_Global_CA_Root.pem
+Adding debian:Certainly_Root_R1.pem
+Adding debian:GlobalSign_Root_CA.pem
+Adding debian:DigiCert_Global_Root_CA.pem
+Adding debian:TWCA_Global_Root_CA.pem
+Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+Adding debian:SZAFIR_ROOT_CA2.pem
+Adding debian:UCA_Global_G2_Root.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G2.pem
+Adding debian:GLOBALTRUST_2020.pem
+Adding debian:BJCA_Global_Root_CA2.pem
+Adding debian:SSL.com_TLS_ECC_Root_CA_2022.pem
+Adding debian:ISRG_Root_X1.pem
+Adding debian:AC_RAIZ_FNMT-RCM.pem
+Adding debian:Security_Communication_ECC_RootCA1.pem
+Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+Adding debian:HiPKI_Root_CA_-_G1.pem
+Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+Adding debian:TrustAsia_Global_Root_CA_G3.pem
+Adding debian:vTrus_Root_CA.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+Adding debian:Buypass_Class_3_Root_CA.pem
+Adding debian:UCA_Extended_Validation_Root.pem
+Adding debian:Certainly_Root_E1.pem
+Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+Adding debian:D-TRUST_BR_Root_CA_1_2020.pem
+Adding debian:Actalis_Authentication_Root_CA.pem
+Adding debian:DigiCert_TLS_ECC_P384_Root_G5.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+Adding debian:Baltimore_CyberTrust_Root.pem
+Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+Adding debian:GlobalSign_Root_CA_-_R3.pem
+Adding debian:Certigna_Root_CA.pem
+Adding debian:AffirmTrust_Premium.pem
+Adding debian:Izenpe.com.pem
+Adding debian:DigiCert_Assured_ID_Root_G2.pem
+Adding debian:COMODO_ECC_Certification_Authority.pem
+Adding debian:Trustwave_Global_Certification_Authority.pem
+Adding debian:QuoVadis_Root_CA_3_G3.pem
+Adding debian:Amazon_Root_CA_3.pem
+Adding debian:e-Szigno_Root_CA_2017.pem
+Adding debian:Certum_Trusted_Root_CA.pem
+Adding debian:emSign_Root_CA_-_G1.pem
+Adding debian:GlobalSign_Root_CA_-_R6.pem
+Adding debian:Amazon_Root_CA_1.pem
+Adding debian:DigiCert_Global_Root_G3.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-02.pem
+Adding debian:DigiCert_Global_Root_G2.pem
+Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+Adding debian:TeliaSonera_Root_CA_v1.pem
+Adding debian:emSign_ECC_Root_CA_-_G3.pem
+Adding debian:Trustwave_Global_ECC_P384_Certification_Authority.pem
+Adding debian:USERTrust_ECC_Certification_Authority.pem
+Adding debian:Entrust_Root_Certification_Authority.pem
+Adding debian:Buypass_Class_2_Root_CA.pem
+Adding debian:Telia_Root_CA_v2.pem
+Adding debian:ACCVRAIZ1.pem
+Adding debian:SwissSign_Gold_CA_-_G2.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+Adding debian:Security_Communication_RootCA2.pem
+Adding debian:NAVER_Global_Root_Certification_Authority.pem
+Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+Adding debian:COMODO_Certification_Authority.pem
+Adding debian:Go_Daddy_Class_2_CA.pem
+Adding debian:Amazon_Root_CA_4.pem
+Adding debian:TWCA_Root_Certification_Authority.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+Adding debian:ISRG_Root_X2.pem
+Adding debian:Hongkong_Post_Root_CA_3.pem
+Adding debian:DigiCert_Assured_ID_Root_G3.pem
+Adding debian:TrustAsia_Global_Root_CA_G4.pem
+Adding debian:Amazon_Root_CA_2.pem
+Adding debian:Certum_EC-384_CA.pem
+Adding debian:GTS_Root_R3.pem
+Adding debian:Atos_TrustedRoot_Root_CA_ECC_TLS_2021.pem
+Adding debian:GlobalSign_Root_R46.pem
+Adding debian:Atos_TrustedRoot_Root_CA_RSA_TLS_2021.pem
+Adding debian:Atos_TrustedRoot_2011.pem
+Adding debian:ANF_Secure_Server_Root_CA.pem
+Adding debian:CA_Disig_Root_R2.pem
+Adding debian:certSIGN_ROOT_CA.pem
+Adding debian:Security_Communication_RootCA3.pem
+Adding debian:GTS_Root_R4.pem
+Adding debian:GTS_Root_R1.pem
+Adding debian:DigiCert_Trusted_Root_G4.pem
+Adding debian:TunTrust_Root_CA.pem
+Adding debian:QuoVadis_Root_CA_1_G3.pem
+Adding debian:COMODO_RSA_Certification_Authority.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-02.pem
+Adding debian:vTrus_ECC_Root_CA.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_E46.pem
+Adding debian:SSL.com_TLS_RSA_Root_CA_2022.pem
+Adding debian:Secure_Global_CA.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+Adding debian:AffirmTrust_Commercial.pem
+Adding debian:QuoVadis_Root_CA_2_G3.pem
+Adding debian:Certum_Trusted_Network_CA_2.pem
+Adding debian:USERTrust_RSA_Certification_Authority.pem
+Adding debian:SwissSign_Silver_CA_-_G2.pem
+Adding debian:Certigna.pem
+Adding debian:emSign_Root_CA_-_C1.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-01.pem
+Adding debian:certSIGN_Root_CA_G2.pem
+Adding debian:AffirmTrust_Premium_ECC.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+Adding debian:AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G4.pem
+Adding debian:Certum_Trusted_Network_CA.pem
+Adding debian:QuoVadis_Root_CA_3.pem
+Adding debian:QuoVadis_Root_CA_2.pem
+Adding debian:Entrust_Root_Certification_Authority_-_EC1.pem
+Adding debian:CFCA_EV_ROOT.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-01.pem
+Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+Adding debian:ePKI_Root_Certification_Authority.pem
+Adding debian:DigiCert_High_Assurance_EV_Root_CA.pem
+Adding debian:Starfield_Class_2_CA.pem
+Adding debian:HARICA_TLS_RSA_Root_CA_2021.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_R46.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+Adding debian:SecureTrust_CA.pem
+Adding debian:SecureSign_RootCA11.pem
+Adding debian:Comodo_AAA_Services_root.pem
+Adding debian:AffirmTrust_Networking.pem
+done.
+Setting up openjdk-17-jdk-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jar to provide /usr/bin/jar (jar) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jarsigner to provide /usr/bin/jarsigner (jarsigner) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javac to provide /usr/bin/javac (javac) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc to provide /usr/bin/javadoc (javadoc) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javap to provide /usr/bin/javap (javap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jcmd to provide /usr/bin/jcmd (jcmd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdb to provide /usr/bin/jdb (jdb) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeprscan to provide /usr/bin/jdeprscan (jdeprscan) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeps to provide /usr/bin/jdeps (jdeps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jfr to provide /usr/bin/jfr (jfr) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jimage to provide /usr/bin/jimage (jimage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jinfo to provide /usr/bin/jinfo (jinfo) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jlink to provide /usr/bin/jlink (jlink) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmap to provide /usr/bin/jmap (jmap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmod to provide /usr/bin/jmod (jmod) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jps to provide /usr/bin/jps (jps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jrunscript to provide /usr/bin/jrunscript (jrunscript) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jshell to provide /usr/bin/jshell (jshell) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstack to provide /usr/bin/jstack (jstack) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstat to provide /usr/bin/jstat (jstat) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstatd to provide /usr/bin/jstatd (jstatd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/serialver to provide /usr/bin/serialver (serialver) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jhsdb to provide /usr/bin/jhsdb (jhsdb) in auto mode
+Processing triggers for libc-bin (2.35-0ubuntu3.13) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for ca-certificates (20240203~22.04.1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+
+done.
+done.
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+[Worker 1 Setup] Installing uv...
+downloading uv 0.11.7 x86_64-unknown-linux-gnu
+installing to /home/ubuntu/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+[Worker 1 Setup] Installing Python dependencies...
+ + wcwidth==0.2.14
+ + webcolors==24.11.1
+ + webencodings==0.5.1
+ + websocket-client==1.8.0
+ + widgetsnbextension==4.0.14
+[Worker 1 Setup] Downloading Spark 3.4.4...
+
+2026-04-24 21:14:35 (26.6 MB/s) - ‘spark-3.4.4-bin-hadoop3.tgz’ saved [388988563/388988563]
+
+[Worker 1 Setup] Downloading AWS JARs (Hadoop 3.3.4 for Spark 3.4.4)...
+[Worker 1 Setup] Configuring environment variables...
+[Worker 1 Setup] Worker node setup complete!
+[0;32m[SUCCESS][0m 2026-04-24 21:14:40 - Worker 1 configured
+[0;34m[INFO][0m 2026-04-24 21:14:40 - Configuring Worker 2 (107.22.97.102)...
+[Worker 2 Setup] Installing system packages...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+All packages are up to date.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.23).
+curl set to manually installed.
+wget is already the newest version (1.21.2-2ubuntu1.1).
+wget set to manually installed.
+The following additional packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jre-headless python3-dev python3-pip-whl python3-setuptools-whl
+  python3-wheel python3.10-dev python3.10-venv rpcsvc-proto zlib1g-dev
+Suggested packages:
+  bzip2-doc cpp-doc gcc-11-locales debian-keyring g++-multilib g++-11-multilib
+  gcc-11-doc gcc-multilib autoconf automake libtool flex bison gdb gcc-doc
+  gcc-11-multilib default-jre apache2 | lighttpd | httpd libasound2-plugins
+  alsa-utils glibc-doc cups-common bzr libgd-tools liblcms2-utils pcscd
+  libstdc++-11-doc make-doc openjdk-17-demo openjdk-17-source libnss-mdns
+  fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho
+  fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic zip
+The following NEW packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jdk-headless openjdk-17-jre-headless python3-dev python3-pip
+  python3-pip-whl python3-setuptools-whl python3-venv python3-wheel
+  python3.10-dev python3.10-venv rpcsvc-proto unzip zlib1g-dev
+0 upgraded, 85 newly installed, 0 to remove and 0 not upgraded.
+Need to get 195 MB of archives.
+After this operation, 520 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 alsa-topology-conf all 1.2.5.1-2 [15.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2-data all 1.2.6.1-1ubuntu1.1 [19.3 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2 amd64 1.2.6.1-1ubuntu1.1 [391 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 alsa-ucm-conf all 1.2.6.3-1ubuntu1.12 [43.5 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.13 [20.3 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 linux-libc-dev amd64 5.15.0-176.186 [1327 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libcrypt-dev amd64 1:4.4.27-1 [112 kB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu6 [68.5 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtirpc-dev amd64 1.3.2-2ubuntu0.1 [192 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libnsl-dev amd64 1.3.0-2build2 [71.3 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.13 [2101 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-base amd64 11.4.0-1ubuntu1~22.04.3 [216 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libisl23 amd64 0.24-2build1 [727 kB]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libmpc3 amd64 1.2.1-2build1 [46.9 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 cpp-11 amd64 11.4.0-1ubuntu1~22.04.3 [10.0 MB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 cpp amd64 4:11.2.0-1ubuntu1 [27.7 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcc1-0 amd64 12.3.0-1ubuntu1~22.04.3 [48.3 kB]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgomp1 amd64 12.3.0-1ubuntu1~22.04.3 [127 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libitm1 amd64 12.3.0-1ubuntu1~22.04.3 [30.2 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libatomic1 amd64 12.3.0-1ubuntu1~22.04.3 [10.5 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasan6 amd64 11.4.0-1ubuntu1~22.04.3 [2283 kB]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 liblsan0 amd64 12.3.0-1ubuntu1~22.04.3 [1069 kB]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtsan0 amd64 11.4.0-1ubuntu1~22.04.3 [2260 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libubsan1 amd64 12.3.0-1ubuntu1~22.04.3 [976 kB]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libquadmath0 amd64 12.3.0-1ubuntu1~22.04.3 [154 kB]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2517 kB]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11 amd64 11.4.0-1ubuntu1~22.04.3 [20.1 MB]
+Get:28 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 gcc amd64 4:11.2.0-1ubuntu1 [5112 B]
+Get:29 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2101 kB]
+Get:30 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11 amd64 11.4.0-1ubuntu1~22.04.3 [11.4 MB]
+Get:31 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 g++ amd64 4:11.2.0-1ubuntu1 [1412 B]
+Get:32 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 make amd64 4.3-4.1build1 [180 kB]
+Get:33 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdpkg-perl all 1.21.1ubuntu2.6 [237 kB]
+Get:34 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 bzip2 amd64 1.0.8-5build1 [34.8 kB]
+Get:35 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 lto-disabled-list all 24 [12.5 kB]
+Get:36 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 dpkg-dev all 1.21.1ubuntu2.6 [922 kB]
+Get:37 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 build-essential amd64 12.9ubuntu3 [4744 B]
+Get:38 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 java-common all 0.72build2 [6782 B]
+Get:39 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common-data amd64 0.8-5ubuntu5.4 [24.0 kB]
+Get:40 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common3 amd64 0.8-5ubuntu5.4 [23.9 kB]
+Get:41 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-client3 amd64 0.8-5ubuntu5.4 [28.0 kB]
+Get:42 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcups2 amd64 2.4.1op1-1ubuntu4.16 [264 kB]
+Get:43 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fonts-dejavu-core all 2.37-2build1 [1041 kB]
+Get:44 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fontconfig-config all 2.13.1-4.2ubuntu5 [29.1 kB]
+Get:45 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfontconfig1 amd64 2.13.1-4.2ubuntu5 [131 kB]
+Get:46 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 liblcms2-2 amd64 2.12~rc1-2build2 [159 kB]
+Get:47 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg-turbo8 amd64 2.1.2-0ubuntu1 [134 kB]
+Get:48 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg8 amd64 8c-2ubuntu10 [2264 B]
+Get:49 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libgraphite2-3 amd64 1.3.14-1build2 [71.3 kB]
+Get:50 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libharfbuzz0b amd64 2.7.4-1ubuntu3.2 [353 kB]
+Get:51 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpcsclite1 amd64 1.9.5-3ubuntu1 [19.8 kB]
+Get:52 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jre-headless amd64 17.0.18+8-1~22.04.1 [48.4 MB]
+Get:53 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates-java all 20190909ubuntu1.3 [12.3 kB]
+Get:54 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfakeroot amd64 1.28-1ubuntu1 [31.5 kB]
+Get:55 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fakeroot amd64 1.28-1ubuntu1 [60.4 kB]
+Get:56 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 javascript-common all 11+nmu1 [5936 B]
+Get:57 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-perl all 1.201-1 [41.8 kB]
+Get:58 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-xs-perl amd64 0.04-6build3 [11.9 kB]
+Get:59 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+Get:60 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libdeflate0 amd64 1.10-2 [70.9 kB]
+Get:61 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.22.04.1 [29.2 kB]
+Get:62 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libwebp7 amd64 1.2.2-2ubuntu0.22.04.2 [206 kB]
+Get:63 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtiff5 amd64 4.3.0-6ubuntu0.13 [185 kB]
+Get:64 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxpm4 amd64 1:3.5.12-1ubuntu0.22.04.2 [36.7 kB]
+Get:65 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgd3 amd64 2.3.0-2ubuntu2.3 [129 kB]
+Get:66 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-devtools amd64 2.35-0ubuntu3.13 [29.0 kB]
+Get:67 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1-dev amd64 2.4.7-1ubuntu0.7 [148 kB]
+Get:68 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfile-fcntllock-perl amd64 0.22-3build7 [33.9 kB]
+Get:69 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-jquery all 3.6.0+dfsg+~3.5.13-1 [321 kB]
+Get:70 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-underscore all 1.13.2~dfsg-2 [118 kB]
+Get:71 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-sphinxdoc all 4.3.2-1 [139 kB]
+Get:72 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-2ubuntu9.2 [164 kB]
+Get:73 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-dev amd64 3.10.12-1~22.04.15 [4764 kB]
+Get:74 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-dev amd64 3.10.6-1~22.04.1 [7064 B]
+Get:75 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 manpages-dev all 5.10-1ubuntu1 [2309 kB]
+Get:76 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jdk-headless amd64 17.0.18+8-1~22.04.1 [71.4 MB]
+Get:77 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-dev amd64 3.10.12-1~22.04.15 [508 kB]
+Get:78 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-dev amd64 3.10.6-1~22.04.1 [26.0 kB]
+Get:79 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
+Get:80 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
+Get:81 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip-whl all 22.0.2+dfsg-1ubuntu0.7 [1683 kB]
+Get:82 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-setuptools-whl all 59.6.0-1.2ubuntu0.22.04.3 [789 kB]
+Get:83 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3.10-venv amd64 3.10.12-1~22.04.15 [5714 B]
+Get:84 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-venv amd64 3.10.6-1~22.04.1 [1042 B]
+Get:85 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 unzip amd64 6.0-26ubuntu3.2 [175 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 195 MB in 3s (71.4 MB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 66037 files and directories currently installed.)
+Setting up javascript-common (11+nmu1) ...
+Setting up libgraphite2-3:amd64 (1.3.14-1build2) ...
+Setting up liblcms2-2:amd64 (2.12~rc1-2build2) ...
+Setting up gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up manpages-dev (5.10-1ubuntu1) ...
+Setting up python3-setuptools-whl (59.6.0-1.2ubuntu0.22.04.3) ...
+Setting up lto-disabled-list (24) ...
+Setting up libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+Setting up java-common (0.72build2) ...
+Setting up libfile-fcntllock-perl (0.22-3build7) ...
+Setting up python3-pip-whl (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libalgorithm-diff-perl (1.201-1) ...
+Setting up unzip (6.0-26ubuntu3.2) ...
+Setting up libdeflate0:amd64 (1.10-2) ...
+Setting up linux-libc-dev:amd64 (5.15.0-176.186) ...
+Setting up libgomp1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up bzip2 (1.0.8-5build1) ...
+Setting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Setting up libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+Setting up libfakeroot:amd64 (1.28-1ubuntu1) ...
+Setting up libasan6:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up fakeroot (1.28-1ubuntu1) ...
+update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+Setting up libasound2-data (1.2.6.1-1ubuntu1.1) ...
+Setting up libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Setting up rpcsvc-proto (1.4.2-0ubuntu6) ...
+Setting up make (4.3-4.1build1) ...
+Setting up libavahi-common-data:amd64 (0.8-5ubuntu5.4) ...
+Setting up libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libmpc3:amd64 (1.2.1-2build1) ...
+Setting up libatomic1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up fonts-dejavu-core (2.37-2build1) ...
+Setting up libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+Setting up python3-pip (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+Setting up libdpkg-perl (1.21.1ubuntu2.6) ...
+Setting up libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+Setting up libubsan1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up alsa-topology-conf (1.2.5.1-2) ...
+Setting up libnsl-dev:amd64 (1.3.0-2build2) ...
+Setting up libcrypt-dev:amd64 (1:4.4.27-1) ...
+Setting up libasound2:amd64 (1.2.6.1-1ubuntu1.1) ...
+Setting up libharfbuzz0b:amd64 (2.7.4-1ubuntu3.2) ...
+Setting up libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Setting up libisl23:amd64 (0.24-2build1) ...
+Setting up libc-dev-bin (2.35-0ubuntu3.13) ...
+Setting up libalgorithm-diff-xs-perl (0.04-6build3) ...
+Setting up libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up liblsan0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libitm1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libjs-underscore (1.13.2~dfsg-2) ...
+Setting up libalgorithm-merge-perl (0.08-3) ...
+Setting up libtsan0:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libjpeg8:amd64 (8c-2ubuntu10) ...
+Setting up cpp-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up python3.10-venv (3.10.12-1~22.04.15) ...
+Setting up alsa-ucm-conf (1.2.6.3-1ubuntu1.12) ...
+Setting up fontconfig-config (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-common3:amd64 (0.8-5ubuntu5.4) ...
+Setting up dpkg-dev (1.21.1ubuntu2.6) ...
+Setting up python3-venv (3.10.6-1~22.04.1) ...
+Setting up libjs-sphinxdoc (4.3.2-1) ...
+Setting up libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up gcc-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up cpp (4:11.2.0-1ubuntu1) ...
+Setting up libc6-dev:amd64 (2.35-0ubuntu3.13) ...
+Setting up libtiff5:amd64 (4.3.0-6ubuntu0.13) ...
+Setting up libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-client3:amd64 (0.8-5ubuntu5.4) ...
+Setting up gcc (4:11.2.0-1ubuntu1) ...
+Setting up libexpat1-dev:amd64 (2.4.7-1ubuntu0.7) ...
+Setting up libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+Setting up libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libcups2:amd64 (2.4.1op1-1ubuntu4.16) ...
+Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Setting up libc-devtools (2.35-0ubuntu3.13) ...
+Setting up g++-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libpython3.10-dev:amd64 (3.10.12-1~22.04.15) ...
+Setting up python3.10-dev (3.10.12-1~22.04.15) ...
+Setting up g++ (4:11.2.0-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up build-essential (12.9ubuntu3) ...
+Setting up libpython3-dev:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-dev (3.10.6-1~22.04.1) ...
+Setting up openjdk-17-jre-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jpackage to provide /usr/bin/jpackage (jpackage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/keytool to provide /usr/bin/keytool (keytool) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/rmiregistry to provide /usr/bin/rmiregistry (rmiregistry) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/lib/jexec to provide /usr/bin/jexec (jexec) in auto mode
+Setting up ca-certificates-java (20190909ubuntu1.3) ...
+head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
+Adding debian:DigiCert_TLS_RSA4096_Root_G5.pem
+Adding debian:HARICA_TLS_ECC_Root_CA_2021.pem
+Adding debian:GlobalSign_Root_E46.pem
+Adding debian:D-TRUST_EV_Root_CA_1_2020.pem
+Adding debian:Entrust.net_Premium_2048_Secure_Server_CA.pem
+Adding debian:BJCA_Global_Root_CA1.pem
+Adding debian:Security_Communication_Root_CA.pem
+Adding debian:DigiCert_Assured_ID_Root_CA.pem
+Adding debian:emSign_ECC_Root_CA_-_C3.pem
+Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+Adding debian:GTS_Root_R2.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+Adding debian:Trustwave_Global_ECC_P256_Certification_Authority.pem
+Adding debian:XRamp_Global_CA_Root.pem
+Adding debian:Certainly_Root_R1.pem
+Adding debian:GlobalSign_Root_CA.pem
+Adding debian:DigiCert_Global_Root_CA.pem
+Adding debian:TWCA_Global_Root_CA.pem
+Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+Adding debian:SZAFIR_ROOT_CA2.pem
+Adding debian:UCA_Global_G2_Root.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G2.pem
+Adding debian:GLOBALTRUST_2020.pem
+Adding debian:BJCA_Global_Root_CA2.pem
+Adding debian:SSL.com_TLS_ECC_Root_CA_2022.pem
+Adding debian:ISRG_Root_X1.pem
+Adding debian:AC_RAIZ_FNMT-RCM.pem
+Adding debian:Security_Communication_ECC_RootCA1.pem
+Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+Adding debian:HiPKI_Root_CA_-_G1.pem
+Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+Adding debian:TrustAsia_Global_Root_CA_G3.pem
+Adding debian:vTrus_Root_CA.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+Adding debian:Buypass_Class_3_Root_CA.pem
+Adding debian:UCA_Extended_Validation_Root.pem
+Adding debian:Certainly_Root_E1.pem
+Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+Adding debian:D-TRUST_BR_Root_CA_1_2020.pem
+Adding debian:Actalis_Authentication_Root_CA.pem
+Adding debian:DigiCert_TLS_ECC_P384_Root_G5.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+Adding debian:Baltimore_CyberTrust_Root.pem
+Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+Adding debian:GlobalSign_Root_CA_-_R3.pem
+Adding debian:Certigna_Root_CA.pem
+Adding debian:AffirmTrust_Premium.pem
+Adding debian:Izenpe.com.pem
+Adding debian:DigiCert_Assured_ID_Root_G2.pem
+Adding debian:COMODO_ECC_Certification_Authority.pem
+Adding debian:Trustwave_Global_Certification_Authority.pem
+Adding debian:QuoVadis_Root_CA_3_G3.pem
+Adding debian:Amazon_Root_CA_3.pem
+Adding debian:e-Szigno_Root_CA_2017.pem
+Adding debian:Certum_Trusted_Root_CA.pem
+Adding debian:emSign_Root_CA_-_G1.pem
+Adding debian:GlobalSign_Root_CA_-_R6.pem
+Adding debian:Amazon_Root_CA_1.pem
+Adding debian:DigiCert_Global_Root_G3.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-02.pem
+Adding debian:DigiCert_Global_Root_G2.pem
+Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+Adding debian:TeliaSonera_Root_CA_v1.pem
+Adding debian:emSign_ECC_Root_CA_-_G3.pem
+Adding debian:Trustwave_Global_ECC_P384_Certification_Authority.pem
+Adding debian:USERTrust_ECC_Certification_Authority.pem
+Adding debian:Entrust_Root_Certification_Authority.pem
+Adding debian:Buypass_Class_2_Root_CA.pem
+Adding debian:Telia_Root_CA_v2.pem
+Adding debian:ACCVRAIZ1.pem
+Adding debian:SwissSign_Gold_CA_-_G2.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+Adding debian:Security_Communication_RootCA2.pem
+Adding debian:NAVER_Global_Root_Certification_Authority.pem
+Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+Adding debian:COMODO_Certification_Authority.pem
+Adding debian:Go_Daddy_Class_2_CA.pem
+Adding debian:Amazon_Root_CA_4.pem
+Adding debian:TWCA_Root_Certification_Authority.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+Adding debian:ISRG_Root_X2.pem
+Adding debian:Hongkong_Post_Root_CA_3.pem
+Adding debian:DigiCert_Assured_ID_Root_G3.pem
+Adding debian:TrustAsia_Global_Root_CA_G4.pem
+Adding debian:Amazon_Root_CA_2.pem
+Adding debian:Certum_EC-384_CA.pem
+Adding debian:GTS_Root_R3.pem
+Adding debian:Atos_TrustedRoot_Root_CA_ECC_TLS_2021.pem
+Adding debian:GlobalSign_Root_R46.pem
+Adding debian:Atos_TrustedRoot_Root_CA_RSA_TLS_2021.pem
+Adding debian:Atos_TrustedRoot_2011.pem
+Adding debian:ANF_Secure_Server_Root_CA.pem
+Adding debian:CA_Disig_Root_R2.pem
+Adding debian:certSIGN_ROOT_CA.pem
+Adding debian:Security_Communication_RootCA3.pem
+Adding debian:GTS_Root_R4.pem
+Adding debian:GTS_Root_R1.pem
+Adding debian:DigiCert_Trusted_Root_G4.pem
+Adding debian:TunTrust_Root_CA.pem
+Adding debian:QuoVadis_Root_CA_1_G3.pem
+Adding debian:COMODO_RSA_Certification_Authority.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-02.pem
+Adding debian:vTrus_ECC_Root_CA.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_E46.pem
+Adding debian:SSL.com_TLS_RSA_Root_CA_2022.pem
+Adding debian:Secure_Global_CA.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+Adding debian:AffirmTrust_Commercial.pem
+Adding debian:QuoVadis_Root_CA_2_G3.pem
+Adding debian:Certum_Trusted_Network_CA_2.pem
+Adding debian:USERTrust_RSA_Certification_Authority.pem
+Adding debian:SwissSign_Silver_CA_-_G2.pem
+Adding debian:Certigna.pem
+Adding debian:emSign_Root_CA_-_C1.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-01.pem
+Adding debian:certSIGN_Root_CA_G2.pem
+Adding debian:AffirmTrust_Premium_ECC.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+Adding debian:AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G4.pem
+Adding debian:Certum_Trusted_Network_CA.pem
+Adding debian:QuoVadis_Root_CA_3.pem
+Adding debian:QuoVadis_Root_CA_2.pem
+Adding debian:Entrust_Root_Certification_Authority_-_EC1.pem
+Adding debian:CFCA_EV_ROOT.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-01.pem
+Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+Adding debian:ePKI_Root_Certification_Authority.pem
+Adding debian:DigiCert_High_Assurance_EV_Root_CA.pem
+Adding debian:Starfield_Class_2_CA.pem
+Adding debian:HARICA_TLS_RSA_Root_CA_2021.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_R46.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+Adding debian:SecureTrust_CA.pem
+Adding debian:SecureSign_RootCA11.pem
+Adding debian:Comodo_AAA_Services_root.pem
+Adding debian:AffirmTrust_Networking.pem
+done.
+Setting up openjdk-17-jdk-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jar to provide /usr/bin/jar (jar) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jarsigner to provide /usr/bin/jarsigner (jarsigner) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javac to provide /usr/bin/javac (javac) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc to provide /usr/bin/javadoc (javadoc) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javap to provide /usr/bin/javap (javap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jcmd to provide /usr/bin/jcmd (jcmd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdb to provide /usr/bin/jdb (jdb) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeprscan to provide /usr/bin/jdeprscan (jdeprscan) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeps to provide /usr/bin/jdeps (jdeps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jfr to provide /usr/bin/jfr (jfr) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jimage to provide /usr/bin/jimage (jimage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jinfo to provide /usr/bin/jinfo (jinfo) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jlink to provide /usr/bin/jlink (jlink) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmap to provide /usr/bin/jmap (jmap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmod to provide /usr/bin/jmod (jmod) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jps to provide /usr/bin/jps (jps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jrunscript to provide /usr/bin/jrunscript (jrunscript) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jshell to provide /usr/bin/jshell (jshell) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstack to provide /usr/bin/jstack (jstack) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstat to provide /usr/bin/jstat (jstat) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstatd to provide /usr/bin/jstatd (jstatd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/serialver to provide /usr/bin/serialver (serialver) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jhsdb to provide /usr/bin/jhsdb (jhsdb) in auto mode
+Processing triggers for libc-bin (2.35-0ubuntu3.13) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for ca-certificates (20240203~22.04.1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+
+done.
+done.
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+[Worker 2 Setup] Installing uv...
+downloading uv 0.11.7 x86_64-unknown-linux-gnu
+installing to /home/ubuntu/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+[Worker 2 Setup] Installing Python dependencies...
+ + wcwidth==0.2.14
+ + webcolors==24.11.1
+ + webencodings==0.5.1
+ + websocket-client==1.8.0
+ + widgetsnbextension==4.0.14
+[Worker 2 Setup] Downloading Spark 3.4.4...
+
+2026-04-24 21:16:03 (21.7 MB/s) - ‘spark-3.4.4-bin-hadoop3.tgz’ saved [388988563/388988563]
+
+[Worker 2 Setup] Downloading AWS JARs (Hadoop 3.3.4 for Spark 3.4.4)...
+[Worker 2 Setup] Configuring environment variables...
+[Worker 2 Setup] Worker node setup complete!
+[0;32m[SUCCESS][0m 2026-04-24 21:16:08 - Worker 2 configured
+[0;34m[INFO][0m 2026-04-24 21:16:08 - Configuring Worker 3 (54.226.51.45)...
+[Worker 3 Setup] Installing system packages...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+All packages are up to date.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.23).
+curl set to manually installed.
+wget is already the newest version (1.21.2-2ubuntu1.1).
+wget set to manually installed.
+The following additional packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jre-headless python3-dev python3-pip-whl python3-setuptools-whl
+  python3-wheel python3.10-dev python3.10-venv rpcsvc-proto zlib1g-dev
+Suggested packages:
+  bzip2-doc cpp-doc gcc-11-locales debian-keyring g++-multilib g++-11-multilib
+  gcc-11-doc gcc-multilib autoconf automake libtool flex bison gdb gcc-doc
+  gcc-11-multilib default-jre apache2 | lighttpd | httpd libasound2-plugins
+  alsa-utils glibc-doc cups-common bzr libgd-tools liblcms2-utils pcscd
+  libstdc++-11-doc make-doc openjdk-17-demo openjdk-17-source libnss-mdns
+  fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho
+  fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic zip
+The following NEW packages will be installed:
+  alsa-topology-conf alsa-ucm-conf build-essential bzip2 ca-certificates-java
+  cpp cpp-11 dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-11
+  gcc gcc-11 gcc-11-base java-common javascript-common libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libasound2
+  libasound2-data libatomic1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libcups2 libdeflate0 libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libfontconfig1 libgcc-11-dev libgd3 libgomp1
+  libgraphite2-3 libharfbuzz0b libisl23 libitm1 libjbig0 libjpeg-turbo8
+  libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore liblcms2-2 liblsan0
+  libmpc3 libnsl-dev libpcsclite1 libpython3-dev libpython3.10-dev
+  libquadmath0 libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1
+  libwebp7 libxpm4 linux-libc-dev lto-disabled-list make manpages-dev
+  openjdk-17-jdk-headless openjdk-17-jre-headless python3-dev python3-pip
+  python3-pip-whl python3-setuptools-whl python3-venv python3-wheel
+  python3.10-dev python3.10-venv rpcsvc-proto unzip zlib1g-dev
+0 upgraded, 85 newly installed, 0 to remove and 0 not upgraded.
+Need to get 195 MB of archives.
+After this operation, 520 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 alsa-topology-conf all 1.2.5.1-2 [15.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2-data all 1.2.6.1-1ubuntu1.1 [19.3 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2 amd64 1.2.6.1-1ubuntu1.1 [391 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 alsa-ucm-conf all 1.2.6.3-1ubuntu1.12 [43.5 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.13 [20.3 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 linux-libc-dev amd64 5.15.0-176.186 [1327 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libcrypt-dev amd64 1:4.4.27-1 [112 kB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu6 [68.5 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtirpc-dev amd64 1.3.2-2ubuntu0.1 [192 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libnsl-dev amd64 1.3.0-2build2 [71.3 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.13 [2101 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-base amd64 11.4.0-1ubuntu1~22.04.3 [216 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libisl23 amd64 0.24-2build1 [727 kB]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libmpc3 amd64 1.2.1-2build1 [46.9 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 cpp-11 amd64 11.4.0-1ubuntu1~22.04.3 [10.0 MB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 cpp amd64 4:11.2.0-1ubuntu1 [27.7 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcc1-0 amd64 12.3.0-1ubuntu1~22.04.3 [48.3 kB]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgomp1 amd64 12.3.0-1ubuntu1~22.04.3 [127 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libitm1 amd64 12.3.0-1ubuntu1~22.04.3 [30.2 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libatomic1 amd64 12.3.0-1ubuntu1~22.04.3 [10.5 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasan6 amd64 11.4.0-1ubuntu1~22.04.3 [2283 kB]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 liblsan0 amd64 12.3.0-1ubuntu1~22.04.3 [1069 kB]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtsan0 amd64 11.4.0-1ubuntu1~22.04.3 [2260 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libubsan1 amd64 12.3.0-1ubuntu1~22.04.3 [976 kB]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libquadmath0 amd64 12.3.0-1ubuntu1~22.04.3 [154 kB]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2517 kB]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11 amd64 11.4.0-1ubuntu1~22.04.3 [20.1 MB]
+Get:28 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 gcc amd64 4:11.2.0-1ubuntu1 [5112 B]
+Get:29 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2101 kB]
+Get:30 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11 amd64 11.4.0-1ubuntu1~22.04.3 [11.4 MB]
+Get:31 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 g++ amd64 4:11.2.0-1ubuntu1 [1412 B]
+Get:32 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 make amd64 4.3-4.1build1 [180 kB]
+Get:33 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdpkg-perl all 1.21.1ubuntu2.6 [237 kB]
+Get:34 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 bzip2 amd64 1.0.8-5build1 [34.8 kB]
+Get:35 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 lto-disabled-list all 24 [12.5 kB]
+Get:36 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 dpkg-dev all 1.21.1ubuntu2.6 [922 kB]
+Get:37 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 build-essential amd64 12.9ubuntu3 [4744 B]
+Get:38 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 java-common all 0.72build2 [6782 B]
+Get:39 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common-data amd64 0.8-5ubuntu5.4 [24.0 kB]
+Get:40 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-common3 amd64 0.8-5ubuntu5.4 [23.9 kB]
+Get:41 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libavahi-client3 amd64 0.8-5ubuntu5.4 [28.0 kB]
+Get:42 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcups2 amd64 2.4.1op1-1ubuntu4.16 [264 kB]
+Get:43 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fonts-dejavu-core all 2.37-2build1 [1041 kB]
+Get:44 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fontconfig-config all 2.13.1-4.2ubuntu5 [29.1 kB]
+Get:45 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfontconfig1 amd64 2.13.1-4.2ubuntu5 [131 kB]
+Get:46 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 liblcms2-2 amd64 2.12~rc1-2build2 [159 kB]
+Get:47 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg-turbo8 amd64 2.1.2-0ubuntu1 [134 kB]
+Get:48 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg8 amd64 8c-2ubuntu10 [2264 B]
+Get:49 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libgraphite2-3 amd64 1.3.14-1build2 [71.3 kB]
+Get:50 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libharfbuzz0b amd64 2.7.4-1ubuntu3.2 [353 kB]
+Get:51 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpcsclite1 amd64 1.9.5-3ubuntu1 [19.8 kB]
+Get:52 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jre-headless amd64 17.0.18+8-1~22.04.1 [48.4 MB]
+Get:53 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates-java all 20190909ubuntu1.3 [12.3 kB]
+Get:54 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfakeroot amd64 1.28-1ubuntu1 [31.5 kB]
+Get:55 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 fakeroot amd64 1.28-1ubuntu1 [60.4 kB]
+Get:56 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 javascript-common all 11+nmu1 [5936 B]
+Get:57 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-perl all 1.201-1 [41.8 kB]
+Get:58 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-xs-perl amd64 0.04-6build3 [11.9 kB]
+Get:59 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+Get:60 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libdeflate0 amd64 1.10-2 [70.9 kB]
+Get:61 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.22.04.1 [29.2 kB]
+Get:62 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libwebp7 amd64 1.2.2-2ubuntu0.22.04.2 [206 kB]
+Get:63 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtiff5 amd64 4.3.0-6ubuntu0.13 [185 kB]
+Get:64 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxpm4 amd64 1:3.5.12-1ubuntu0.22.04.2 [36.7 kB]
+Get:65 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgd3 amd64 2.3.0-2ubuntu2.3 [129 kB]
+Get:66 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-devtools amd64 2.35-0ubuntu3.13 [29.0 kB]
+Get:67 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1-dev amd64 2.4.7-1ubuntu0.7 [148 kB]
+Get:68 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libfile-fcntllock-perl amd64 0.22-3build7 [33.9 kB]
+Get:69 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-jquery all 3.6.0+dfsg+~3.5.13-1 [321 kB]
+Get:70 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-underscore all 1.13.2~dfsg-2 [118 kB]
+Get:71 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libjs-sphinxdoc all 4.3.2-1 [139 kB]
+Get:72 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-2ubuntu9.2 [164 kB]
+Get:73 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-dev amd64 3.10.12-1~22.04.15 [4764 kB]
+Get:74 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-dev amd64 3.10.6-1~22.04.1 [7064 B]
+Get:75 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 manpages-dev all 5.10-1ubuntu1 [2309 kB]
+Get:76 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jdk-headless amd64 17.0.18+8-1~22.04.1 [71.4 MB]
+Get:77 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-dev amd64 3.10.12-1~22.04.15 [508 kB]
+Get:78 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-dev amd64 3.10.6-1~22.04.1 [26.0 kB]
+Get:79 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
+Get:80 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
+Get:81 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip-whl all 22.0.2+dfsg-1ubuntu0.7 [1683 kB]
+Get:82 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-setuptools-whl all 59.6.0-1.2ubuntu0.22.04.3 [789 kB]
+Get:83 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3.10-venv amd64 3.10.12-1~22.04.15 [5714 B]
+Get:84 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-venv amd64 3.10.6-1~22.04.1 [1042 B]
+Get:85 http://us-east-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 unzip amd64 6.0-26ubuntu3.2 [175 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 195 MB in 2s (89.5 MB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 66037 files and directories currently installed.)
+Setting up javascript-common (11+nmu1) ...
+Setting up libgraphite2-3:amd64 (1.3.14-1build2) ...
+Setting up liblcms2-2:amd64 (2.12~rc1-2build2) ...
+Setting up gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up manpages-dev (5.10-1ubuntu1) ...
+Setting up python3-setuptools-whl (59.6.0-1.2ubuntu0.22.04.3) ...
+Setting up lto-disabled-list (24) ...
+Setting up libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+Setting up java-common (0.72build2) ...
+Setting up libfile-fcntllock-perl (0.22-3build7) ...
+Setting up python3-pip-whl (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libalgorithm-diff-perl (1.201-1) ...
+Setting up unzip (6.0-26ubuntu3.2) ...
+Setting up libdeflate0:amd64 (1.10-2) ...
+Setting up linux-libc-dev:amd64 (5.15.0-176.186) ...
+Setting up libgomp1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up bzip2 (1.0.8-5build1) ...
+Setting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Setting up libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+Setting up libfakeroot:amd64 (1.28-1ubuntu1) ...
+Setting up libasan6:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up fakeroot (1.28-1ubuntu1) ...
+update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+Setting up libasound2-data (1.2.6.1-1ubuntu1.1) ...
+Setting up libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Setting up rpcsvc-proto (1.4.2-0ubuntu6) ...
+Setting up make (4.3-4.1build1) ...
+Setting up libavahi-common-data:amd64 (0.8-5ubuntu5.4) ...
+Setting up libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libmpc3:amd64 (1.2.1-2build1) ...
+Setting up libatomic1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up fonts-dejavu-core (2.37-2build1) ...
+Setting up libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+Setting up python3-pip (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+Setting up libdpkg-perl (1.21.1ubuntu2.6) ...
+Setting up libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+Setting up libubsan1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up alsa-topology-conf (1.2.5.1-2) ...
+Setting up libnsl-dev:amd64 (1.3.0-2build2) ...
+Setting up libcrypt-dev:amd64 (1:4.4.27-1) ...
+Setting up libasound2:amd64 (1.2.6.1-1ubuntu1.1) ...
+Setting up libharfbuzz0b:amd64 (2.7.4-1ubuntu3.2) ...
+Setting up libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Setting up libisl23:amd64 (0.24-2build1) ...
+Setting up libc-dev-bin (2.35-0ubuntu3.13) ...
+Setting up libalgorithm-diff-xs-perl (0.04-6build3) ...
+Setting up libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up liblsan0:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libitm1:amd64 (12.3.0-1ubuntu1~22.04.3) ...
+Setting up libjs-underscore (1.13.2~dfsg-2) ...
+Setting up libalgorithm-merge-perl (0.08-3) ...
+Setting up libtsan0:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libjpeg8:amd64 (8c-2ubuntu10) ...
+Setting up cpp-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up python3.10-venv (3.10.12-1~22.04.15) ...
+Setting up alsa-ucm-conf (1.2.6.3-1ubuntu1.12) ...
+Setting up fontconfig-config (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-common3:amd64 (0.8-5ubuntu5.4) ...
+Setting up dpkg-dev (1.21.1ubuntu2.6) ...
+Setting up python3-venv (3.10.6-1~22.04.1) ...
+Setting up libjs-sphinxdoc (4.3.2-1) ...
+Setting up libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up gcc-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up cpp (4:11.2.0-1ubuntu1) ...
+Setting up libc6-dev:amd64 (2.35-0ubuntu3.13) ...
+Setting up libtiff5:amd64 (4.3.0-6ubuntu0.13) ...
+Setting up libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+Setting up libavahi-client3:amd64 (0.8-5ubuntu5.4) ...
+Setting up gcc (4:11.2.0-1ubuntu1) ...
+Setting up libexpat1-dev:amd64 (2.4.7-1ubuntu0.7) ...
+Setting up libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+Setting up libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libcups2:amd64 (2.4.1op1-1ubuntu4.16) ...
+Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Setting up libc-devtools (2.35-0ubuntu3.13) ...
+Setting up g++-11 (11.4.0-1ubuntu1~22.04.3) ...
+Setting up libpython3.10-dev:amd64 (3.10.12-1~22.04.15) ...
+Setting up python3.10-dev (3.10.12-1~22.04.15) ...
+Setting up g++ (4:11.2.0-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up build-essential (12.9ubuntu3) ...
+Setting up libpython3-dev:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-dev (3.10.6-1~22.04.1) ...
+Setting up openjdk-17-jre-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jpackage to provide /usr/bin/jpackage (jpackage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/keytool to provide /usr/bin/keytool (keytool) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/rmiregistry to provide /usr/bin/rmiregistry (rmiregistry) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/lib/jexec to provide /usr/bin/jexec (jexec) in auto mode
+Setting up ca-certificates-java (20190909ubuntu1.3) ...
+head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
+Adding debian:DigiCert_TLS_RSA4096_Root_G5.pem
+Adding debian:HARICA_TLS_ECC_Root_CA_2021.pem
+Adding debian:GlobalSign_Root_E46.pem
+Adding debian:D-TRUST_EV_Root_CA_1_2020.pem
+Adding debian:Entrust.net_Premium_2048_Secure_Server_CA.pem
+Adding debian:BJCA_Global_Root_CA1.pem
+Adding debian:Security_Communication_Root_CA.pem
+Adding debian:DigiCert_Assured_ID_Root_CA.pem
+Adding debian:emSign_ECC_Root_CA_-_C3.pem
+Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+Adding debian:GTS_Root_R2.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+Adding debian:Trustwave_Global_ECC_P256_Certification_Authority.pem
+Adding debian:XRamp_Global_CA_Root.pem
+Adding debian:Certainly_Root_R1.pem
+Adding debian:GlobalSign_Root_CA.pem
+Adding debian:DigiCert_Global_Root_CA.pem
+Adding debian:TWCA_Global_Root_CA.pem
+Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+Adding debian:SZAFIR_ROOT_CA2.pem
+Adding debian:UCA_Global_G2_Root.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G2.pem
+Adding debian:GLOBALTRUST_2020.pem
+Adding debian:BJCA_Global_Root_CA2.pem
+Adding debian:SSL.com_TLS_ECC_Root_CA_2022.pem
+Adding debian:ISRG_Root_X1.pem
+Adding debian:AC_RAIZ_FNMT-RCM.pem
+Adding debian:Security_Communication_ECC_RootCA1.pem
+Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+Adding debian:HiPKI_Root_CA_-_G1.pem
+Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+Adding debian:TrustAsia_Global_Root_CA_G3.pem
+Adding debian:vTrus_Root_CA.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+Adding debian:Buypass_Class_3_Root_CA.pem
+Adding debian:UCA_Extended_Validation_Root.pem
+Adding debian:Certainly_Root_E1.pem
+Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+Adding debian:D-TRUST_BR_Root_CA_1_2020.pem
+Adding debian:Actalis_Authentication_Root_CA.pem
+Adding debian:DigiCert_TLS_ECC_P384_Root_G5.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+Adding debian:Baltimore_CyberTrust_Root.pem
+Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+Adding debian:GlobalSign_Root_CA_-_R3.pem
+Adding debian:Certigna_Root_CA.pem
+Adding debian:AffirmTrust_Premium.pem
+Adding debian:Izenpe.com.pem
+Adding debian:DigiCert_Assured_ID_Root_G2.pem
+Adding debian:COMODO_ECC_Certification_Authority.pem
+Adding debian:Trustwave_Global_Certification_Authority.pem
+Adding debian:QuoVadis_Root_CA_3_G3.pem
+Adding debian:Amazon_Root_CA_3.pem
+Adding debian:e-Szigno_Root_CA_2017.pem
+Adding debian:Certum_Trusted_Root_CA.pem
+Adding debian:emSign_Root_CA_-_G1.pem
+Adding debian:GlobalSign_Root_CA_-_R6.pem
+Adding debian:Amazon_Root_CA_1.pem
+Adding debian:DigiCert_Global_Root_G3.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-02.pem
+Adding debian:DigiCert_Global_Root_G2.pem
+Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+Adding debian:TeliaSonera_Root_CA_v1.pem
+Adding debian:emSign_ECC_Root_CA_-_G3.pem
+Adding debian:Trustwave_Global_ECC_P384_Certification_Authority.pem
+Adding debian:USERTrust_ECC_Certification_Authority.pem
+Adding debian:Entrust_Root_Certification_Authority.pem
+Adding debian:Buypass_Class_2_Root_CA.pem
+Adding debian:Telia_Root_CA_v2.pem
+Adding debian:ACCVRAIZ1.pem
+Adding debian:SwissSign_Gold_CA_-_G2.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+Adding debian:Security_Communication_RootCA2.pem
+Adding debian:NAVER_Global_Root_Certification_Authority.pem
+Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+Adding debian:COMODO_Certification_Authority.pem
+Adding debian:Go_Daddy_Class_2_CA.pem
+Adding debian:Amazon_Root_CA_4.pem
+Adding debian:TWCA_Root_Certification_Authority.pem
+Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+Adding debian:ISRG_Root_X2.pem
+Adding debian:Hongkong_Post_Root_CA_3.pem
+Adding debian:DigiCert_Assured_ID_Root_G3.pem
+Adding debian:TrustAsia_Global_Root_CA_G4.pem
+Adding debian:Amazon_Root_CA_2.pem
+Adding debian:Certum_EC-384_CA.pem
+Adding debian:GTS_Root_R3.pem
+Adding debian:Atos_TrustedRoot_Root_CA_ECC_TLS_2021.pem
+Adding debian:GlobalSign_Root_R46.pem
+Adding debian:Atos_TrustedRoot_Root_CA_RSA_TLS_2021.pem
+Adding debian:Atos_TrustedRoot_2011.pem
+Adding debian:ANF_Secure_Server_Root_CA.pem
+Adding debian:CA_Disig_Root_R2.pem
+Adding debian:certSIGN_ROOT_CA.pem
+Adding debian:Security_Communication_RootCA3.pem
+Adding debian:GTS_Root_R4.pem
+Adding debian:GTS_Root_R1.pem
+Adding debian:DigiCert_Trusted_Root_G4.pem
+Adding debian:TunTrust_Root_CA.pem
+Adding debian:QuoVadis_Root_CA_1_G3.pem
+Adding debian:COMODO_RSA_Certification_Authority.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-02.pem
+Adding debian:vTrus_ECC_Root_CA.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_E46.pem
+Adding debian:SSL.com_TLS_RSA_Root_CA_2022.pem
+Adding debian:Secure_Global_CA.pem
+Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+Adding debian:AffirmTrust_Commercial.pem
+Adding debian:QuoVadis_Root_CA_2_G3.pem
+Adding debian:Certum_Trusted_Network_CA_2.pem
+Adding debian:USERTrust_RSA_Certification_Authority.pem
+Adding debian:SwissSign_Silver_CA_-_G2.pem
+Adding debian:Certigna.pem
+Adding debian:emSign_Root_CA_-_C1.pem
+Adding debian:CommScope_Public_Trust_RSA_Root-01.pem
+Adding debian:certSIGN_Root_CA_G2.pem
+Adding debian:AffirmTrust_Premium_ECC.pem
+Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+Adding debian:AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.pem
+Adding debian:Entrust_Root_Certification_Authority_-_G4.pem
+Adding debian:Certum_Trusted_Network_CA.pem
+Adding debian:QuoVadis_Root_CA_3.pem
+Adding debian:QuoVadis_Root_CA_2.pem
+Adding debian:Entrust_Root_Certification_Authority_-_EC1.pem
+Adding debian:CFCA_EV_ROOT.pem
+Adding debian:CommScope_Public_Trust_ECC_Root-01.pem
+Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+Adding debian:ePKI_Root_Certification_Authority.pem
+Adding debian:DigiCert_High_Assurance_EV_Root_CA.pem
+Adding debian:Starfield_Class_2_CA.pem
+Adding debian:HARICA_TLS_RSA_Root_CA_2021.pem
+Adding debian:Sectigo_Public_Server_Authentication_Root_R46.pem
+Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+Adding debian:SecureTrust_CA.pem
+Adding debian:SecureSign_RootCA11.pem
+Adding debian:Comodo_AAA_Services_root.pem
+Adding debian:AffirmTrust_Networking.pem
+done.
+Setting up openjdk-17-jdk-headless:amd64 (17.0.18+8-1~22.04.1) ...
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jar to provide /usr/bin/jar (jar) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jarsigner to provide /usr/bin/jarsigner (jarsigner) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javac to provide /usr/bin/javac (javac) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc to provide /usr/bin/javadoc (javadoc) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javap to provide /usr/bin/javap (javap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jcmd to provide /usr/bin/jcmd (jcmd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdb to provide /usr/bin/jdb (jdb) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeprscan to provide /usr/bin/jdeprscan (jdeprscan) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeps to provide /usr/bin/jdeps (jdeps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jfr to provide /usr/bin/jfr (jfr) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jimage to provide /usr/bin/jimage (jimage) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jinfo to provide /usr/bin/jinfo (jinfo) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jlink to provide /usr/bin/jlink (jlink) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmap to provide /usr/bin/jmap (jmap) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmod to provide /usr/bin/jmod (jmod) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jps to provide /usr/bin/jps (jps) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jrunscript to provide /usr/bin/jrunscript (jrunscript) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jshell to provide /usr/bin/jshell (jshell) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstack to provide /usr/bin/jstack (jstack) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstat to provide /usr/bin/jstat (jstat) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstatd to provide /usr/bin/jstatd (jstatd) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/serialver to provide /usr/bin/serialver (serialver) in auto mode
+update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jhsdb to provide /usr/bin/jhsdb (jhsdb) in auto mode
+Processing triggers for libc-bin (2.35-0ubuntu3.13) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for ca-certificates (20240203~22.04.1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+
+done.
+done.
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+[Worker 3 Setup] Installing uv...
+downloading uv 0.11.7 x86_64-unknown-linux-gnu
+installing to /home/ubuntu/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+[Worker 3 Setup] Installing Python dependencies...
+ + wcwidth==0.2.14
+ + webcolors==24.11.1
+ + webencodings==0.5.1
+ + websocket-client==1.8.0
+ + widgetsnbextension==4.0.14
+[Worker 3 Setup] Downloading Spark 3.4.4...
+
+2026-04-24 21:17:27 (28.0 MB/s) - ‘spark-3.4.4-bin-hadoop3.tgz’ saved [388988563/388988563]
+
+[Worker 3 Setup] Downloading AWS JARs (Hadoop 3.3.4 for Spark 3.4.4)...
+[Worker 3 Setup] Configuring environment variables...
+[Worker 3 Setup] Worker node setup complete!
+[0;32m[SUCCESS][0m 2026-04-24 21:17:32 - Worker 3 configured
+[0;32m[SUCCESS][0m 2026-04-24 21:17:32 - All worker nodes configured
+
+[0;32m========================================[0m
+[0;32mPart 9: Configuring Spark on Master Node[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:17:32 - Creating Spark configuration files on master...
+[Spark Config] Creating spark-env.sh...
+[Spark Config] Creating workers file...
+[Spark Config] Spark configuration complete!
+[0;32m[SUCCESS][0m 2026-04-24 21:17:33 - Spark configured on master
+
+[0;32m========================================[0m
+[0;32mPart 10: Configuring Spark on Worker Nodes[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:17:33 - Configuring Spark on Worker 1...
+[0;32m[SUCCESS][0m 2026-04-24 21:17:34 - Spark configured on Worker 1
+[0;34m[INFO][0m 2026-04-24 21:17:34 - Configuring Spark on Worker 2...
+[0;32m[SUCCESS][0m 2026-04-24 21:17:35 - Spark configured on Worker 2
+[0;34m[INFO][0m 2026-04-24 21:17:35 - Configuring Spark on Worker 3...
+[0;32m[SUCCESS][0m 2026-04-24 21:17:36 - Spark configured on Worker 3
+[0;32m[SUCCESS][0m 2026-04-24 21:17:36 - Spark configured on all workers
+
+[0;32m========================================[0m
+[0;32mPart 11: Setting Up SSH Keys for Passwordless Access[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:17:36 - Copying SSH key to master node...
+[0;32m[SUCCESS][0m 2026-04-24 21:17:37 - SSH key copied to master
+[0;34m[INFO][0m 2026-04-24 21:17:37 - Generating SSH key on master...
+[0;32m[SUCCESS][0m 2026-04-24 21:17:38 - SSH key generated on master
+[0;34m[INFO][0m 2026-04-24 21:17:39 - Adding master's key to authorized_keys on all workers...
+[0;32m[SUCCESS][0m 2026-04-24 21:17:40 - Passwordless SSH configured
+
+[0;32m========================================[0m
+[0;32mPart 12: Starting Spark Cluster[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:17:40 - Starting Spark master...
+starting org.apache.spark.deploy.master.Master, logging to /home/ubuntu/spark/logs/spark-ubuntu-org.apache.spark.deploy.master.Master-1-ip-172-31-21-206.out
+[0;32m[SUCCESS][0m 2026-04-24 21:17:48 - Spark master started
+[0;34m[INFO][0m 2026-04-24 21:17:48 - Starting Spark workers...
+172.31.22.225: Warning: Permanently added '172.31.22.225' (ED25519) to the list of known hosts.
+172.31.22.225: starting org.apache.spark.deploy.worker.Worker, logging to /home/ubuntu/spark/logs/spark-ubuntu-org.apache.spark.deploy.worker.Worker-1-ip-172-31-22-225.out
+172.31.25.226: Warning: Permanently added '172.31.25.226' (ED25519) to the list of known hosts.
+172.31.25.226: starting org.apache.spark.deploy.worker.Worker, logging to /home/ubuntu/spark/logs/spark-ubuntu-org.apache.spark.deploy.worker.Worker-1-ip-172-31-25-226.out
+172.31.19.142: Warning: Permanently added '172.31.19.142' (ED25519) to the list of known hosts.
+172.31.19.142: starting org.apache.spark.deploy.worker.Worker, logging to /home/ubuntu/spark/logs/spark-ubuntu-org.apache.spark.deploy.worker.Worker-1-ip-172-31-19-142.out
+[0;32m[SUCCESS][0m 2026-04-24 21:17:57 - Spark workers started
+
+[0;32m========================================[0m
+[0;32mPart 13: Verifying Cluster[0m
+[0;32m========================================[0m
+[0;34m[INFO][0m 2026-04-24 21:17:57 - Checking master process...
+4976 Master
+[0;32m[SUCCESS][0m 2026-04-24 21:17:58 - Master process running
+[0;34m[INFO][0m 2026-04-24 21:17:58 - Waiting for workers to fully start up...
+[0;34m[INFO][0m 2026-04-24 21:18:08 - Checking worker processes...
+4791 Worker
+4780 Worker
+4762 Worker
+[0;32m[SUCCESS][0m 2026-04-24 21:18:09 - Workers running: 3/3
+
+[0;32m========================================[0m
+[0;32m✓ Spark Cluster Setup Complete![0m
+[0;32m========================================[0m
+
+==================================================
+           CLUSTER INFORMATION
+==================================================
+
+Master Node:
+  Public IP:  54.208.63.13
+  Private IP: 172.31.21.206
+
+Worker Nodes:
+  Worker 1: 100.54.86.13 (private: 172.31.19.142)
+  Worker 2: 107.22.97.102 (private: 172.31.25.226)
+  Worker 3: 54.226.51.45 (private: 172.31.22.225)
+
+==================================================
+           ACCESS INFORMATION
+==================================================
+
+SSH to Master:
+  ssh -i spark-cluster-key-1777064937.pem ubuntu@54.208.63.13
+
+Or use the helper script:
+  ./ssh_to_master_node.sh
+
+Spark Master Web UI:
+  http://54.208.63.13:8080
+
+Spark Application UI (when job running):
+  http://54.208.63.13:4040
+
+==================================================
+           CONFIGURATION FILES
+==================================================
+
+Cluster configuration: cluster-config.txt
+IP addresses: cluster-ips.txt
+SSH key: spark-cluster-key-1777064937.pem
+
+==================================================
+           NEXT STEPS
+==================================================
+
+1. Access Spark Master Web UI to verify 3 workers are connected
+2. SSH to master and run a test job:
+   ssh -i spark-cluster-key-1777064937.pem ubuntu@54.208.63.13
+   cd ~/spark-cluster
+   source cluster-ips.txt
+   uv run python nyc_tlc_problem1_cluster.py spark://$MASTER_PRIVATE_IP:7077
+
+3. To stop the cluster later:
+   ssh -i spark-cluster-key-1777064937.pem ubuntu@54.208.63.13 '$SPARK_HOME/sbin/stop-all.sh'
+
+4. To terminate all resources, use the cleanup script or:
+   source cluster-config.txt
+   aws ec2 terminate-instances --instance-ids $MASTER_INSTANCE_ID $WORKER1_INSTANCE_ID $WORKER2_INSTANCE_ID $WORKER3_INSTANCE_ID --region $AWS_REGION
+   aws ec2 delete-security-group --group-id $SPARK_SG_ID --region $AWS_REGION
+   aws ec2 delete-key-pair --key-name $KEY_NAME --region $AWS_REGION
+
+==================================================
+           LOG FILE
+==================================================
+
+Full setup log saved to: cluster-setup-20260424-210829.log
+If you encounter issues, check this log file for detailed error messages.
+
+[0;32m[SUCCESS][0m 2026-04-24 21:18:09 - Setup script completed successfully!
+[0;34m[INFO][0m 2026-04-24 21:18:09 - Total setup time: 9 minutes 40 seconds
