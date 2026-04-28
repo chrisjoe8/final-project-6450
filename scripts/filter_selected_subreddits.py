@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 import os
 
-MASTER_URL = "spark://172.31.28.131:7077"
+MASTER_URL = "spark://172.31.21.33:7077"
 INPUT_PATH = "s3a://eleni-zournatzi-datsbd-s2026/reddit-project/parquet/comments/"
 OUTPUT_PATH = "s3a://eleni-zournatzi-datsbd-s2026/project/filtered_comments_v1/"
 #MASTER_URL = "spark://172.31.21.206:7077"
