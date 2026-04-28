@@ -1,0 +1,5 @@
+ROW COUNTS BY ANALYSIS SUBSET
+all_df: 21995306
+text_df: 19594438
+user_df: 19580655
+text_user_df: 19580584

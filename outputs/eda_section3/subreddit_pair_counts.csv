@@ -1,0 +1,16 @@
+subreddit_a,subreddit_b,shared_users
+politics,worldnews,158820
+news,worldnews,153459
+news,politics,141792
+WhitePeopleTwitter,politics,137366
+WhitePeopleTwitter,worldnews,107786
+WhitePeopleTwitter,news,101205
+changemyview,worldnews,29415
+changemyview,politics,25643
+changemyview,news,22934
+WhitePeopleTwitter,changemyview,20853
+conspiracy,worldnews,19778
+conspiracy,politics,19660
+WhitePeopleTwitter,conspiracy,15789
+conspiracy,news,15788
+changemyview,conspiracy,5991
