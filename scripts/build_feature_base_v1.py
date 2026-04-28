@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 
-MASTER_URL = "spark://172.31.21.33:7077"
+MASTER_URL = "spark://172.31.27.59:7077" # MASTER_PRIVATE_IP
 INPUT_PATH = "s3a://eleni-zournatzi-datsbd-s2026/reddit-project/parquet/comments/"
 OUTPUT_PATH = "s3a://eleni-zournatzi-datsbd-s2026/project/filtered_comments_v1/"
 #MASTER_URL = "spark://172.31.21.206:7077"
