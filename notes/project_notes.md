@@ -1,4 +1,3 @@
------------- 4/18/2026 ------------
 export NET_ID="chris-joe"
 export BUCKET="${NET_ID}-datsbd-s2026-v2"
 export DEST="s3://${BUCKET}/reddit-data/"
