@@ -4,7 +4,7 @@ from pyspark.sql.window import Window
 from pyspark.ml.feature import StopWordsRemover
 import os
 
-MASTER_URL = "spark://172.31.21.166:7077" #MASTER_PRIVATE_IP
+MASTER_URL = "spark://172.31.86.233:7077" #MASTER_PRIVATE_IP
 INPUT_PATH = "s3a://chris-joe-datsbd-s2026-v2/project/feature_base_v1/"
 OUTPUT_DIR = "outputs/eda_section4"
 
