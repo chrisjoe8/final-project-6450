@@ -1,0 +1,6 @@
+NLP PREP TEXT BASE SUMMARY
+INPUT_PATH: s3a://chris-joe-datsbd-s2026-v2/project/feature_base_v1/
+OUTPUT_PATH: s3a://chris-joe-datsbd-s2026-v2/project/nlp_text_base_v1/
+FULL_FEATURE_BASE_ROWS: 21995306
+TEXT_VALID_ROWS: 19580559
+NLP_BASE_ROWS: 19580559
