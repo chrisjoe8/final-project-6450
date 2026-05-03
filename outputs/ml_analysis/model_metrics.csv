@@ -1,0 +1,3 @@
+model,auc_roc,accuracy,f1,weighted_precision,weighted_recall
+Logistic Regression,0.6985,0.5722,0.6885,0.9331,0.5722
+Random Forest,0.856,0.9539,0.9324,0.9541,0.9539

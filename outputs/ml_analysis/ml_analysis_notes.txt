@@ -1,0 +1,8 @@
+ML ANALYSIS SUMMARY
+Models run:
+- Logistic Regression
+- Random Forest
+
+Metrics:
+Logistic Regression: AUC=0.6985, Accuracy=0.5722, F1=0.6885, Weighted Precision=0.9331, Weighted Recall=0.5722
+Random Forest: AUC=0.856, Accuracy=0.9539, F1=0.9324, Weighted Precision=0.9541, Weighted Recall=0.9539
