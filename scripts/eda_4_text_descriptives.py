@@ -4,7 +4,7 @@ from pyspark.sql.window import Window
 from pyspark.ml.feature import StopWordsRemover
 import os
 
-MASTER_URL = "spark://172.31.86.233:7077" #MASTER_PRIVATE_IP
+MASTER_URL = "spark://172.31.86.90:7077" #MASTER_PRIVATE_IP
 INPUT_PATH = "s3a://chris-joe-datsbd-s2026-v2/project/feature_base_v1/"
 OUTPUT_DIR = "outputs/eda_section4"
 
@@ -61,9 +61,9 @@ text_length_by_controversy = (
     text_user_labeled_df.groupBy("controversiality")
     .agg(
         F.count("*").alias("total_comments"),
-        F.avg("body_length_chars").alias("avg_body_length_chars"),
+        F.round(F.avg("body_length_chars"), 2).alias("avg_body_length_chars"),
         F.expr("percentile_approx(body_length_chars, 0.5)").alias("median_body_length_chars"),
-        F.avg("body_length_words").alias("avg_body_length_words"),
+        F.round(F.avg("body_length_words"), 2).alias("avg_body_length_words"),
         F.expr("percentile_approx(body_length_words, 0.5)").alias("median_body_length_words")
     )
     .orderBy("controversiality")
@@ -79,9 +79,9 @@ text_length_by_subreddit = (
     text_user_labeled_df.groupBy("subreddit")
     .agg(
         F.count("*").alias("total_comments"),
-        F.avg("body_length_chars").alias("avg_body_length_chars"),
+        F.round(F.avg("body_length_chars"), 2).alias("avg_body_length_chars"),
         F.expr("percentile_approx(body_length_chars, 0.5)").alias("median_body_length_chars"),
-        F.avg("body_length_words").alias("avg_body_length_words"),
+        F.round(F.avg("body_length_words"), 2).alias("avg_body_length_words"),
         F.expr("percentile_approx(body_length_words, 0.5)").alias("median_body_length_words")
     )
     .orderBy(F.desc("total_comments"))

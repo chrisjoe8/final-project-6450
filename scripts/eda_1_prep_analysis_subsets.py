@@ -3,7 +3,7 @@ import pyspark.sql.functions as F
 import os
 
 
-MASTER_URL = "spark://172.31.21.166:7077" #MASTER_PRIVATE_IP
+MASTER_URL = "spark://172.31.86.90:7077" #MASTER_PRIVATE_IP
 INPUT_PATH = "s3a://chris-joe-datsbd-s2026-v2/project/feature_base_v1/"
 OUTPUT_DIR = "outputs/eda_section1"
 
@@ -117,7 +117,7 @@ controversy_rate_by_subreddit = (
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
     .orderBy(F.desc("controversy_rate"))
 )

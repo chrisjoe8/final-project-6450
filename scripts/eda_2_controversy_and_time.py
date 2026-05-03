@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 import os
 
-MASTER_URL = "spark://172.31.21.166:7077" #MASTER_PRIVATE_IP
+MASTER_URL = "spark://172.31.86.90:7077" #MASTER_PRIVATE_IP
 INPUT_PATH = "s3a://chris-joe-datsbd-s2026-v2/project/feature_base_v1/"
 OUTPUT_DIR = "outputs/eda_section2"
 
@@ -24,6 +24,13 @@ df = spark.read.parquet(INPUT_PATH)
 
 # Use full cleaned feature base for controversy/time analysis
 all_df = df
+all_df = all_df.withColumn(
+    "created_ts_est",
+    F.from_utc_timestamp(F.from_unixtime("created_utc").cast("timestamp"), "America/New_York")
+).withColumn(
+    "hour_est",
+    F.hour("created_ts_est")
+)
 
 # --------------------------------------------------
 # 1. Controversy by subreddit
@@ -36,7 +43,7 @@ controversy_by_subreddit = (
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
     .orderBy(F.desc("controversy_rate"))
 )
@@ -55,7 +62,7 @@ controversy_by_month = (
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
     .orderBy("year", "month")
 )
@@ -67,19 +74,19 @@ controversy_by_month.show(50, truncate=False)
 # 3. Controversy by hour
 # --------------------------------------------------
 controversy_by_hour = (
-    all_df.groupBy("hour")
+    all_df.groupBy("hour_est")
     .agg(
         F.count("*").alias("total_comments"),
         F.sum("controversiality").alias("controversial_comments")
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
-    .orderBy("hour")
+    .orderBy("hour_est")
 )
 
-print("\nCONTROVERSY BY HOUR")
+print("\nCONTROVERSY BY HOUR (EST)")
 controversy_by_hour.show(24, truncate=False)
 
 # --------------------------------------------------
@@ -107,7 +114,7 @@ controversy_by_weekday = (
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
     .orderBy("weekday")
 )
@@ -126,7 +133,7 @@ controversy_over_time_by_subreddit = (
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
     .orderBy("subreddit", "year", "month")
 )

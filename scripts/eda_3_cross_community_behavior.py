@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 import os
 
-MASTER_URL = "spark://172.31.21.166:7077" #MASTER_PRIVATE_IP
+MASTER_URL = "spark://172.31.86.90:7077" #MASTER_PRIVATE_IP
 INPUT_PATH = "s3a://chris-joe-datsbd-s2026-v2/project/feature_base_v1/"
 OUTPUT_DIR = "outputs/eda_section3"
 
@@ -76,13 +76,13 @@ user_type_comment_summary = (
     .agg(
         F.count("*").alias("total_comments"),
         F.sum("controversiality").alias("controversial_comments"),
-        F.avg("score").alias("avg_score"),
-        F.avg("body_length_chars").alias("avg_body_length_chars"),
-        F.avg("body_length_words").alias("avg_body_length_words")
+        F.round(F.avg("score"), 2).alias("avg_score"),
+        F.round(F.avg("body_length_chars"), 2).alias("avg_body_length_chars"),
+        F.round(F.avg("body_length_words"), 2).alias("avg_body_length_words")
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
     .orderBy("user_type")
 )
@@ -97,10 +97,10 @@ user_type_user_summary = (
     user_subreddit_counts.groupBy("user_type")
     .agg(
         F.count("*").alias("num_users"),
-        F.avg("distinct_subreddits").alias("avg_distinct_subreddits"),
-        F.avg("total_comments").alias("avg_comments_per_user"),
-        F.avg("controversial_comments").alias("avg_controversial_comments_per_user"),
-        F.avg("avg_score").alias("avg_user_mean_score")
+        F.round(F.avg("distinct_subreddits"), 2).alias("avg_distinct_subreddits"),
+        F.round(F.avg("total_comments"), 2).alias("avg_comments_per_user"),
+        F.round(F.avg("controversial_comments"), 2).alias("avg_controversial_comments_per_user"),
+        F.round(F.avg("avg_score"), 2).alias("avg_user_mean_score")
     )
     .orderBy("user_type")
 )
@@ -116,11 +116,11 @@ subreddit_user_type_summary = (
     .agg(
         F.count("*").alias("total_comments"),
         F.sum("controversiality").alias("controversial_comments"),
-        F.avg("score").alias("avg_score")
+        F.round(F.avg("score"), 2).alias("avg_score")
     )
     .withColumn(
         "controversy_rate",
-        F.col("controversial_comments") / F.col("total_comments")
+        F.round(F.col("controversial_comments") / F.col("total_comments"), 4)
     )
     .orderBy("subreddit", "user_type")
 )
