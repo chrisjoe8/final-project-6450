@@ -6,21 +6,21 @@ title: "Data and Methods"
 
 ## Dataset
 
-This project uses the Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using Apache Spark on an EC2 cluster with data stored in S3.
+This project uses the course-provided Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using **Apache Spark on an EC2 cluster** with data stored in S3.
 
-Our analysis focuses on Reddit comments rather than submissions. We chose comments because the project centers on controversial discourse, interaction, and cross-community behavior, and comments provide a much richer view of discussion dynamics than thread-starting posts alone.
+Our analysis focuses on Reddit **comments** rather than submissions. We chose comments because the project centers on controversial discourse, interaction, and cross-community behavior, and comments provide a richer view of discussion dynamics than thread-starting posts alone.
 
 ## Why Comments Rather Than Submissions
 
 Reddit submissions are the original posts that begin threads, while comments are the replies within those threads. For this project, comments were the more appropriate unit of analysis for three reasons:
 
-1. **They capture discussion directly.**  
+**1. They capture discussion directly.**  
    Since the project asks how controversy is shaped across communities, comments provide a more direct view of disagreement, response behavior, and conversational tone.
 
-2. **They better support cross-community behavior analysis.**  
+**2. They better support cross-community behavior analysis.**  
    User-level participation patterns are easier to study at scale when using comments, because comments provide a larger and denser record of how users engage across multiple subreddits.
 
-3. **They provide a stronger base for text analysis.**  
+**3. They provide a stronger base for text analysis.**  
    The comments dataset contains a much larger volume of language, which makes it more suitable for descriptive NLP and supporting predictive modeling.
 
 ## Subreddit Selection
@@ -34,17 +34,17 @@ The full Reddit dataset spans many unrelated topics, so we filtered the analysis
 - `conspiracy`
 - `changemyview`
 
-These communities were selected because they form a coherent political and public-discourse cluster while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative, while preserving meaningful variation across communities.
+These communities were selected because they form a coherent **political and public-discourse cluster** while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative while preserving meaningful variation across communities.
 
 Conceptually, these six subreddits cover several different forms of public discourse:
 
 - `politics` emphasizes explicitly political discussion
-- `news` and `worldnews` focus on current events, with `news` containing U.S.-focused news and `worldnews` containing predominantly non-U.S.-focused news
+- `news` and `worldnews` focus on current events, with `news` more U.S.-oriented and `worldnews` more internationally oriented
 - `WhitePeopleTwitter` blends political commentary with meme and social-media discourse
 - `conspiracy` represents a higher-conflict alternative discourse space
 - `changemyview` emphasizes more structured disagreement and debate
 
-This selection strategy was designed to avoid a random collection of unrelated communities and instead focus on a coherent comparison set.
+This selection strategy was designed to avoid a random collection of unrelated communities and instead focus on a coherent comparison set in which both overlap and difference could be meaningfully studied.
 
 ## Research Question
 
@@ -62,9 +62,7 @@ This broad question was broken into three analytical layers:
 
 The workflow began with copying the Reddit data into a personal S3 bucket and then using Spark to filter the full comments dataset down to the six selected subreddits. This produced the project-specific filtered comments dataset used in the rest of the analysis.
 
-From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning.
-
-The broad pipeline was:
+From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning. The broad pipeline was:
 
 1. **Copy Reddit data to S3**
 2. **Filter to selected subreddits**
@@ -74,6 +72,8 @@ The broad pipeline was:
 6. **Run NLP analysis**
 7. **Prepare ML-ready model base**
 8. **Run supporting ML models**
+
+This workflow was designed to keep each analytical stage tied to the same underlying research question while ensuring that later phases built directly on earlier descriptive findings.
 
 ## Feature Base Construction
 
@@ -87,7 +87,7 @@ The cleaned feature base retained the variables most relevant to the research qu
 - `score`
 - thread-linking fields such as `link_id` and `parent_id`
 
-From these, we created:
+From these, we created several types of derived variables.
 
 ### Time Features
 - year
@@ -124,7 +124,7 @@ This prevented us from mixing unusable text rows into NLP analyses or deleted us
 
 ## Exploratory Data Analysis (EDA)
 
-The EDA focused on four main areas:
+The EDA focused on four main areas.
 
 ### 1. Controversy Across Communities
 We measured:
@@ -149,12 +149,15 @@ We also examined:
 - controversy rates by user type
 - engagement differences by user type
 - subreddit-pair shared-user patterns
+- cross-community participation over time
 
 ### 4. Text Descriptives
 We examined:
 - text length by controversy status
 - text length by subreddit
 - common and distinctive terms across communities and user types
+
+Overall, the EDA was designed to establish the descriptive structure of the problem before moving to more explicitly language-focused and predictive analyses.
 
 ## NLP Methods
 
@@ -167,28 +170,28 @@ The text was:
 - tokenized
 - filtered with standard stopword removal
 
-Using this base, we conducted:
+Using this base, we conducted two main analyses.
 
 ### Sentiment Analysis
-We used a simple lexicon-based sentiment approach in which selected positive and negative words were counted within comments. This was not intended as a sophisticated sentiment model, but rather as a transparent way to compare tone across controversy groups and subreddits.
+We used a simple lexicon-based sentiment approach in which selected positive and negative words were counted within comments. This was not intended as a sophisticated sentiment model, but rather as a transparent way to compare broad tone across controversy groups and subreddits.
 
 ### Distinctive-Term Analysis
 We identified terms that were especially distinctive:
 - for controversial versus non-controversial comments
 - for each subreddit
 
-This helped us connect controversial content to concrete topical language rather than only to abstract metrics.
+This helped connect controversial content to concrete topical language rather than only to abstract metrics such as sentiment scores or text length.
 
 ## Machine Learning Methods
 
-The machine learning phase was designed as a supporting analysis.
+The machine learning phase was designed as a **supporting analysis**, not the main contribution of the project.
 
 We framed the prediction problem as a **binary classification task**:
 
 - `1` = controversial comment
 - `0` = non-controversial comment
 
-The modeling base used interpretable features from four categories:
+The modeling base used interpretable features from four categories.
 
 ### Community Features
 - subreddit identity
@@ -217,6 +220,10 @@ We trained two simple models:
 - **Logistic Regression**
 - **Random Forest**
 
-The purpose of this comparison was not to maximize predictive sophistication, but to test whether controversiality was at least moderately predictable from the features created in earlier phases.
+The purpose of this comparison was not to maximize predictive sophistication, but to test whether controversiality was at least moderately predictable from the features created in earlier phases and to compare overall predictive performance with usefulness for identifying the controversial class itself.
 
 Because the data are highly imbalanced, model evaluation was interpreted carefully rather than relying on accuracy alone.
+
+## Project Philosophy
+
+This project prioritizes clear insight, interpretable results, and coherent storytelling over technical complexity. The methods were chosen to stay within the scope of the course and to support the research question directly. EDA serves as the foundation of the analysis, while NLP and ML act as supporting layers that deepen the explanation rather than replace it.
