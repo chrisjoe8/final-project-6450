@@ -1,0 +1,77 @@
+---
+title: "Home"
+---
+
+# Controversy Across Communities on Reddit
+
+## Project Overview
+
+This project examines how linguistic features and cross-community user behavior jointly shape controversial content across Reddit communities. Using a large Reddit comments dataset processed with Apache Spark on an EC2 cluster, we analyze whether controversy is associated more strongly with subreddit context, temporal patterns, language use, or cross-community participation.
+
+Our analysis focuses on six selected subreddits:
+- `politics`
+- `worldnews`
+- `news`
+- `WhitePeopleTwitter`
+- `conspiracy`
+- `changemyview`
+
+These communities were selected because they form a coherent political and public-discourse cluster while still differing in tone, norms, and patterns of interaction.
+
+## Research Question
+
+**How do linguistic features and cross-community user behavior jointly shape controversial content across Reddit communities?**
+
+## Why This Question Matters
+
+Reddit is organized into distinct communities with different norms, topics, and styles of interaction. Controversial content is not distributed evenly across those communities. Some communities appear more conflict-prone than others, and users who move across multiple subreddits may help transmit language, topics, or behavioral patterns across community boundaries.
+
+This project investigates those differences at scale. Rather than treating controversy as a uniform platform-wide phenomenon, we ask whether it depends on the interaction between:
+
+- **community context**
+- **temporal structure**
+- **language**
+- **cross-community user behavior**
+
+## Data and Scope
+
+The project uses the course-provided Reddit comments dataset covering June 2023 through July 2024. Because the full dataset is extremely large, we used Apache Spark on an EC2 cluster to process the data and filtered the analysis to the six selected subreddits listed above.
+
+The final analytical workflow proceeded in four major stages:
+
+1. **Exploratory Data Analysis (EDA)**  
+   We examined text features and controversy rates across communities, over time, and across user types.
+
+2. **Natural Language Processing (NLP)**  
+   We prepared a clean text-analysis base, compared simple sentiment patterns, and identified distinctive terms associated with controversy and with each subreddit.
+
+3. **Machine Learning (ML)**  
+   We trained simple classification models to predict whether a comment was controversial using community, temporal, behavioral, and text-length features.
+
+4. **Synthesis and Interpretation**  
+   We integrated the descriptive, linguistic, and predictive results into a single explanation of how controversial content varies across Reddit communities.
+
+## Main Findings
+
+At a high level, the project finds that controversy is shaped by both **community context** and **language**, while the role of cross-community behavior is important but not uniform across subreddits.
+
+Three core patterns emerged:
+
+- **Controversy rates differ sharply across communities.**  
+  `conspiracy` had the highest controversy rate in our selected set, while `WhitePeopleTwitter` had the lowest.
+
+- **Cross-community participation matters, but differently across communities.**  
+  Multi-subreddit users contributed most of the activity in the dataset, but their relationship to controversy depended on the subreddit rather than following one universal pattern.
+
+- **Controversial comments are associated with distinctive language.**  
+  They were somewhat longer on average and more strongly associated with conflict-heavy geopolitical and political vocabulary than non-controversial comments.
+
+## Site Structure
+
+This website is organized as follows:
+
+- **Data and Methods** explains the dataset, subreddit selection, and analytical workflow.
+- **EDA** presents the main descriptive results.
+- **NLP** presents the text-based findings.
+- **ML** summarizes the supporting predictive modeling results.
+- **Conclusion** synthesizes the project’s implications and limitations.

@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs/_site
+
+website:
+  title: "Controversy Across Communities on Reddit"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: data-and-method.qmd
+        text: Data and Methods
+      - href: eda.qmd
+        text: EDA
+      - href: nlp.qmd
+        text: NLP
+      - href: ml.qmd
+        text: ML
+      - href: conclusions.qmd
+        text: Conclusion
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    number-sections: true

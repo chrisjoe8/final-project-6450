@@ -1,0 +1,222 @@
+---
+title: "Data and Methods"
+---
+
+# Data and Methods
+
+## Dataset
+
+This project uses the Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using Apache Spark on an EC2 cluster with data stored in S3.
+
+Our analysis focuses on Reddit comments rather than submissions. We chose comments because the project centers on controversial discourse, interaction, and cross-community behavior, and comments provide a much richer view of discussion dynamics than thread-starting posts alone.
+
+## Why Comments Rather Than Submissions
+
+Reddit submissions are the original posts that begin threads, while comments are the replies within those threads. For this project, comments were the more appropriate unit of analysis for three reasons:
+
+1. **They capture discussion directly.**  
+   Since the project asks how controversy is shaped across communities, comments provide a more direct view of disagreement, response behavior, and conversational tone.
+
+2. **They better support cross-community behavior analysis.**  
+   User-level participation patterns are easier to study at scale when using comments, because comments provide a larger and denser record of how users engage across multiple subreddits.
+
+3. **They provide a stronger base for text analysis.**  
+   The comments dataset contains a much larger volume of language, which makes it more suitable for descriptive NLP and supporting predictive modeling.
+
+## Subreddit Selection
+
+The full Reddit dataset spans many unrelated topics, so we filtered the analysis to six subreddits:
+
+- `politics`
+- `worldnews`
+- `news`
+- `WhitePeopleTwitter`
+- `conspiracy`
+- `changemyview`
+
+These communities were selected because they form a coherent political and public-discourse cluster while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative, while preserving meaningful variation across communities.
+
+Conceptually, these six subreddits cover several different forms of public discourse:
+
+- `politics` emphasizes explicitly political discussion
+- `news` and `worldnews` focus on current events, with `news` containing U.S.-focused news and `worldnews` containing predominantly non-U.S.-focused news
+- `WhitePeopleTwitter` blends political commentary with meme and social-media discourse
+- `conspiracy` represents a higher-conflict alternative discourse space
+- `changemyview` emphasizes more structured disagreement and debate
+
+This selection strategy was designed to avoid a random collection of unrelated communities and instead focus on a coherent comparison set.
+
+## Research Question
+
+The project is organized around the following question:
+
+**How do linguistic features and cross-community user behavior jointly shape controversial content across Reddit communities?**
+
+This broad question was broken into three analytical layers:
+
+- **EDA:** Where is controversy concentrated, how does it vary across communities and over time, and how is it related to text-based features?
+- **NLP:** How does controversial language differ from non-controversial language, and how do communities differ linguistically?
+- **ML:** Can controversial comments be predicted from a combination of community, temporal, behavioral, and text-based features?
+
+## Data Processing Workflow
+
+The workflow began with copying the Reddit data into a personal S3 bucket and then using Spark to filter the full comments dataset down to the six selected subreddits. This produced the project-specific filtered comments dataset used in the rest of the analysis.
+
+From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning.
+
+The broad pipeline was:
+
+1. **Copy Reddit data to S3**
+2. **Filter to selected subreddits**
+3. **Build a cleaned feature base**
+4. **Run EDA**
+5. **Prepare NLP-ready text base**
+6. **Run NLP analysis**
+7. **Prepare ML-ready model base**
+8. **Run supporting ML models**
+
+## Feature Base Construction
+
+The cleaned feature base retained the variables most relevant to the research question, including:
+
+- `author`
+- `subreddit`
+- `body`
+- `controversiality`
+- `created_utc`
+- `score`
+- thread-linking fields such as `link_id` and `parent_id`
+
+From these, we created:
+
+### Time Features
+- year
+- month
+- day
+- hour
+- weekday
+
+These were used for temporal EDA and later standardized for time-of-day interpretation.
+
+### Text-Length Features
+- comment length in characters
+- comment length in words
+
+These were used to test whether controversial comments differed from non-controversial comments in how long or elaborate they were.
+
+### Content Flags
+We also created indicator variables for:
+- removed/deleted comment bodies
+- deleted authors
+
+These flags allowed us to exclude unusable rows from text-based and user-based analyses while preserving transparency about how much of the data was affected by deleted or unavailable content.
+
+## Analytical Subsets
+
+After building the feature base, we defined several subsets for different phases of the project:
+
+- **Full cleaned base:** for broad descriptive analysis
+- **Text-valid subset:** excludes removed/deleted comment bodies
+- **User-valid subset:** excludes deleted authors
+- **Text + user valid subset:** excludes both
+
+This prevented us from mixing unusable text rows into NLP analyses or deleted users into cross-community user analysis.
+
+## Exploratory Data Analysis (EDA)
+
+The EDA focused on four main areas:
+
+### 1. Controversy Across Communities
+We measured:
+- controversy rate by subreddit
+- controversy volume versus controversy rate
+- controversy over time by subreddit
+
+### 2. Temporal Structure
+We analyzed:
+- controversy by month
+- controversy by hour
+- controversy by weekday
+
+To make the time-of-day patterns more interpretable, hour-based results were standardized to **America/New_York** rather than left in raw UTC form.
+
+### 3. Cross-Community User Behavior
+We compared:
+- single-subreddit users
+- multi-subreddit users
+
+We also examined:
+- controversy rates by user type
+- engagement differences by user type
+- subreddit-pair shared-user patterns
+
+### 4. Text Descriptives
+We examined:
+- text length by controversy status
+- text length by subreddit
+- common and distinctive terms across communities and user types
+
+## NLP Methods
+
+The NLP phase used a cleaned text base derived from the feature table. This phase remained intentionally simple and interpretable.
+
+The text was:
+- lowercased
+- stripped of URLs
+- normalized to alphanumeric text
+- tokenized
+- filtered with standard stopword removal
+
+Using this base, we conducted:
+
+### Sentiment Analysis
+We used a simple lexicon-based sentiment approach in which selected positive and negative words were counted within comments. This was not intended as a sophisticated sentiment model, but rather as a transparent way to compare tone across controversy groups and subreddits.
+
+### Distinctive-Term Analysis
+We identified terms that were especially distinctive:
+- for controversial versus non-controversial comments
+- for each subreddit
+
+This helped us connect controversial content to concrete topical language rather than only to abstract metrics.
+
+## Machine Learning Methods
+
+The machine learning phase was designed as a supporting analysis.
+
+We framed the prediction problem as a **binary classification task**:
+
+- `1` = controversial comment
+- `0` = non-controversial comment
+
+The modeling base used interpretable features from four categories:
+
+### Community Features
+- subreddit identity
+- subreddit-level controversy rate
+- subreddit-level average score
+- subreddit-level average text length
+
+### Temporal Features
+- month
+- hour
+- weekday
+
+### Text-Length Features
+- body length in words
+- log-transformed body length
+
+### Cross-Community User Features
+- number of distinct subreddits per user
+- total comments per user
+- whether a user was a multi-subreddit user
+- user-level average score
+- user-level controversial comment total
+
+We trained two simple models:
+
+- **Logistic Regression**
+- **Random Forest**
+
+The purpose of this comparison was not to maximize predictive sophistication, but to test whether controversiality was at least moderately predictable from the features created in earlier phases.
+
+Because the data are highly imbalanced, model evaluation was interpreted carefully rather than relying on accuracy alone.
