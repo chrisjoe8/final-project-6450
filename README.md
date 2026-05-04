@@ -78,6 +78,7 @@ The project was completed using:
 ├── pyproject.toml
 ├── uv.lock
 └── README.md
+```
 
 ## Quarto Website
 
