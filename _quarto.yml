@@ -1,22 +1,24 @@
 project:
   type: website
   output-dir: docs/_site
+  render:
+    - docs/*.qmd
 
 website:
   title: "Controversy Across Communities on Reddit"
   navbar:
     left:
-      - href: index.qmd
+      - href: docs/index.qmd
         text: Home
-      - href: data-and-method.qmd
+      - href: docs/data-and-method.qmd
         text: Data and Methods
-      - href: eda.qmd
+      - href: docs/eda.qmd
         text: EDA
-      - href: nlp.qmd
+      - href: docs/nlp.qmd
         text: NLP
-      - href: ml.qmd
+      - href: docs/ml.qmd
         text: ML
-      - href: conclusions.qmd
+      - href: docs/conclusion.qmd
         text: Conclusion
 
 format:
