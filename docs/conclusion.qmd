@@ -30,11 +30,11 @@ The six selected subreddits do not behave the same way. Some communities are muc
 
 ### 2. Language matters, but mainly through topic and discourse style
 
-The NLP results show that controversial comments are associated with distinctive vocabulary and are somewhat longer on average than non-controversial comments. The strongest linguistic signal came from topic-specific and conflict-heavy terms rather than from a large overall sentiment gap. This suggests that controversiality in this dataset is tied more to **what is being discussed and how it is framed** than to a simple positive-versus-negative tone difference.
+The NLP results show that controversial comments are associated with distinctive vocabulary and are somewhat longer on average than non-controversial comments. The strongest linguistic signal came from topic-specific and conflict-heavy terms rather than from a large overall sentiment gap. This suggests that controversiality in this dataset is tied more to what is being discussed and how it is framed than to a simple positive-versus-negative tone difference.
 
 ### 3. Cross-community users are central, but their effect is not uniform
 
-Users who participate in multiple subreddits drive most of the comment activity and create strong overlap across `politics`, `news`, and `worldnews`. But their relationship to controversy is not the same in every community. Cross-community behavior is therefore important, but it should be interpreted as a **context-dependent mechanism**, not as a universal predictor.
+Users who participate in multiple subreddits drive most of the comment activity and create strong overlap across `politics`, `news`, and `worldnews`. But their relationship to controversy is not the same in every community. Cross-community behavior is therefore important, but it should be interpreted as a context-dependent mechanism, not as a universal predictor.
 
 ## Practical implications
 
@@ -42,7 +42,7 @@ Although this project is not framed around a business problem in the narrow corp
 
 ### 1. Moderation should be community-sensitive, not purely platform-wide
 
-Because controversy rates differ sharply across subreddits, a one-size-fits-all moderation logic is likely to miss important local differences. Communities such as `conspiracy` and `worldnews` operate under different discourse conditions than communities such as `WhitePeopleTwitter`. A platform interested in identifying or managing controversial content would likely need **community-specific baselines** rather than a single uniform threshold.
+Because controversy rates differ sharply across subreddits, a one-size-fits-all moderation logic is likely to miss important local differences. Communities such as `conspiracy` and `worldnews` operate under different discourse conditions than communities such as `WhitePeopleTwitter`. A platform interested in identifying or managing controversial content would likely need community-specific baselines rather than a single uniform threshold.
 
 ### 2. Topic-level monitoring may be more informative than general sentiment monitoring
 
@@ -50,7 +50,7 @@ The NLP results suggest that controversiality in this dataset is more strongly a
 
 ### 3. Cross-community overlap can help identify how discourse travels
 
-The shared-user patterns show dense overlap among several of the selected communities. This suggests that controversy is not only a within-community phenomenon. It may also be shaped by users who carry topics, frames, and styles of interaction across community boundaries. For platform analysis, this means that **user overlap across communities** is itself an important structural signal.
+The shared-user patterns show dense overlap among several of the selected communities. This suggests that controversy is not only a within-community phenomenon. It may also be shaped by users who carry topics, frames, and styles of interaction across community boundaries. For platform analysis, this means that user overlap across communities is itself an important structural signal.
 
 ## Role of machine learning
 
@@ -59,7 +59,7 @@ This reinforces an important methodological lesson from the project: predictive 
 
 ## Limitations
 
-This project also has several limitations. First, the analysis is limited to **six selected subreddits**, not all of Reddit. The goal was to study a coherent topical cluster rather than produce a universal account of controversiality across the platform.
+This project also has several limitations. First, the analysis is limited to six selected subreddits, not all of Reddit. The goal was to study a coherent topical cluster rather than produce a universal account of controversiality across the platform.
 Moreover, the NLP approach was intentionally simple and interpretable. The lexicon-based sentiment analysis provides a transparent comparison, but it should not be treated as a fine-grained emotional model. Furtermore, the machine learning results are constrained by strong class imbalance. That makes model interpretation more complex and reduces the usefulness of accuracy alone.
 It is also important to note that the temporal analysis reflects a standardized timezone for interpretability rather than the true local time of each commenter, which is not available in the dataset. Finally, the project identifies strong associations but does not establish causal relationships. It shows where controversiality is concentrated and what kinds of language are associated with it, but it does not prove that any one factor independently causes content to become controversial.
 
