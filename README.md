@@ -40,7 +40,8 @@ The project was completed using:
 - Quarto (for final website/report)
 
 ## Repository Structure
-
+```text
+.
 ├── docs/
 │   ├── index.qmd
 │   ├── data-and-method.qmd
@@ -91,6 +92,7 @@ Main website pages:
 - `conclusion.qmd`
 
 To render the website locally from the repository root, run:
+```bash
 quarto render
 
 ## Team Workflow and Contributions
