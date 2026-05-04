@@ -111,7 +111,7 @@ Several clear patterns emerge:
 - **`politics`** is lower at 0.0341
 - **`WhitePeopleTwitter`** is much lower at 0.0095
 
-This is one of the strongest descriptive findings in the project: **controversy is not evenly distributed across the selected communities**. The differences are not minor. `conspiracy` is more than seven times as controversy-prone as `WhitePeopleTwitter` in rate terms, even though both belong to the same broad political and public-discourse ecosystem.
+This is one of the strongest descriptive findings in the project: controversy is not evenly distributed across the selected communities. The differences are not minor. `conspiracy` is more than seven times as controversy-prone as `WhitePeopleTwitter` in rate terms, even though both belong to the same broad political and public-discourse ecosystem.
 The comparison also shows that volume and controversy do not move together mechanically. `politics` has the largest total volume, but not the highest controversy rate, while `conspiracy` has much less volume than `politics` and `worldnews` yet the highest controversy rate. This suggests that controversiality is not simply a byproduct of how much discussion a subreddit generates. Community context appears to matter independently of raw scale.
 
 ## Temporal structure
