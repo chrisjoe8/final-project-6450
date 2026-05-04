@@ -238,7 +238,7 @@ The reliable conclusions from the ML phase come from the model-comparison result
 ## ML interpretation
 
 The machine learning phase adds a final supporting layer to the project.
-First, the results suggest that controversiality is **meaningfully predictable** from the combined set of community, temporal, behavioral, and text-length features created earlier in the workflow. This means the earlier descriptive findings were not merely isolated observations; they contain signal that can be used in classification.
+First, the results suggest that controversiality is meaningfully predictable from the combined set of community, temporal, behavioral, and text-length features created earlier in the workflow. This means the earlier descriptive findings were not merely isolated observations; they contain signal that can be used in classification.
 Second, the model comparison shows that evaluation must be interpreted carefully in imbalanced settings. A model such as Random Forest can produce very strong overall metrics while still failing to recover much of the controversial class. Logistic Regression produces lower overall accuracy, but it is far more useful for the project’s substantive goal because it identifies a much larger share of controversial comments.
 Third, the ML phase reinforces the broader project narrative rather than replacing it. The main contribution of the project still comes from the EDA and NLP, which explain how controversy differs across communities, across time, across user types, and across language patterns. The ML phase shows that these same patterns are predictive enough to support classification, but it does not overturn the descriptive story.
 
