@@ -64,15 +64,14 @@ The workflow began with copying the Reddit data into a personal S3 bucket and th
 
 From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning. The broad pipeline was:
 
-
-**1. Copy Reddit data to S3**
-**2. Filter to selected subreddits**
-**3. Build a cleaned feature base**
-**4. Run EDA**
-**5. Prepare NLP-ready text base**
-**6. Run NLP analysis**
-**7. Prepare ML-ready model base**
-**8. Run supporting ML models**
+**1.** **Copy Reddit data to S3**  
+**2.** **Filter to selected subreddits**  
+**3.** **Build a cleaned feature base**  
+**4.** **Run EDA**  
+**5.** **Prepare NLP-ready text base**  
+**6.** **Run NLP analysis**  
+**7.** **Prepare ML-ready model base**  
+**8.** **Run supporting ML models**
 
 This workflow was designed to keep each analytical stage tied to the same underlying research question while ensuring that later phases built directly on earlier descriptive findings.
 

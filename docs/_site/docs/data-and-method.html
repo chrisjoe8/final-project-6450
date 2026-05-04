@@ -245,7 +245,14 @@ The comments dataset contains a much larger volume of language, which makes it m
 <h2 data-number="1.5" class="anchored" data-anchor-id="data-processing-workflow"><span class="header-section-number">1.5</span> Data Processing Workflow</h2>
 <p>The workflow began with copying the Reddit data into a personal S3 bucket and then using Spark to filter the full comments dataset down to the six selected subreddits. This produced the project-specific filtered comments dataset used in the rest of the analysis.</p>
 <p>From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning. The broad pipeline was:</p>
-<p><strong>1. Copy Reddit data to S3</strong> <strong>2. Filter to selected subreddits</strong> <strong>3. Build a cleaned feature base</strong> <strong>4. Run EDA</strong> <strong>5. Prepare NLP-ready text base</strong> <strong>6. Run NLP analysis</strong> <strong>7. Prepare ML-ready model base</strong> <strong>8. Run supporting ML models</strong></p>
+<p><strong>1.</strong> <strong>Copy Reddit data to S3</strong><br>
+<strong>2.</strong> <strong>Filter to selected subreddits</strong><br>
+<strong>3.</strong> <strong>Build a cleaned feature base</strong><br>
+<strong>4.</strong> <strong>Run EDA</strong><br>
+<strong>5.</strong> <strong>Prepare NLP-ready text base</strong><br>
+<strong>6.</strong> <strong>Run NLP analysis</strong><br>
+<strong>7.</strong> <strong>Prepare ML-ready model base</strong><br>
+<strong>8.</strong> <strong>Run supporting ML models</strong></p>
 <p>This workflow was designed to keep each analytical stage tied to the same underlying research question while ensuring that later phases built directly on earlier descriptive findings.</p>
 </section>
 <section id="feature-base-construction" class="level2" data-number="1.6">
