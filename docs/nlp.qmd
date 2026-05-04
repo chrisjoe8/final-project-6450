@@ -1,0 +1,212 @@
+---
+title: "NLP"
+format: html
+---
+
+```{python}
+#| echo: false
+import pandas as pd
+import plotly.express as px
+from pathlib import Path
+
+BASE = Path("..") / "outputs"
+
+nlp_prep = BASE / "nlp_prep_text_base"
+nlp_analysis = BASE / "nlp_analysis"
+
+subreddit_counts = pd.read_csv(nlp_prep / "subreddit_counts.csv")
+controversiality_distribution = pd.read_csv(nlp_prep / "controversiality_distribution.csv")
+avg_clean_text_length_by_subreddit = pd.read_csv(nlp_prep / "avg_clean_text_length_by_subreddit.csv")
+
+sentiment_by_controversy = pd.read_csv(nlp_analysis / "sentiment_by_controversy.csv")
+sentiment_by_subreddit = pd.read_csv(nlp_analysis / "sentiment_by_subreddit.csv")
+top_distinctive_terms_by_controversy = pd.read_csv(nlp_analysis / "top_distinctive_terms_by_controversy.csv")
+top_distinctive_terms_by_subreddit = pd.read_csv(nlp_analysis / "top_distinctive_terms_by_subreddit.csv")
+```
+# Natural Language Processing
+## NLP goals
+
+The NLP phase extends the EDA by asking two more focused questions:
+
+1. Do controversial comments differ from non-controversial comments in their overall tone?
+2. Are there distinctive words or topics that are disproportionately associated with controversial content or with particular subreddits?
+
+This section remains intentionally simple and interpretable. Rather than using a highly complex NLP pipeline, we constructed a clean text-analysis base, applied a transparent lexicon-based sentiment comparison, and then identified distinctive terms across controversy groups and communities.
+
+## NLP-ready text base
+
+The first NLP step created a cleaned text-analysis base from the feature table. We excluded removed or deleted comment bodies, excluded deleted authors, required non-empty text, standardized text into a normalized cleaned field, and retained the core variables needed for later comparison.
+```{python}
+#| echo: false
+subreddit_counts
+```
+The NLP-ready dataset contains 19,580,559 comments. This is only modestly smaller than the broader feature base, which means the exclusions needed for text analysis did not materially weaken the scale of the project. The six selected subreddits remain well represented, with `politics` and `worldnews` again accounting for the largest volumes.
+
+The controversiality distribution in the NLP-ready base remains similar to the earlier EDA subsets:
+```{python}
+#| echo: false
+controversiality_distribution
+```
+This confirms that the cleaned text base preserves the project’s central target variable and remains large enough for meaningful linguistic comparison.
+
+We also checked average cleaned text length by subreddit after normalization:
+```{python}
+#| echo: false
+avg_clean_text_length_by_subreddit
+```
+These cleaned-text averages remain consistent with the EDA findings. `changemyview` has by far the longest comments on average, while `WhitePeopleTwitter` has the shortest. The cleaned base therefore preserves the same community-level structural differences that appeared in the earlier descriptive work.
+
+## Sentiment by controversy status
+
+We next applied a simple lexicon-based sentiment procedure. The goal here was not to build a sophisticated sentiment model, but to compare broad tone across groups using a transparent and interpretable method. Comments were tokenized, filtered, and then compared against small positive and negative lexicons.
+```{python}
+#| echo: false
+sentiment_by_controversy
+```
+The sentiment comparison shows a modest but meaningful difference between controversial and non-controversial comments:
+
+- Non-controversial comments average 0.27 positive tokens and 0.24 negative tokens, yielding an average sentiment score of 0.03.
+- Controversial comments average 0.31 positive tokens and 0.31 negative tokens, yielding an average sentiment score of -0.01.
+
+These values are small in magnitude, so the project should not overstate them. However, the direction is informative. Non-controversial comments are slightly more positive than negative on average, while controversial comments are closer to neutral-to-slightly-negative overall. This supports the narrower descriptive claim that controversial comments are associated with a somewhat more conflict-oriented emotional balance.
+
+## Sentiment by subreddit
+```{python}
+#| echo: false
+fig = px.bar(
+    sentiment_by_subreddit,
+    x="subreddit",
+    y="avg_sentiment_score",
+    text="avg_sentiment_score",
+    title="Average Sentiment Score by Subreddit",
+    labels={"subreddit": "Subreddit", "avg_sentiment_score": "Average sentiment score"}
+)
+fig.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+fig
+```
+```{python}
+#| echo: false
+sentiment_by_subreddit
+```
+The subreddit-level sentiment results show that tone varies across communities:
+
+- `changemyview` has the highest average sentiment score (0.12).
+- `politics` and `WhitePeopleTwitter` are also slightly positive on average (0.05 each).
+-  `news` is slightly positive (0.02).
+- `conspiracy` is positive but small (0.03).
+- `worldnews` is the only subreddit with a slightly negative average sentiment score (-0.04).
+
+These results should be interpreted cautiously because the lexicon is deliberately simple, but the overall pattern is still useful. `worldnews` appears more negative than the other selected communities, while `changemyview` appears more positive on average despite being conflict-oriented in topic. That pattern is consistent with the idea that `changemyview` contains longer, more structured argument rather than simply harsher tone.
+
+## Distinctive terms by controversy status
+
+The sentiment results provide one broad tonal comparison, but the more substantively useful NLP result comes from distinctive-term analysis. Here, we identified words that were disproportionately associated with controversial versus non-controversial comments.
+```{python}
+#| echo: false
+top_distinctive_terms_by_controversy.query("controversiality == 1").head(20)
+```
+The controversial comments are disproportionately associated with terms such as:
+
+- `aipac`
+- `zionism`
+- `zionists`
+- `ceasefire`
+- `genocide`
+- `netanyahu`
+- `antisemitic`
+- `antisemitism`
+- `rafah`
+- `bibi`
+
+These terms strongly suggest that controversial comments in this dataset are heavily concentrated around highly polarized geopolitical discourse, especially the Israel–Palestine conflict. That is a much more specific finding than simply saying that controversial comments are “negative.” The distinctive vocabulary ties controversy to particular topics rather than only to a general emotional tone.
+
+For contrast, the most distinctive non-controversial terms are shown below:
+```{python}
+#| echo: false
+top_distinctive_terms_by_controversy.query("controversiality == 0").head(20)
+```
+Many of these non-controversial terms are procedural or moderation-related rather than obviously conflict-heavy. This provides further support for the interpretation that controversial content is not just another slice of ordinary discussion volume; it is disproportionately associated with a narrower set of charged topics and terms.
+
+## Distinctive terms by subreddit
+
+The next step is to ask whether the subreddits also differ in their linguistic identities.
+```{python}
+#| echo: false
+top_distinctive_terms_by_subreddit.groupby("subreddit").head(10)
+```
+These results show that the selected subreddits share a common public-discourse environment but still retain clearly different linguistic signatures.
+
+### WhitePeopleTwitter
+
+`WhitePeopleTwitter` is strongly associated with terms such as:
+
+`giphy`
+`gif`
+`imgur`
+`emotes`
+`timestamp`
+
+This confirms that it remains deeply tied to meme, reaction-image, and social-media embedding practices rather than functioning like a conventional news-discussion subreddit.
+
+### changemyview
+
+changemyview is strongly associated with:
+
+`cmv`
+`delta`
+`deltabot`
+`deltalog`
+`socratic`
+`soapboxing`
+
+These are highly subreddit-specific terms that reflect the platform rules, debate structure, and conversational norms of that community. This is consistent with the EDA result that changemyview comments are also substantially longer than those in the other selected communities.
+
+### conspiracy
+
+conspiracy is associated with terms such as:
+
+`freemasonry`
+`freemason`
+`gematria`
+`rothschild`
+`nephilim`
+`luciferian`
+
+These terms point clearly to an alternative discourse space with its own recurring conceptual vocabulary. This helps explain why conspiracy also had the highest controversy rate in the EDA.
+
+### news and worldnews
+
+`news` and `worldnews` both contain distinctive current-events language, but their signatures differ:
+
+- `news` includes terms tied to specific domestic or event-oriented story cycles.
+- `worldnews` includes terms such as `kharkiv`, `atacms`, `tokmak`, and `nasrallah`, which are strongly geopolitical and international.
+
+This supports the earlier EDA result that worldnews and news are related but not interchangeable.
+
+### politics
+
+`politics` includes a combination of domestic political language and subreddit-specific moderation or discussion norms. Its linguistic identity is political, but less meme-oriented than `WhitePeopleTwitter` and less international than `worldnews`.
+
+## NLP interpretation
+
+Taken together, the NLP results support three evidence-based conclusions.
+
+1. **Controversial comments are not dramatically different in sentiment, but they are somewhat more conflict-oriented**
+The lexicon-based sentiment results show only modest differences, but the direction is consistent: non-controversial comments are slightly more positive overall, while controversial comments are closer to neutral-to-negative. This suggests that controversial content is associated with somewhat more adversarial tone, even if the sentiment gap is not large.
+
+2. **Distinctive controversial language is topic-specific rather than generic**
+The strongest controversial markers are not generic insults or broad emotional vocabulary. Instead, they are tightly tied to specific polarized geopolitical topics. This is a more precise finding than simply saying controversial comments are more negative: controversy in this dataset appears to cluster around particular conflict-heavy topics.
+
+3. **Subreddit context still shapes language strongly**
+The subreddit-level distinctive terms confirm that the selected communities are part of a shared political/public-discourse ecosystem, but they are not linguistically interchangeable. WhitePeopleTwitter, changemyview, conspiracy, news, worldnews, and politics each maintain recognizable discourse patterns. This supports the project’s broader argument that community context and language operate together.
+
+## NLP summary
+
+The NLP phase strengthens the main story established in the EDA.
+
+- The text base remains large and analytically robust after cleaning.
+- Sentiment differences between controversial and non-controversial comments exist, but they are modest.
+- The clearest linguistic signal comes from distinctive topical vocabulary, not from sentiment alone.
+- Community-specific vocabularies remain strong, reinforcing the importance of subreddit context.
+
+These findings set up the final analytical question for the project: can controversial content be predicted from community, temporal, behavioral, and text-based features? That question is addressed in the machine learning section.
