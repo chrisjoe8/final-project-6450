@@ -155,6 +155,7 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
   <li><a href="#confusion-matrix-interpretation" id="toc-confusion-matrix-interpretation" class="nav-link" data-scroll-target="#confusion-matrix-interpretation"><span class="header-section-number">1.5</span> Confusion-matrix interpretation</a>
   <ul class="collapse">
   <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression"><span class="header-section-number">1.5.1</span> Logistic Regression</a></li>
+  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest"><span class="header-section-number">1.5.2</span> Random Forest</a></li>
   </ul></li>
   <li><a href="#what-the-model-comparison-means" id="toc-what-the-model-comparison-means" class="nav-link" data-scroll-target="#what-the-model-comparison-means"><span class="header-section-number">1.6</span> What the model comparison means</a>
   <ul class="collapse">
@@ -197,20 +198,20 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 <p>The machine learning phase was designed as a supporting analysis with the goal of testing whether controversial comments could be predicted from the same kinds of features that emerged as meaningful in the EDA and NLP phases.</p>
 <p>The prediction problem was framed as a binary classification task:</p>
 <ul>
-<li><code>1</code> = controversial comment</li>
-<li><code>0</code> = non-controversial comment</li>
+<li><strong>1</strong> = controversial comment</li>
+<li><strong>0</strong> = non-controversial comment</li>
 </ul>
 <p>Two models were trained and compared:</p>
 <ul>
 <li><strong>Logistic Regression</strong></li>
 <li><strong>Random Forest</strong></li>
 </ul>
-<p>The central question was not simply which model achieved the highest overall accuracy, but rather whether controversy was meaningfully predictable from community, temporal, behavioral, and text-length features.</p>
+<p>The central question was not simply which model achieved the highest overall accuracy, but whether controversy was meaningfully predictable from community, temporal, behavioral, and text-length features, and whether the resulting models were useful for identifying the controversial class itself.</p>
 </section>
 <section id="modeling-base" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="modeling-base"><span class="header-section-number">1.2</span> Modeling base</h2>
 <p>The modeling base was constructed from the cleaned feature table and retained only comments appropriate for modeling.</p>
-<div id="ffc07806" class="cell" data-execution_count="3">
+<div id="710fa010" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
@@ -240,9 +241,8 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </div>
 </div>
 </div>
-<p>The modeling dataset contains a very strong class imbalance: 18,660,055 non-controversial comments and 920,504 controversial comments. This matters for interpretation, because a model can achieve high accuracy simply by predicting the majority class most of the time.</p>
-<p>The modeling base also preserves the same subreddit distribution used throughout the rest of the project:</p>
-<div id="c547577a" class="cell" data-execution_count="4">
+<p>The modeling dataset contains a very strong class imbalance: 18,660,055 non-controversial comments and 920,504 controversial comments. This matters for interpretation, because a model can achieve high accuracy simply by predicting the majority class most of the time. The modeling base also preserves the same subreddit distribution used throughout the rest of the project, which means the ML phase is operating on the same substantive structure established in the descriptive analysis rather than on a different or artificially simplified sample.</p>
+<div id="29aec034" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
@@ -292,8 +292,8 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </div>
 </div>
 </div>
-<p>Finally, the model base includes user-level cross-community indicators:</p>
-<div id="d12cc55a" class="cell" data-execution_count="5">
+<p>Finally, the model base includes user-level cross-community indicators. Most comments in the modeling base come from users who participated in more than one selected subreddit. This preserves one of the project’s central explanatory dimensions: cross-community behavior.</p>
+<div id="d75ba812" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
@@ -323,7 +323,6 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </div>
 </div>
 </div>
-<p>Most comments in the modeling base come from users who participated in more than one selected subreddit. This preserves one of the project’s central explanatory dimensions: cross-community behavior.</p>
 </section>
 <section id="features-used-for-modeling" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="features-used-for-modeling"><span class="header-section-number">1.3</span> Features used for modeling</h2>
@@ -361,12 +360,12 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 <li>user-level average score</li>
 <li>user-level controversial-comment total</li>
 </ul>
-<p>These features were chosen because they are aligned with the EDA and NLP findings and remain interpretable in the context of the project.</p>
+<p>These features were chosen because they are aligned with the EDA and NLP findings and remain interpretable in the context of the project. In other words, the ML phase does not introduce a new unrelated feature space; it formalizes the same patterns already identified descriptively and tests whether they contain usable predictive signal.</p>
 </section>
 </section>
 <section id="overall-model-comparison" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="overall-model-comparison"><span class="header-section-number">1.4</span> Overall model comparison</h2>
-<div id="394f52fc" class="cell" data-execution_count="6">
+<div id="6025ec3b" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
@@ -408,12 +407,12 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </div>
 </div>
 </div>
-<div id="7f76b062" class="cell" data-execution_count="7">
+<div id="cda95443" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script>if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.5.0.min.js" integrity="sha256-fHbNLP+GlIXN+efbQec78UkemUz3NJp7UmfGxC1tNxs=" crossorigin="anonymous"></script>                <div id="7452ca52-da5c-4ba9-9654-e26d50cb227b" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("7452ca52-da5c-4ba9-9654-e26d50cb227b")) {                    Plotly.newPlot(                        "7452ca52-da5c-4ba9-9654-e26d50cb227b",                        [{"alignmentgroup":"True","hovertemplate":"Model=Logistic Regression\u003cbr\u003eMetric=%{x}\u003cbr\u003eValue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Logistic Regression","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Logistic Regression","offsetgroup":"Logistic Regression","orientation":"v","showlegend":true,"textposition":"auto","x":["AUC-ROC","Accuracy","Weighted F1","Weighted Precision","Weighted Recall"],"xaxis":"x","y":{"dtype":"f8","bdata":"JzEIrBxa5j+srdhfdk\u002fiP9V46SYxCOY\u002fJLn8h\u002fTb7T+srdhfdk\u002fiPw=="},"yaxis":"y","type":"bar"},{"alignmentgroup":"True","hovertemplate":"Model=Random Forest\u003cbr\u003eMetric=%{x}\u003cbr\u003eValue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Random Forest","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Random Forest","offsetgroup":"Random Forest","orientation":"v","showlegend":true,"textposition":"auto","x":["AUC-ROC","Accuracy","Weighted F1","Weighted Precision","Weighted Recall"],"xaxis":"x","y":{"dtype":"f8","bdata":"MQisHFpk6z\u002fY8PRKWYbuP\u002fVKWYY41u0\u002fnKIjufyH7j\u002fY8PRKWYbuPw=="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Metric"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Value"}},"legend":{"title":{"text":"Model"},"tracegroupgap":0},"title":{"text":"Model Comparison Across Evaluation Metrics"},"barmode":"group"},                        {"responsive": true}                    ).then(function(){
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.5.0.min.js" integrity="sha256-fHbNLP+GlIXN+efbQec78UkemUz3NJp7UmfGxC1tNxs=" crossorigin="anonymous"></script>                <div id="5c0963a8-9782-4750-921f-7d1d22a759c6" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("5c0963a8-9782-4750-921f-7d1d22a759c6")) {                    Plotly.newPlot(                        "5c0963a8-9782-4750-921f-7d1d22a759c6",                        [{"alignmentgroup":"True","hovertemplate":"Model=Logistic Regression\u003cbr\u003eMetric=%{x}\u003cbr\u003eValue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Logistic Regression","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Logistic Regression","offsetgroup":"Logistic Regression","orientation":"v","showlegend":true,"textposition":"auto","x":["AUC-ROC","Accuracy","Weighted F1","Weighted Precision","Weighted Recall"],"xaxis":"x","y":{"dtype":"f8","bdata":"JzEIrBxa5j+srdhfdk\u002fiP9V46SYxCOY\u002fJLn8h\u002fTb7T+srdhfdk\u002fiPw=="},"yaxis":"y","type":"bar"},{"alignmentgroup":"True","hovertemplate":"Model=Random Forest\u003cbr\u003eMetric=%{x}\u003cbr\u003eValue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Random Forest","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Random Forest","offsetgroup":"Random Forest","orientation":"v","showlegend":true,"textposition":"auto","x":["AUC-ROC","Accuracy","Weighted F1","Weighted Precision","Weighted Recall"],"xaxis":"x","y":{"dtype":"f8","bdata":"MQisHFpk6z\u002fY8PRKWYbuP\u002fVKWYY41u0\u002fnKIjufyH7j\u002fY8PRKWYbuPw=="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Metric"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Value"}},"legend":{"title":{"text":"Model"},"tracegroupgap":0},"title":{"text":"Model Comparison Across Evaluation Metrics"},"barmode":"group"},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('7452ca52-da5c-4ba9-9654-e26d50cb227b');
+var gd = document.getElementById('5c0963a8-9782-4750-921f-7d1d22a759c6');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -440,17 +439,17 @@ if (outputEl) {{
 </div>
 <p>At first glance, the Random Forest appears to outperform Logistic Regression on all reported metrics. It has substantially higher:</p>
 <ul>
-<li>AUC-ROC</li>
-<li>Accuracy</li>
-<li>Weighted F1</li>
-<li>Weighted Precision</li>
-<li>Weighted Recall</li>
+<li><strong>AUC-ROC</strong></li>
+<li><strong>Accuracy</strong></li>
+<li><strong>Weighted F1</strong></li>
+<li><strong>Weighted Precision</strong></li>
+<li><strong>Weighted Recall</strong></li>
 </ul>
-<p>If interpreted in isolation, these metrics would suggest that Random Forest is the stronger model. However, because the dataset is so imbalanced, these overall metrics do not tell the full story.</p>
+<p>If interpreted in isolation, these metrics would suggest that Random Forest is the stronger model. However, because the dataset is so imbalanced, these overall metrics do not tell the full story. This is the most important caution in the ML section. A model can look very strong in aggregate while still failing to identify much of the controversial class. For this reason, the confusion-matrix interpretation below is more important than the overall metric table by itself.</p>
 </section>
 <section id="confusion-matrix-interpretation" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="confusion-matrix-interpretation"><span class="header-section-number">1.5</span> Confusion-matrix interpretation</h2>
-<div id="e45e6879" class="cell" data-execution_count="8">
+<div id="3178abf0" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
@@ -502,19 +501,22 @@ if (outputEl) {{
 <section id="logistic-regression" class="level3" data-number="1.5.1">
 <h3 data-number="1.5.1" class="anchored" data-anchor-id="logistic-regression"><span class="header-section-number">1.5.1</span> Logistic Regression</h3>
 <ul>
-<li>True Positives: 130,935</li>
-<li>False Negatives: 53,214</li>
-<li>False Positives: 1,623,004</li>
-<li>True Negatives: 2,111,049 ### Random Forest</li>
-<li>True Positives: 3,734</li>
-<li>False Negatives: 180,415</li>
-<li>False Positives: 160</li>
-<li>True Negatives: 3,733,893</li>
+<li>True Positives: <strong>130,935</strong></li>
+<li>False Negatives: <strong>53,214</strong></li>
+<li>False Positives: <strong>1,623,004</strong></li>
+<li>True Negatives: <strong>2,111,049</strong></li>
+</ul>
+</section>
+<section id="random-forest" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">1.5.2</span> Random Forest</h3>
+<ul>
+<li>True Positives: <strong>3,734</strong></li>
+<li>False Negatives: <strong>180,415</strong></li>
+<li>False Positives: <strong>160</strong></li>
+<li>True Negatives: <strong>3,733,893</strong></li>
 </ul>
 <p>These two models behave very differently.</p>
-<p>Logistic Regression identifies a much larger share of controversial comments. Its positive recall is 0.7110, meaning it captures a substantial portion of the controversial class. The tradeoff is that it also produces many false positives, so its positive precision is only 0.0747.</p>
-<p>Random Forest, by contrast, is extremely conservative about predicting the controversial class. Its positive precision is very high (0.9589), but its positive recall is only 0.0203. In other words, it predicts very few comments as controversial, and it misses the overwhelming majority of truly controversial comments.</p>
-<p>This means that the Random Forest’s high accuracy is driven largely by the fact that most comments are non-controversial. Because the negative class dominates the dataset, a model that predicts “non-controversial” most of the time can score well on overall metrics without being especially useful for identifying controversial comments.</p>
+<p>Logistic Regression identifies a much larger share of controversial comments. Its positive recall is 0.7110, meaning it captures a substantial portion of the controversial class. The tradeoff is that it also produces many false positives, so its positive precision is only <strong>0.0747</strong>. Random Forest, by contrast, is extremely conservative about predicting the controversial class. Its positive precision is very high (0.9589), but its positive recall is only 0.0203. In other words, it predicts very few comments as controversial, and it misses the overwhelming majority of truly controversial comments. This means that the Random Forest’s high accuracy is driven largely by the fact that most comments are non-controversial. Because the negative class dominates the dataset, a model that predicts “non-controversial” most of the time can score well on overall metrics without being especially useful for identifying controversial comments.</p>
 </section>
 </section>
 <section id="what-the-model-comparison-means" class="level2" data-number="1.6">
@@ -527,13 +529,12 @@ if (outputEl) {{
 <section id="if-the-goal-is-identifying-controversial-comments" class="level3" data-number="1.6.2">
 <h3 data-number="1.6.2" class="anchored" data-anchor-id="if-the-goal-is-identifying-controversial-comments"><span class="header-section-number">1.6.2</span> If the goal is identifying controversial comments</h3>
 <p>Logistic Regression is more substantively useful.</p>
-<p>For this project, the second goal matters more. The project is not mainly about maximizing aggregate accuracy; it is about understanding and identifying controversial content. On that criterion, Logistic Regression is more aligned with the research question because it is much more willing to classify comments as controversial.</p>
-<p>This does not mean Logistic Regression is universally “better” than Random Forest. It means that for a highly imbalanced dataset and a substantively important minority class, model usefulness depends on the metric being emphasized.</p>
+<p>For this project, the second goal matters more. The project is not mainly about maximizing aggregate accuracy; it is about understanding and identifying controversial content. On that criterion, Logistic Regression is more aligned with the research question because it is much more willing to classify comments as controversial. This does not mean Logistic Regression is universally “better” than Random Forest. It means that for a highly imbalanced dataset and a substantively important minority class, model usefulness depends on the metric being emphasized.</p>
 </section>
 </section>
 <section id="feature-importance-outputs" class="level2" data-number="1.7">
 <h2 data-number="1.7" class="anchored" data-anchor-id="feature-importance-outputs"><span class="header-section-number">1.7</span> Feature-importance outputs</h2>
-<div id="6594992f" class="cell" data-execution_count="9">
+<div id="c89f5a1f" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -674,7 +675,7 @@ if (outputEl) {{
 </div>
 </div>
 </div>
-<div id="bbdb1bf9" class="cell" data-execution_count="10">
+<div id="65829b02" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 
@@ -794,24 +795,21 @@ if (outputEl) {{
 </div>
 </div>
 </div>
-<p>The script also saved coefficient and feature-importance outputs, but these require caution. Because the pipeline used one-hot encoding and the exported outputs were stored as feature indices rather than directly labeled feature names, these tables are not yet directly interpretable. For that reason, this section does not make strong claims about which exact individual predictors were most important.</p>
-<p>The reliable conclusions from the ML phase come from the model-comparison results rather than from the raw feature-index tables.</p>
+<p>The script also saved coefficient and feature-importance outputs, but these require caution. Because the pipeline used one-hot encoding and the exported outputs were stored as feature indices rather than directly labeled feature names, these tables are not yet directly interpretable. For that reason, this section does not make strong claims about which exact individual predictors were most important. The reliable conclusions from the ML phase come from the model-comparison results rather than from the raw feature-index tables.</p>
 </section>
 <section id="ml-interpretation" class="level2" data-number="1.8">
 <h2 data-number="1.8" class="anchored" data-anchor-id="ml-interpretation"><span class="header-section-number">1.8</span> ML interpretation</h2>
-<p>The machine learning phase adds a final supporting layer to the project.</p>
-<p>First, the results suggest that controversiality is at least moderately predictable from the combined set of community, temporal, behavioral, and text-length features created earlier in the workflow. This means the earlier descriptive findings were not merely isolated observations; they contain signal that can be used in classification.</p>
-<p>Second, the model comparison shows that evaluation must be interpreted carefully in imbalanced settings. A model such as Random Forest can produce very strong overall metrics while still failing to recover much of the controversial class. Logistic Regression produces lower overall accuracy, but it is far more useful for the project’s substantive goal because it identifies a much larger share of controversial comments.</p>
-<p>Third, the ML phase reinforces the broader project narrative rather than replacing it. The main contribution of the project still comes from the EDA and NLP, which explain how controversy differs across communities, across time, across user types, and across language patterns. The ML phase shows that these same patterns are predictive enough to support classification, but it does not overturn the descriptive story.</p>
+<p>The machine learning phase adds a final supporting layer to the project. First, the results suggest that controversiality is <strong>meaningfully predictable</strong> from the combined set of community, temporal, behavioral, and text-length features created earlier in the workflow. This means the earlier descriptive findings were not merely isolated observations; they contain signal that can be used in classification. Second, the model comparison shows that evaluation must be interpreted carefully in imbalanced settings. A model such as Random Forest can produce very strong overall metrics while still failing to recover much of the controversial class. Logistic Regression produces lower overall accuracy, but it is far more useful for the project’s substantive goal because it identifies a much larger share of controversial comments. Third, the ML phase reinforces the broader project narrative rather than replacing it. The main contribution of the project still comes from the EDA and NLP, which explain how controversy differs across communities, across time, across user types, and across language patterns. The ML phase shows that these same patterns are predictive enough to support classification, but it does not overturn the descriptive story.</p>
 </section>
 <section id="ml-summary" class="level2" data-number="1.9">
 <h2 data-number="1.9" class="anchored" data-anchor-id="ml-summary"><span class="header-section-number">1.9</span> ML summary</h2>
 <p>The machine learning results support three grounded conclusions:</p>
-<ol type="1">
-<li><p><strong>Controversial content is moderately predictable.</strong> The feature set captures real signal related to subreddit context, timing, behavior, and text length.</p></li>
-<li><p><strong>Model interpretation depends on the metric.</strong> Random Forest performs better on overall metrics, but much of that advantage comes from majority-class prediction.</p></li>
-<li><p><strong>Logistic Regression is more useful for the project’s substantive goal.</strong> It identifies a much larger share of controversial comments and therefore better supports the project’s focus on controversial content itself.</p></li>
-</ol>
+<p><strong>1. Controversial content is meaningfully predictable.</strong><br>
+The feature set captures real signal related to subreddit context, timing, behavior, and text length.</p>
+<p><strong>2. Model interpretation depends on the metric.</strong><br>
+Random Forest performs better on overall metrics, but much of that advantage comes from majority-class prediction.</p>
+<p><strong>3. Logistic Regression is more useful for the project’s substantive goal.</strong><br>
+It identifies a much larger share of controversial comments and therefore better supports the project’s focus on controversial content itself.</p>
 <p>The ML phase complements the earlier EDA and NLP rather than serving as the main analytic result. The overall project conclusion therefore rests on a combination of descriptive patterns, linguistic distinctions, and supporting predictive evidence.</p>
 
 
