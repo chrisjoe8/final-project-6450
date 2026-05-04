@@ -40,6 +40,7 @@ The project was completed using:
 - Quarto (for final website/report)
 
 ## Repository Structure
+
 ```text
 .
 ├── docs/
@@ -50,6 +51,16 @@ The project was completed using:
 │   ├── ml.qmd
 │   ├── conclusion.qmd
 │   └── _site/
+│       ├── index.html
+│       ├── search.json
+│       ├── site_libs/
+│       └── docs/
+│           ├── index.html
+│           ├── data-and-method.html
+│           ├── eda.html
+│           ├── nlp.html
+│           ├── ml.html
+│           └── conclusion.html
 ├── figures/
 ├── notes/
 ├── outputs/
