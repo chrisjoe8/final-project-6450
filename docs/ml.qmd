@@ -1,0 +1,247 @@
+---
+title: "ML"
+format: html
+---
+
+```{python}
+#| echo: false
+import pandas as pd
+import plotly.express as px
+from pathlib import Path
+
+BASE = Path("..") / "outputs"
+
+ml_prep = BASE / "ml_prep_model_base"
+ml_analysis = BASE / "ml_analysis"
+
+label_distribution = pd.read_csv(ml_prep / "label_distribution.csv")
+subreddit_distribution = pd.read_csv(ml_prep / "subreddit_distribution.csv")
+multi_subreddit_user_distribution = pd.read_csv(ml_prep / "multi_subreddit_user_distribution.csv")
+
+model_metrics = pd.read_csv(ml_analysis / "model_metrics.csv")
+logreg_confusion = pd.read_csv(ml_analysis / "logreg_confusion_counts.csv")
+rf_confusion = pd.read_csv(ml_analysis / "rf_confusion_counts.csv")
+logreg_feature_coefficients = pd.read_csv(ml_analysis / "logreg_feature_coefficients.csv")
+rf_feature_importances = pd.read_csv(ml_analysis / "rf_feature_importances.csv")
+```
+```{python}
+#| echo: false
+def confusion_summary(df, model_name):
+    tp = int(df[(df["label"] == 1) & (df["prediction"] == 1.0)]["count"].sum())
+    fn = int(df[(df["label"] == 1) & (df["prediction"] == 0.0)]["count"].sum())
+    fp = int(df[(df["label"] == 0) & (df["prediction"] == 1.0)]["count"].sum())
+    tn = int(df[(df["label"] == 0) & (df["prediction"] == 0.0)]["count"].sum())
+
+    precision_pos = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    recall_pos = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    specificity = tn / (tn + fp) if (tn + fp) > 0 else 0.0
+
+    return pd.DataFrame([{
+        "model": model_name,
+        "true_negatives": tn,
+        "false_positives": fp,
+        "false_negatives": fn,
+        "true_positives": tp,
+        "positive_precision": round(precision_pos, 4),
+        "positive_recall": round(recall_pos, 4),
+        "specificity": round(specificity, 4)
+    }])
+
+confusion_summary_df = pd.concat([
+    confusion_summary(logreg_confusion, "Logistic Regression"),
+    confusion_summary(rf_confusion, "Random Forest")
+], ignore_index=True)
+
+metrics_display = model_metrics.copy()
+metrics_display = metrics_display.rename(columns={
+    "model": "Model",
+    "auc_roc": "AUC-ROC",
+    "accuracy": "Accuracy",
+    "f1": "Weighted F1",
+    "weighted_precision": "Weighted Precision",
+    "weighted_recall": "Weighted Recall"
+})
+
+confusion_display = confusion_summary_df.rename(columns={
+    "model": "Model",
+    "true_negatives": "TN",
+    "false_positives": "FP",
+    "false_negatives": "FN",
+    "true_positives": "TP",
+    "positive_precision": "Positive Precision",
+    "positive_recall": "Positive Recall",
+    "specificity": "Specificity"
+})
+```
+# Machine Learning
+## ML goals
+
+The machine learning phase was designed as a supporting analysis with the goal of testing whether controversial comments could be predicted from the same kinds of features that emerged as meaningful in the EDA and NLP phases.
+
+The prediction problem was framed as a binary classification task:
+
+- `1` = controversial comment
+- `0` = non-controversial comment
+
+Two models were trained and compared:
+
+- **Logistic Regression**
+- **Random Forest**
+
+The central question was not simply which model achieved the highest overall accuracy, but rather whether controversy was meaningfully predictable from community, temporal, behavioral, and text-length features.
+
+## Modeling base
+
+The modeling base was constructed from the cleaned feature table and retained only comments appropriate for modeling.
+```{python}
+#| echo: false
+label_distribution
+``` 
+The modeling dataset contains a very strong class imbalance: 18,660,055 non-controversial comments and 920,504 controversial comments. This matters for interpretation, because a model can achieve high accuracy simply by predicting the majority class most of the time.
+
+The modeling base also preserves the same subreddit distribution used throughout the rest of the project:
+```{python}
+#| echo: false
+subreddit_distribution
+```
+Finally, the model base includes user-level cross-community indicators:
+```{python}
+#| echo: false
+multi_subreddit_user_distribution
+```
+Most comments in the modeling base come from users who participated in more than one selected subreddit. This preserves one of the project’s central explanatory dimensions: cross-community behavior.
+
+## Features used for modeling
+
+The models were trained on interpretable predictors drawn from four groups:
+
+### Community features
+- subreddit identity
+- subreddit-level controversy rate
+- subreddit-level average score
+- subreddit-level average text length
+
+### Temporal features
+- month
+- hour
+- weekday
+
+### Text-length features
+- comment length in words
+- log-transformed comment length
+
+### Cross-community user features
+- number of distinct subreddits per user
+- total comments per user
+- whether the user was a multi-subreddit user
+- user-level average score
+- user-level controversial-comment total
+
+These features were chosen because they are aligned with the EDA and NLP findings and remain interpretable in the context of the project.
+
+## Overall model comparison
+```{python}
+#| echo: false
+metrics_display
+```
+```{python}
+#| echo: false
+fig = px.bar(
+    metrics_display.melt(id_vars="Model", var_name="Metric", value_name="Value"),
+    x="Metric",
+    y="Value",
+    color="Model",
+    barmode="group",
+    title="Model Comparison Across Evaluation Metrics"
+)
+fig
+```
+At first glance, the Random Forest appears to outperform Logistic Regression on all reported metrics. It has substantially higher:
+
+- AUC-ROC
+- Accuracy
+- Weighted F1
+- Weighted Precision
+- Weighted Recall
+
+If interpreted in isolation, these metrics would suggest that Random Forest is the stronger model. However, because the dataset is so imbalanced, these overall metrics do not tell the full story.
+
+## Confusion-matrix interpretation
+```{python}
+#| echo: false
+confusion_display
+```
+The confusion counts show why careful interpretation is necessary.
+
+### Logistic Regression
+- True Positives: 130,935
+- False Negatives: 53,214
+- False Positives: 1,623,004
+- True Negatives: 2,111,049
+### Random Forest
+- True Positives: 3,734
+- False Negatives: 180,415
+- False Positives: 160
+- True Negatives: 3,733,893
+
+These two models behave very differently.
+
+Logistic Regression identifies a much larger share of controversial comments. Its positive recall is 0.7110, meaning it captures a substantial portion of the controversial class. The tradeoff is that it also produces many false positives, so its positive precision is only 0.0747.
+
+Random Forest, by contrast, is extremely conservative about predicting the controversial class. Its positive precision is very high (0.9589), but its positive recall is only 0.0203. In other words, it predicts very few comments as controversial, and it misses the overwhelming majority of truly controversial comments.
+
+This means that the Random Forest’s high accuracy is driven largely by the fact that most comments are non-controversial. Because the negative class dominates the dataset, a model that predicts “non-controversial” most of the time can score well on overall metrics without being especially useful for identifying controversial comments.
+
+## What the model comparison means
+
+The model comparison supports two different conclusions depending on the evaluation goal.
+
+### If the goal is overall classification accuracy
+
+Random Forest appears stronger.
+
+### If the goal is identifying controversial comments
+
+Logistic Regression is more substantively useful.
+
+For this project, the second goal matters more. The project is not mainly about maximizing aggregate accuracy; it is about understanding and identifying controversial content. On that criterion, Logistic Regression is more aligned with the research question because it is much more willing to classify comments as controversial.
+
+This does not mean Logistic Regression is universally “better” than Random Forest. It means that for a highly imbalanced dataset and a substantively important minority class, model usefulness depends on the metric being emphasized.
+
+## Feature-importance outputs
+```{python}
+#| echo: false
+logreg_feature_coefficients.head(20)
+```
+```{python}
+#| echo: false
+rf_feature_importances.head(20)
+```
+The script also saved coefficient and feature-importance outputs, but these require caution. Because the pipeline used one-hot encoding and the exported outputs were stored as feature indices rather than directly labeled feature names, these tables are not yet directly interpretable. For that reason, this section does not make strong claims about which exact individual predictors were most important.
+
+The reliable conclusions from the ML phase come from the model-comparison results rather than from the raw feature-index tables.
+
+## ML interpretation
+
+The machine learning phase adds a final supporting layer to the project.
+
+First, the results suggest that controversiality is at least moderately predictable from the combined set of community, temporal, behavioral, and text-length features created earlier in the workflow. This means the earlier descriptive findings were not merely isolated observations; they contain signal that can be used in classification.
+
+Second, the model comparison shows that evaluation must be interpreted carefully in imbalanced settings. A model such as Random Forest can produce very strong overall metrics while still failing to recover much of the controversial class. Logistic Regression produces lower overall accuracy, but it is far more useful for the project’s substantive goal because it identifies a much larger share of controversial comments.
+
+Third, the ML phase reinforces the broader project narrative rather than replacing it. The main contribution of the project still comes from the EDA and NLP, which explain how controversy differs across communities, across time, across user types, and across language patterns. The ML phase shows that these same patterns are predictive enough to support classification, but it does not overturn the descriptive story.
+
+## ML summary
+
+The machine learning results support three grounded conclusions:
+
+1. **Controversial content is moderately predictable.**
+The feature set captures real signal related to subreddit context, timing, behavior, and text length.
+
+2. **Model interpretation depends on the metric.**
+Random Forest performs better on overall metrics, but much of that advantage comes from majority-class prediction.
+
+3. **Logistic Regression is more useful for the project’s substantive goal.**
+It identifies a much larger share of controversial comments and therefore better supports the project’s focus on controversial content itself.
+
+The ML phase complements the earlier EDA and NLP rather than serving as the main analytic result. The overall project conclusion therefore rests on a combination of descriptive patterns, linguistic distinctions, and supporting predictive evidence.
