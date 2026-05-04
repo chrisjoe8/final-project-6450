@@ -1,0 +1,8 @@
+/.quarto/
+**/*.quarto_ipynb
+*.pem
+cluster-config.txt
+cluster-ips.txt
+cluster-setup-*.log
+spark-cluster-key-*.pem
+spark-cluster-*.log
