@@ -164,6 +164,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#text-length-features-1" id="toc-text-length-features-1" class="nav-link" data-scroll-target="#text-length-features-1"><span class="header-section-number">1.10.3</span> Text-Length Features</a></li>
   <li><a href="#cross-community-user-features" id="toc-cross-community-user-features" class="nav-link" data-scroll-target="#cross-community-user-features"><span class="header-section-number">1.10.4</span> Cross-Community User Features</a></li>
   </ul></li>
+  <li><a href="#project-philosophy" id="toc-project-philosophy" class="nav-link" data-scroll-target="#project-philosophy"><span class="header-section-number">1.11</span> Project Philosophy</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -194,20 +195,18 @@ ul.task-list li input[type="checkbox"] {
 <h1 data-number="1"><span class="header-section-number">1</span> Data and Methods</h1>
 <section id="dataset" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="dataset"><span class="header-section-number">1.1</span> Dataset</h2>
-<p>This project uses the Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using Apache Spark on an EC2 cluster with data stored in S3.</p>
-<p>Our analysis focuses on Reddit comments rather than submissions. We chose comments because the project centers on controversial discourse, interaction, and cross-community behavior, and comments provide a much richer view of discussion dynamics than thread-starting posts alone.</p>
+<p>This project uses the course-provided Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using <strong>Apache Spark on an EC2 cluster</strong> with data stored in S3.</p>
+<p>Our analysis focuses on Reddit <strong>comments</strong> rather than submissions. We chose comments because the project centers on controversial discourse, interaction, and cross-community behavior, and comments provide a richer view of discussion dynamics than thread-starting posts alone.</p>
 </section>
 <section id="why-comments-rather-than-submissions" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="why-comments-rather-than-submissions"><span class="header-section-number">1.2</span> Why Comments Rather Than Submissions</h2>
 <p>Reddit submissions are the original posts that begin threads, while comments are the replies within those threads. For this project, comments were the more appropriate unit of analysis for three reasons:</p>
-<ol type="1">
-<li><p><strong>They capture discussion directly.</strong><br>
-Since the project asks how controversy is shaped across communities, comments provide a more direct view of disagreement, response behavior, and conversational tone.</p></li>
-<li><p><strong>They better support cross-community behavior analysis.</strong><br>
-User-level participation patterns are easier to study at scale when using comments, because comments provide a larger and denser record of how users engage across multiple subreddits.</p></li>
-<li><p><strong>They provide a stronger base for text analysis.</strong><br>
-The comments dataset contains a much larger volume of language, which makes it more suitable for descriptive NLP and supporting predictive modeling.</p></li>
-</ol>
+<p><strong>1. They capture discussion directly.</strong><br>
+Since the project asks how controversy is shaped across communities, comments provide a more direct view of disagreement, response behavior, and conversational tone.</p>
+<p><strong>2. They better support cross-community behavior analysis.</strong><br>
+User-level participation patterns are easier to study at scale when using comments, because comments provide a larger and denser record of how users engage across multiple subreddits.</p>
+<p><strong>3. They provide a stronger base for text analysis.</strong><br>
+The comments dataset contains a much larger volume of language, which makes it more suitable for descriptive NLP and supporting predictive modeling.</p>
 </section>
 <section id="subreddit-selection" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="subreddit-selection"><span class="header-section-number">1.3</span> Subreddit Selection</h2>
@@ -220,16 +219,16 @@ The comments dataset contains a much larger volume of language, which makes it m
 <li><code>conspiracy</code></li>
 <li><code>changemyview</code></li>
 </ul>
-<p>These communities were selected because they form a coherent political and public-discourse cluster while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative, while preserving meaningful variation across communities.</p>
+<p>These communities were selected because they form a coherent <strong>political and public-discourse cluster</strong> while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative while preserving meaningful variation across communities.</p>
 <p>Conceptually, these six subreddits cover several different forms of public discourse:</p>
 <ul>
 <li><code>politics</code> emphasizes explicitly political discussion</li>
-<li><code>news</code> and <code>worldnews</code> focus on current events, with <code>news</code> containing U.S.-focused news and <code>worldnews</code> containing predominantly non-U.S.-focused news</li>
+<li><code>news</code> and <code>worldnews</code> focus on current events, with <code>news</code> more U.S.-oriented and <code>worldnews</code> more internationally oriented</li>
 <li><code>WhitePeopleTwitter</code> blends political commentary with meme and social-media discourse</li>
 <li><code>conspiracy</code> represents a higher-conflict alternative discourse space</li>
 <li><code>changemyview</code> emphasizes more structured disagreement and debate</li>
 </ul>
-<p>This selection strategy was designed to avoid a random collection of unrelated communities and instead focus on a coherent comparison set.</p>
+<p>This selection strategy was designed to avoid a random collection of unrelated communities and instead focus on a coherent comparison set in which both overlap and difference could be meaningfully studied.</p>
 </section>
 <section id="research-question" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="research-question"><span class="header-section-number">1.4</span> Research Question</h2>
@@ -245,8 +244,7 @@ The comments dataset contains a much larger volume of language, which makes it m
 <section id="data-processing-workflow" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="data-processing-workflow"><span class="header-section-number">1.5</span> Data Processing Workflow</h2>
 <p>The workflow began with copying the Reddit data into a personal S3 bucket and then using Spark to filter the full comments dataset down to the six selected subreddits. This produced the project-specific filtered comments dataset used in the rest of the analysis.</p>
-<p>From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning.</p>
-<p>The broad pipeline was:</p>
+<p>From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning. The broad pipeline was:</p>
 <ol type="1">
 <li><strong>Copy Reddit data to S3</strong></li>
 <li><strong>Filter to selected subreddits</strong></li>
@@ -257,6 +255,7 @@ The comments dataset contains a much larger volume of language, which makes it m
 <li><strong>Prepare ML-ready model base</strong></li>
 <li><strong>Run supporting ML models</strong></li>
 </ol>
+<p>This workflow was designed to keep each analytical stage tied to the same underlying research question while ensuring that later phases built directly on earlier descriptive findings.</p>
 </section>
 <section id="feature-base-construction" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="feature-base-construction"><span class="header-section-number">1.6</span> Feature Base Construction</h2>
@@ -270,7 +269,7 @@ The comments dataset contains a much larger volume of language, which makes it m
 <li><code>score</code></li>
 <li>thread-linking fields such as <code>link_id</code> and <code>parent_id</code></li>
 </ul>
-<p>From these, we created:</p>
+<p>From these, we created several types of derived variables.</p>
 <section id="time-features" class="level3" data-number="1.6.1">
 <h3 data-number="1.6.1" class="anchored" data-anchor-id="time-features"><span class="header-section-number">1.6.1</span> Time Features</h3>
 <ul>
@@ -309,7 +308,7 @@ The comments dataset contains a much larger volume of language, which makes it m
 </section>
 <section id="exploratory-data-analysis-eda" class="level2" data-number="1.8">
 <h2 data-number="1.8" class="anchored" data-anchor-id="exploratory-data-analysis-eda"><span class="header-section-number">1.8</span> Exploratory Data Analysis (EDA)</h2>
-<p>The EDA focused on four main areas:</p>
+<p>The EDA focused on four main areas.</p>
 <section id="controversy-across-communities" class="level3" data-number="1.8.1">
 <h3 data-number="1.8.1" class="anchored" data-anchor-id="controversy-across-communities"><span class="header-section-number">1.8.1</span> 1. Controversy Across Communities</h3>
 <p>We measured: - controversy rate by subreddit - controversy volume versus controversy rate - controversy over time by subreddit</p>
@@ -322,37 +321,38 @@ The comments dataset contains a much larger volume of language, which makes it m
 <section id="cross-community-user-behavior" class="level3" data-number="1.8.3">
 <h3 data-number="1.8.3" class="anchored" data-anchor-id="cross-community-user-behavior"><span class="header-section-number">1.8.3</span> 3. Cross-Community User Behavior</h3>
 <p>We compared: - single-subreddit users - multi-subreddit users</p>
-<p>We also examined: - controversy rates by user type - engagement differences by user type - subreddit-pair shared-user patterns</p>
+<p>We also examined: - controversy rates by user type - engagement differences by user type - subreddit-pair shared-user patterns - cross-community participation over time</p>
 </section>
 <section id="text-descriptives" class="level3" data-number="1.8.4">
 <h3 data-number="1.8.4" class="anchored" data-anchor-id="text-descriptives"><span class="header-section-number">1.8.4</span> 4. Text Descriptives</h3>
 <p>We examined: - text length by controversy status - text length by subreddit - common and distinctive terms across communities and user types</p>
+<p>Overall, the EDA was designed to establish the descriptive structure of the problem before moving to more explicitly language-focused and predictive analyses.</p>
 </section>
 </section>
 <section id="nlp-methods" class="level2" data-number="1.9">
 <h2 data-number="1.9" class="anchored" data-anchor-id="nlp-methods"><span class="header-section-number">1.9</span> NLP Methods</h2>
 <p>The NLP phase used a cleaned text base derived from the feature table. This phase remained intentionally simple and interpretable.</p>
 <p>The text was: - lowercased - stripped of URLs - normalized to alphanumeric text - tokenized - filtered with standard stopword removal</p>
-<p>Using this base, we conducted:</p>
+<p>Using this base, we conducted two main analyses.</p>
 <section id="sentiment-analysis" class="level3" data-number="1.9.1">
 <h3 data-number="1.9.1" class="anchored" data-anchor-id="sentiment-analysis"><span class="header-section-number">1.9.1</span> Sentiment Analysis</h3>
-<p>We used a simple lexicon-based sentiment approach in which selected positive and negative words were counted within comments. This was not intended as a sophisticated sentiment model, but rather as a transparent way to compare tone across controversy groups and subreddits.</p>
+<p>We used a simple lexicon-based sentiment approach in which selected positive and negative words were counted within comments. This was not intended as a sophisticated sentiment model, but rather as a transparent way to compare broad tone across controversy groups and subreddits.</p>
 </section>
 <section id="distinctive-term-analysis" class="level3" data-number="1.9.2">
 <h3 data-number="1.9.2" class="anchored" data-anchor-id="distinctive-term-analysis"><span class="header-section-number">1.9.2</span> Distinctive-Term Analysis</h3>
 <p>We identified terms that were especially distinctive: - for controversial versus non-controversial comments - for each subreddit</p>
-<p>This helped us connect controversial content to concrete topical language rather than only to abstract metrics.</p>
+<p>This helped connect controversial content to concrete topical language rather than only to abstract metrics such as sentiment scores or text length.</p>
 </section>
 </section>
 <section id="machine-learning-methods" class="level2" data-number="1.10">
 <h2 data-number="1.10" class="anchored" data-anchor-id="machine-learning-methods"><span class="header-section-number">1.10</span> Machine Learning Methods</h2>
-<p>The machine learning phase was designed as a supporting analysis.</p>
+<p>The machine learning phase was designed as a <strong>supporting analysis</strong>, not the main contribution of the project.</p>
 <p>We framed the prediction problem as a <strong>binary classification task</strong>:</p>
 <ul>
 <li><code>1</code> = controversial comment</li>
 <li><code>0</code> = non-controversial comment</li>
 </ul>
-<p>The modeling base used interpretable features from four categories:</p>
+<p>The modeling base used interpretable features from four categories.</p>
 <section id="community-features" class="level3" data-number="1.10.1">
 <h3 data-number="1.10.1" class="anchored" data-anchor-id="community-features"><span class="header-section-number">1.10.1</span> Community Features</h3>
 <ul>
@@ -391,11 +391,15 @@ The comments dataset contains a much larger volume of language, which makes it m
 <li><strong>Logistic Regression</strong></li>
 <li><strong>Random Forest</strong></li>
 </ul>
-<p>The purpose of this comparison was not to maximize predictive sophistication, but to test whether controversiality was at least moderately predictable from the features created in earlier phases.</p>
+<p>The purpose of this comparison was not to maximize predictive sophistication, but to test whether controversiality was at least moderately predictable from the features created in earlier phases and to compare overall predictive performance with usefulness for identifying the controversial class itself.</p>
 <p>Because the data are highly imbalanced, model evaluation was interpreted carefully rather than relying on accuracy alone.</p>
-
-
 </section>
+</section>
+<section id="project-philosophy" class="level2" data-number="1.11">
+<h2 data-number="1.11" class="anchored" data-anchor-id="project-philosophy"><span class="header-section-number">1.11</span> Project Philosophy</h2>
+<p>This project prioritizes clear insight, interpretable results, and coherent storytelling over technical complexity. The methods were chosen to stay within the scope of the course and to support the research question directly. EDA serves as the foundation of the analysis, while NLP and ML act as supporting layers that deepen the explanation rather than replace it.</p>
+
+
 </section>
 </section>
 
