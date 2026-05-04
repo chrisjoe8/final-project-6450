@@ -146,7 +146,7 @@ These results show that the selected subreddits share a common public-discourse 
 `emotes`
 `timestamp`
 
-This confirms that it remains deeply tied to meme, reaction-image, and social-media embedding practices rather than functioning like a conventional news-discussion subreddit.
+This is consistent with the ideea that it remains deeply tied to meme, reaction-image, and social-media embedding practices rather than functioning like a conventional news-discussion subreddit.
 
 ### changemyview
 
@@ -172,7 +172,7 @@ conspiracy is associated with terms such as:
 `nephilim`
 `luciferian`
 
-These terms point clearly to an alternative discourse space with its own recurring conceptual vocabulary. This helps explain why conspiracy also had the highest controversy rate in the EDA.
+These terms point strongly to an alternative discourse space with its own recurring conceptual vocabulary. This helps explain why conspiracy also had the highest controversy rate in the EDA.
 
 ### news and worldnews
 
