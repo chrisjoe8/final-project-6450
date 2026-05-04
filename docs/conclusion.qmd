@@ -11,12 +11,9 @@ This project asked:
 
 **How do linguistic features and cross-community user behavior jointly shape controversial content across Reddit communities?**
 
-Taken together, the results suggest that controversial content on Reddit is shaped most clearly by **community context and topic-specific language**, while **cross-community user behavior matters in a more conditional way**.
-
-The EDA showed that controversy is distributed unevenly across the six selected subreddits. `conspiracy` had the highest controversy rate, followed by `news` and `worldnews`, while `WhitePeopleTwitter` had by far the lowest. This means that controversiality is not simply a platform-wide constant. It varies substantially by community, even within a coherent cluster of political and public-discourse subreddits.
-
-The NLP results deepen that interpretation. Controversial comments were only modestly different in broad sentiment, but they were much more clearly associated with **distinctive conflict-heavy vocabulary**, especially around highly polarized geopolitical topics. The language of controversy in this dataset was therefore not just “more negative” in a generic sense; it was tied to specific themes and discourse patterns.
-
+Taken together, the results suggest that controversial content on Reddit is shaped most clearly by community context and topic-specific language, while cross-community user behavior matters in a more conditional way.
+The EDA showed that controversiality is distributed unevenly across the six selected subreddits. `conspiracy` had the highest controversy rate, followed by `news` and `worldnews`, while `WhitePeopleTwitter` had by far the lowest. This means that controversiality is not simply a platform-wide constant. Even within a coherent political and public-discourse cluster, some communities are much more controversy-prone than others.
+Addiotionally, The NLP results deepen that interpretation. Controversial comments were only modestly different in broad sentiment, but they were much more clearly associated with distinctive conflict-heavy vocabulary, especially around highly polarized geopolitical topics. The strongest linguistic signal in the project did not come from general negativity alone. Instead, it came from the fact that controversial comments were disproportionately tied to specific topics and forms of discourse.
 Cross-community participation also mattered, but not in a simple one-directional way. Multi-subreddit users accounted for most of the activity in the dataset and were strongly concentrated in overlapping political and news-oriented communities. However, their relationship to controversy depended on the subreddit. In some communities they were associated with higher controversy rates, while in others they were not. This suggests that cross-community behavior interacts with local community norms rather than producing the same effect everywhere.
 
 Overall, the strongest evidence from the project supports the following conclusion:
@@ -25,11 +22,11 @@ Overall, the strongest evidence from the project supports the following conclusi
 
 ## Main takeaways
 
-Three key findings summarize the project.
+Three high-level findings summarize the project.
 
 ### 1. Community context matters strongly
 
-The six selected subreddits do not behave the same way. Some communities are much more controversy-prone than others, even though all six belong to a related political/public-discourse ecosystem. This means that platform-wide explanations of controversy are incomplete without attention to community structure.
+The six selected subreddits do not behave the same way. Some communities are much more controversy-prone than others, even though all six belong to a related political and public-discourse ecosystem. This means that broad platform-level explanations of controversy are incomplete without attention to community structure.
 
 ### 2. Language matters, but mainly through topic and discourse style
 
@@ -57,24 +54,18 @@ The shared-user patterns show dense overlap among several of the selected commun
 
 ## Role of machine learning
 
-The machine learning phase was designed to support, not replace, the descriptive and linguistic findings.
-
-The results show that controversiality is at least somewhat predictable from community, temporal, behavioral, and text-length features. However, the model comparison also demonstrated that strong headline metrics can be misleading in an imbalanced classification setting. Random Forest achieved much stronger overall accuracy, but much of that performance came from predicting the majority non-controversial class. Logistic Regression, while weaker on overall accuracy, was more useful for identifying controversial comments themselves.
-
-This reinforces an important methodological lesson from the project: predictive performance must be interpreted in light of the actual substantive goal. In this case, the ML results are most valuable because they support the earlier EDA and NLP patterns rather than because they produce the highest possible classification score.
+The machine learning phase was designed to support the descriptive and linguistic findings, not replace them. The results show that controversiality is meaningfully predictable from community, temporal, behavioral, and text-length features. However, the model comparison also demonstrated that strong headline metrics can be misleading in an imbalanced classification setting. Random Forest achieved much stronger overall accuracy, but much of that performance came from predicting the majority non-controversial class. Logistic Regression, while weaker on overall accuracy, was more useful for identifying controversial comments themselves.
+This reinforces an important methodological lesson from the project: predictive performance must be interpreted in light of the substantive goal. In this case, the ML results are most valuable because they support the earlier EDA and NLP patterns rather than because they produce the highest possible classification score.
 
 ## Limitations
 
-This project also has several limitations.
+This project also has several limitations. First, the analysis is limited to **six selected subreddits**, not all of Reddit. The goal was to study a coherent topical cluster rather than produce a universal account of controversiality across the platform.
+Moreover, the NLP approach was intentionally simple and interpretable. The lexicon-based sentiment analysis provides a transparent comparison, but it should not be treated as a fine-grained emotional model. Furtermore, the machine learning results are constrained by strong class imbalance. That makes model interpretation more complex and reduces the usefulness of accuracy alone.
+It is also important to note that the temporal analysis reflects a standardized timezone for interpretability rather than the true local time of each commenter, which is not available in the dataset. Finally, the project identifies strong associations but does not establish causal relationships. It shows where controversiality is concentrated and what kinds of language are associated with it, but it does not prove that any one factor independently causes content to become controversial.
 
-First, the analysis is limited to **six selected subreddits**, not all of Reddit. The goal was to study a coherent topical cluster rather than produce a universal account of controversiality across the platform.
-
-Second, the NLP approach was intentionally simple and interpretable. The lexicon-based sentiment analysis provides a transparent comparison, but it should not be treated as a fine-grained emotional model.
-
-Third, the machine learning results are constrained by strong class imbalance. That makes model interpretation more complex and reduces the usefulness of accuracy alone.
-
-Fourth, the temporal analysis reflects a standardized timezone for interpretability (EST) rather than the true local time of each commenter, which is not available in the dataset.
+These limitations do not invalidate the findings, but they do help define the scope of the conclusions.
 
 ## Final reflection
 
 This project shows that controversial content on Reddit is best understood as a joint product of community norms, discourse topics, and patterns of participation across communities. The strongest explanations do not come from any one layer alone. Instead, the most useful account emerges when subreddit context, temporal structure, user behavior, and language are analyzed together.
+More broadly, the project demonstrates the value of an insight-driven big-data workflow. The main contribution is not technical complexity for its own sake, but the ability to use large-scale data and course-aligned methods to tell a coherent and evidence-based story about how controversial discourse varies across online communities.
