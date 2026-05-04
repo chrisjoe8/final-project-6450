@@ -195,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
 <h1 data-number="1"><span class="header-section-number">1</span> Data and Methods</h1>
 <section id="dataset" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="dataset"><span class="header-section-number">1.1</span> Dataset</h2>
-<p>This project uses the course-provided Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using <strong>Apache Spark on an EC2 cluster</strong> with data stored in S3.</p>
+<p>This project uses the course-provided Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using Apache Spark on an EC2 cluster with data stored in S3.</p>
 <p>Our analysis focuses on Reddit <strong>comments</strong> rather than submissions. We chose comments because the project centers on controversial discourse, interaction, and cross-community behavior, and comments provide a richer view of discussion dynamics than thread-starting posts alone.</p>
 </section>
 <section id="why-comments-rather-than-submissions" class="level2" data-number="1.2">
@@ -219,7 +219,7 @@ The comments dataset contains a much larger volume of language, which makes it m
 <li><code>conspiracy</code></li>
 <li><code>changemyview</code></li>
 </ul>
-<p>These communities were selected because they form a coherent <strong>political and public-discourse cluster</strong> while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative while preserving meaningful variation across communities.</p>
+<p>These communities were selected because they form a coherent political and public-discourse cluster while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative while preserving meaningful variation across communities.</p>
 <p>Conceptually, these six subreddits cover several different forms of public discourse:</p>
 <ul>
 <li><code>politics</code> emphasizes explicitly political discussion</li>
@@ -245,16 +245,7 @@ The comments dataset contains a much larger volume of language, which makes it m
 <h2 data-number="1.5" class="anchored" data-anchor-id="data-processing-workflow"><span class="header-section-number">1.5</span> Data Processing Workflow</h2>
 <p>The workflow began with copying the Reddit data into a personal S3 bucket and then using Spark to filter the full comments dataset down to the six selected subreddits. This produced the project-specific filtered comments dataset used in the rest of the analysis.</p>
 <p>From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning. The broad pipeline was:</p>
-<ol type="1">
-<li><strong>Copy Reddit data to S3</strong></li>
-<li><strong>Filter to selected subreddits</strong></li>
-<li><strong>Build a cleaned feature base</strong></li>
-<li><strong>Run EDA</strong></li>
-<li><strong>Prepare NLP-ready text base</strong></li>
-<li><strong>Run NLP analysis</strong></li>
-<li><strong>Prepare ML-ready model base</strong></li>
-<li><strong>Run supporting ML models</strong></li>
-</ol>
+<p><strong>1. Copy Reddit data to S3</strong> <strong>2. Filter to selected subreddits</strong> <strong>3. Build a cleaned feature base</strong> <strong>4. Run EDA</strong> <strong>5. Prepare NLP-ready text base</strong> <strong>6. Run NLP analysis</strong> <strong>7. Prepare ML-ready model base</strong> <strong>8. Run supporting ML models</strong></p>
 <p>This workflow was designed to keep each analytical stage tied to the same underlying research question while ensuring that later phases built directly on earlier descriptive findings.</p>
 </section>
 <section id="feature-base-construction" class="level2" data-number="1.6">
@@ -311,28 +302,60 @@ The comments dataset contains a much larger volume of language, which makes it m
 <p>The EDA focused on four main areas.</p>
 <section id="controversy-across-communities" class="level3" data-number="1.8.1">
 <h3 data-number="1.8.1" class="anchored" data-anchor-id="controversy-across-communities"><span class="header-section-number">1.8.1</span> 1. Controversy Across Communities</h3>
-<p>We measured: - controversy rate by subreddit - controversy volume versus controversy rate - controversy over time by subreddit</p>
+<p>We measured:</p>
+<ul>
+<li>controversy rate by subreddit</li>
+<li>controversy volume versus controversy rate</li>
+<li>controversy over time by subreddit</li>
+</ul>
 </section>
 <section id="temporal-structure" class="level3" data-number="1.8.2">
 <h3 data-number="1.8.2" class="anchored" data-anchor-id="temporal-structure"><span class="header-section-number">1.8.2</span> 2. Temporal Structure</h3>
-<p>We analyzed: - controversy by month - controversy by hour - controversy by weekday</p>
+<p>We analyzed:</p>
+<ul>
+<li>controversy by month</li>
+<li>controversy by hour</li>
+<li>controversy by weekday</li>
+</ul>
 <p>To make the time-of-day patterns more interpretable, hour-based results were standardized to <strong>America/New_York</strong> rather than left in raw UTC form.</p>
 </section>
 <section id="cross-community-user-behavior" class="level3" data-number="1.8.3">
 <h3 data-number="1.8.3" class="anchored" data-anchor-id="cross-community-user-behavior"><span class="header-section-number">1.8.3</span> 3. Cross-Community User Behavior</h3>
-<p>We compared: - single-subreddit users - multi-subreddit users</p>
-<p>We also examined: - controversy rates by user type - engagement differences by user type - subreddit-pair shared-user patterns - cross-community participation over time</p>
+<p>We compared:</p>
+<ul>
+<li>single-subreddit users</li>
+<li>multi-subreddit users</li>
+</ul>
+<p>We also examined:</p>
+<ul>
+<li>controversy rates by user type</li>
+<li>engagement differences by user type</li>
+<li>subreddit-pair shared-user patterns</li>
+<li>cross-community participation over time</li>
+</ul>
 </section>
 <section id="text-descriptives" class="level3" data-number="1.8.4">
 <h3 data-number="1.8.4" class="anchored" data-anchor-id="text-descriptives"><span class="header-section-number">1.8.4</span> 4. Text Descriptives</h3>
-<p>We examined: - text length by controversy status - text length by subreddit - common and distinctive terms across communities and user types</p>
+<p>We examined:</p>
+<ul>
+<li>text length by controversy status</li>
+<li>text length by subreddit</li>
+<li>common and distinctive terms across communities and user types</li>
+</ul>
 <p>Overall, the EDA was designed to establish the descriptive structure of the problem before moving to more explicitly language-focused and predictive analyses.</p>
 </section>
 </section>
 <section id="nlp-methods" class="level2" data-number="1.9">
 <h2 data-number="1.9" class="anchored" data-anchor-id="nlp-methods"><span class="header-section-number">1.9</span> NLP Methods</h2>
 <p>The NLP phase used a cleaned text base derived from the feature table. This phase remained intentionally simple and interpretable.</p>
-<p>The text was: - lowercased - stripped of URLs - normalized to alphanumeric text - tokenized - filtered with standard stopword removal</p>
+<p>The text was:</p>
+<ul>
+<li>lowercased</li>
+<li>stripped of URLs</li>
+<li>normalized to alphanumeric text</li>
+<li>tokenized</li>
+<li>filtered with standard stopword removal</li>
+</ul>
 <p>Using this base, we conducted two main analyses.</p>
 <section id="sentiment-analysis" class="level3" data-number="1.9.1">
 <h3 data-number="1.9.1" class="anchored" data-anchor-id="sentiment-analysis"><span class="header-section-number">1.9.1</span> Sentiment Analysis</h3>
@@ -340,13 +363,17 @@ The comments dataset contains a much larger volume of language, which makes it m
 </section>
 <section id="distinctive-term-analysis" class="level3" data-number="1.9.2">
 <h3 data-number="1.9.2" class="anchored" data-anchor-id="distinctive-term-analysis"><span class="header-section-number">1.9.2</span> Distinctive-Term Analysis</h3>
-<p>We identified terms that were especially distinctive: - for controversial versus non-controversial comments - for each subreddit</p>
+<p>We identified terms that were especially distinctive:</p>
+<ul>
+<li>for controversial versus non-controversial comments</li>
+<li>for each subreddit</li>
+</ul>
 <p>This helped connect controversial content to concrete topical language rather than only to abstract metrics such as sentiment scores or text length.</p>
 </section>
 </section>
 <section id="machine-learning-methods" class="level2" data-number="1.10">
 <h2 data-number="1.10" class="anchored" data-anchor-id="machine-learning-methods"><span class="header-section-number">1.10</span> Machine Learning Methods</h2>
-<p>The machine learning phase was designed as a <strong>supporting analysis</strong>, not the main contribution of the project.</p>
+<p>The machine learning phase was designed as a supporting analysis, not the main contribution of the project.</p>
 <p>We framed the prediction problem as a <strong>binary classification task</strong>:</p>
 <ul>
 <li><code>1</code> = controversial comment</li>

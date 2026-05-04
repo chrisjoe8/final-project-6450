@@ -6,7 +6,7 @@ title: "Data and Methods"
 
 ## Dataset
 
-This project uses the course-provided Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using **Apache Spark on an EC2 cluster** with data stored in S3.
+This project uses the course-provided Reddit comments dataset covering activity from June 2023 through July 2024. The full dataset is large enough that single-machine tools would be impractical for the complete workflow, so the project was conducted using Apache Spark on an EC2 cluster with data stored in S3.
 
 Our analysis focuses on Reddit **comments** rather than submissions. We chose comments because the project centers on controversial discourse, interaction, and cross-community behavior, and comments provide a richer view of discussion dynamics than thread-starting posts alone.
 
@@ -34,7 +34,7 @@ The full Reddit dataset spans many unrelated topics, so we filtered the analysis
 - `conspiracy`
 - `changemyview`
 
-These communities were selected because they form a coherent **political and public-discourse cluster** while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative while preserving meaningful variation across communities.
+These communities were selected because they form a coherent political and public-discourse cluster while still differing in norms, tone, and style. This gives the project enough topical consistency to support a clear narrative while preserving meaningful variation across communities.
 
 Conceptually, these six subreddits cover several different forms of public discourse:
 
@@ -64,14 +64,14 @@ The workflow began with copying the Reddit data into a personal S3 bucket and th
 
 From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning. The broad pipeline was:
 
-1. **Copy Reddit data to S3**
-2. **Filter to selected subreddits**
-3. **Build a cleaned feature base**
-4. **Run EDA**
-5. **Prepare NLP-ready text base**
-6. **Run NLP analysis**
-7. **Prepare ML-ready model base**
-8. **Run supporting ML models**
+**1. Copy Reddit data to S3**
+**2. Filter to selected subreddits**
+**3. Build a cleaned feature base**
+**4. Run EDA**
+**5. Prepare NLP-ready text base**
+**6. Run NLP analysis**
+**7. Prepare ML-ready model base**
+**8. Run supporting ML models**
 
 This workflow was designed to keep each analytical stage tied to the same underlying research question while ensuring that later phases built directly on earlier descriptive findings.
 
@@ -127,13 +127,17 @@ This prevented us from mixing unusable text rows into NLP analyses or deleted us
 The EDA focused on four main areas.
 
 ### 1. Controversy Across Communities
+
 We measured:
+
 - controversy rate by subreddit
 - controversy volume versus controversy rate
 - controversy over time by subreddit
 
 ### 2. Temporal Structure
+
 We analyzed:
+
 - controversy by month
 - controversy by hour
 - controversy by weekday
@@ -141,18 +145,23 @@ We analyzed:
 To make the time-of-day patterns more interpretable, hour-based results were standardized to **America/New_York** rather than left in raw UTC form.
 
 ### 3. Cross-Community User Behavior
+
 We compared:
+
 - single-subreddit users
 - multi-subreddit users
 
 We also examined:
+
 - controversy rates by user type
 - engagement differences by user type
 - subreddit-pair shared-user patterns
 - cross-community participation over time
 
 ### 4. Text Descriptives
+
 We examined:
+
 - text length by controversy status
 - text length by subreddit
 - common and distinctive terms across communities and user types
@@ -164,6 +173,7 @@ Overall, the EDA was designed to establish the descriptive structure of the prob
 The NLP phase used a cleaned text base derived from the feature table. This phase remained intentionally simple and interpretable.
 
 The text was:
+
 - lowercased
 - stripped of URLs
 - normalized to alphanumeric text
@@ -177,6 +187,7 @@ We used a simple lexicon-based sentiment approach in which selected positive and
 
 ### Distinctive-Term Analysis
 We identified terms that were especially distinctive:
+
 - for controversial versus non-controversial comments
 - for each subreddit
 
@@ -184,7 +195,7 @@ This helped connect controversial content to concrete topical language rather th
 
 ## Machine Learning Methods
 
-The machine learning phase was designed as a **supporting analysis**, not the main contribution of the project.
+The machine learning phase was designed as a supporting analysis, not the main contribution of the project.
 
 We framed the prediction problem as a **binary classification task**:
 
