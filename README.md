@@ -40,9 +40,16 @@ The project was completed using:
 - Quarto (for final website/report)
 
 ## Repository Structure
-```text
-.
+
 ├── docs/
+│   ├── index.qmd
+│   ├── data-and-method.qmd
+│   ├── eda.qmd
+│   ├── nlp.qmd
+│   ├── ml.qmd
+│   ├── conclusion.qmd
+│   └── _site/
+├── figures/
 ├── notes/
 ├── outputs/
 │   ├── eda_section1/
@@ -51,10 +58,11 @@ The project was completed using:
 │   ├── eda_section4/
 │   ├── nlp_prep_text_base/
 │   ├── nlp_analysis/
-│   └── ml_prep_model_base/
+│   ├── ml_prep_model_base/
+│   └── ml_analysis/
 ├── scripts/
 │   ├── filter_selected_subreddits.py
-│   ├── build_feature_base_v1.py 
+│   ├── build_feature_base_v1.py
 │   ├── eda_1_prep_analysis_subsets.py
 │   ├── eda_2_controversy_and_time.py
 │   ├── eda_3_cross_community_behavior.py
@@ -65,12 +73,30 @@ The project was completed using:
 │   ├── ml_analysis.py
 │   ├── setup-spark-cluster.sh
 │   └── cleanup-spark-cluster.sh
+├── _quarto.yml
+├── pyproject.toml
+├── uv.lock
 └── README.md
+
+## Quarto Website
+
+The final report is implemented as a Quarto website. The source pages are stored in `docs/` as `.qmd` files, and the rendered site output is stored in `docs/_site/`.
+
+Main website pages:
+- `index.qmd`
+- `data-and-method.qmd`
+- `eda.qmd`
+- `nlp.qmd`
+- `ml.qmd`
+- `conclusion.qmd`
+
+To render the website locally from the repository root, run:
+quarto render
 
 ## Team Workflow and Contributions
 Although this repository’s commit history primarily reflects work pushed from Chris’s GitHub/account and EC2 environment, this project was completed collaboratively by both team members.
 
-Early in the project, Eleni encountered repeated infrastructure issues while trying to access and process the Reddit data independently. In particular, the Spark cluster setup script began taking 2–3 hours to complete in some AWS sessions, leaving too little time in the 4-hour session window to reliably rerun the filtering and feature-base construction steps. Because Chris had already successfully copied, filtered, and prepared the project dataset, we decided to complete the project collaboratively on Chris’s laptop/EC2 environment rather than continue duplicating unstable setup work across two separate machines. We took turns working on the same environment in order to keep the project moving and ensure that both partners contributed meaningfully to the final deliverables.
+Early in the project, Eleni encountered repeated infrastructure issues while trying to access and process the Reddit data independently. In particular, the Spark cluster setup script began taking 2–3 hours to complete in some AWS sessions, leaving too little time in the 4-hour session window to reliably rerun the filtering and feature-base construction steps. Because Chris had already successfully copied, filtered, and prepared the project dataset, we decided to complete the project collaboratively on Chris’s laptop/EC2 environment rather than continue duplicating unstable setup work across two separate machines. We took turns working on the same environment in order to keep the project moving and ensure that both partners contributed meaningfully to the final deliverables. Additionally, we both worked on the written report/quarto website collaboratively.
 
 ### Division of Work
 
@@ -87,3 +113,4 @@ Early in the project, Eleni encountered repeated infrastructure issues while try
 - `eda_4_text_descriptives.py`
 - `ml_prep_model_base.py`
 - `ml_analysis.py`
+
