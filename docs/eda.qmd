@@ -45,18 +45,21 @@ subset_row_counts = (eda1 / "subset_row_counts.txt").read_text()
 ```
 
 # Exploratory Data Analysis
+
 ## EDA goals
+
 The EDA phase was designed to answer three descriptive questions:
 
-1. **Where is controversial content concentrated?**
-2. **How does controversy vary across time and across user types?**
-3. **How is controversy related to text-based descriptive features such as comment length and common vocabulary?**
+**1.** **Where is controversial content concentrated?**
+**2.** **How does controversy vary across time and across user types?**
+**3.** **How is controversy related to text-based descriptive features such as comment length and common vocabulary?**
 
-This section presents the descriptive results that motivated the later NLP and machine learning phases.
+This section provides the descriptive foundation for the rest of the project. The later NLP and machine learning sections build on the same patterns established here rather than replacing them.
 
 ## Analysis subsets
 
 We first defined several analysis subsets in order to separate general descriptive analysis from text-valid and user-valid analysis.
+
 ```{python}
 #| echo: false
 subset_counts = pd.DataFrame({
@@ -65,18 +68,22 @@ subset_counts = pd.DataFrame({
 })
 subset_counts
 ```
-The full filtered dataset contains 21,995,306 comments across the six selected subreddits. After excluding removed or deleted text, the text-valid subset still contains 19,594,438 comments. After excluding deleted authors, the user-valid subset contains 19,580,655 comments, and the strictest text-plus-user-valid subset contains 19,580,584 comments. These exclusions reduce the dataset but do not materially weaken its scale for later analysis.
 
-For reference, the subreddit counts remain large in all subsets:
+The full filtered dataset contains **21,995,306** comments across the six selected subreddits. After excluding removed or deleted text, the text-valid subset still contains **19,594,438** comments. After excluding deleted authors, the user-valid subset contains **19,580,655** comments, and the strictest text-plus-user-valid subset contains **19,580,584** comments. These exclusions reduce the dataset, but they do not materially weaken its scale for later analysis.
+
+For reference, the subreddit counts remain large in all subsets.
+
 ```{python}
 #| echo: false
 all_subreddit_counts
 ```
-The distribution remains heavily concentrated in `politics` and `worldnews`, with smaller but still substantial volumes in `WhitePeopleTwitter`, `news`, `conspiracy`, and `changemyview`.
+
+The distribution remains heavily concentrated in `politics` and `worldnews`, with smaller but still substantial volumes in `WhitePeopleTwitter`, `news`, `conspiracy`, and `changemyview`. This matters because later differences in controversy are therefore not driven by tiny or fragile communities; each subreddit contributes enough data to support meaningful comparison.
 
 ## Controversy across communities
 
 The first descriptive question is whether controversial content is distributed evenly across the six communities. It is not.
+
 ```{python}
 #| echo: false
 fig = px.bar(
@@ -95,20 +102,22 @@ fig
 #| echo: false
 controversy_by_subreddit
 ```
+
 Several clear patterns emerge:
 
-- `conspiracy` has the highest controversy rate at 0.0723
-- `news` and `worldnews` follow at 0.0537 and 0.0533 respectively
-- `changemyview` is also elevated at 0.0474
-- `politics` is lower at 0.0341
-- `WhitePeopleTwitter` is much lower at 0.0095
+- **`conspiracy` has the highest controversy rate** at **0.0723**
+- **`news` and `worldnews` follow** at **0.0537** and **0.0533**
+- **`changemyview` is also elevated** at **0.0474**
+- **`politics` is lower** at **0.0341**
+- **`WhitePeopleTwitter` is much lower** at **0.0095**
 
-This is a central descriptive finding of the project: controversy is not evenly distributed across the selected communities. Community context appears to matter strongly.
-
-Volume and controversy rate also do not move together mechanically. For example, `politics` has the largest total volume, but not the highest controversy rate, while `conspiracy` has much less total volume than `politics` and `worldnews` yet the highest controversy rate. This suggests that controversiality is not simply a byproduct of discussion volume.
+This is one of the strongest descriptive findings in the project: **controversy is not evenly distributed across the selected communities**. The differences are not minor. `conspiracy` is more than seven times as controversy-prone as `WhitePeopleTwitter` in rate terms, even though both belong to the same broad political and public-discourse ecosystem.
+The comparison also shows that volume and controversy do not move together mechanically. `politics` has the largest total volume, but not the highest controversy rate, while `conspiracy` has much less volume than `politics` and `worldnews` yet the highest controversy rate. This suggests that controversiality is not simply a byproduct of how much discussion a subreddit generates. Community context appears to matter independently of raw scale.
 
 ## Temporal structure
+
 ### Controversy by month
+
 ```{python}
 #| echo: false
 controversy_by_month["year_month"] = (
@@ -132,11 +141,13 @@ fig
 controversy_by_month
 ```
 
-The monthly pattern shows a striking discontinuity. Controversy rates are very low from August through October 2023, then rise sharply beginning in November 2023 and remain elevated throughout 2024. This pattern is visible in the monthly totals themselves and appears again in the subreddit-by-month breakdown below. The EDA supports the claim that controversy changed sharply over time in this dataset, but it does not by itself establish why that shift occurred.
+The monthly pattern shows a striking discontinuity. Controversy rates are low in June and July 2023, extremely low from August through October 2023, and then jump sharply beginning in November 2023, remaining elevated throughout 2024.
+This is important for two reasons. First, it shows that controversy in this dataset is not temporally stable. Second, the break is large enough that it is unlikely to be a trivial fluctuation. The EDA therefore supports the claim that controversy changed sharply over time in this dataset. At the same time, the EDA alone does not establish the cause of that shift. It could reflect changes in topic salience, community behavior, moderation conditions, platform dynamics, or properties of the controversiality signal itself. The right conclusion here is that the discontinuity is real and analytically important, but not yet causally explained.
 
 ### Controversy by hour
 
 The hour-based analysis was standardized to EST for interpretability.
+
 ```{python}
 #| echo: false
 fig = px.line(
@@ -154,9 +165,12 @@ fig
 #| echo: false
 controversy_by_hour
 ```
-The hour-based pattern is relatively stable compared with the subreddit and monthly differences, but it is not flat. Controversy is lower in the early-to-mid afternoon and somewhat higher during the late evening and near midnight. The differences are modest, so the strongest temporal story comes from month and weekday rather than hour alone, but they do suggest that comments may be somewhat more likely to be controversial later in the day.
+
+The hour-based pattern is relatively stable compared with the subreddit and monthly differences, but it is not flat. Controversy is lower in the **early-to-mid afternoon** and rises through the **late evening**, peaking around **10 PM ET** before dropping again. This suggests that time-of-day matters, but more modestly than subreddit context or the monthly pattern.
+So the hour analysis contributes a secondary rather than primary temporal story: controversy is somewhat more likely later in the day, but the strongest temporal signal comes from **month** and **weekday**, not hour alone.
 
 ### Controversy by weekday
+
 ```{python}
 #| echo: false
 fig = px.bar(
@@ -175,11 +189,14 @@ fig
 #| echo: false
 controversy_by_weekday
 ```
+
 controversy_by_weekday
 
 Weekend days are more controversy-prone than weekdays. Saturday has the highest controversy rate at 0.0598, followed by Sunday at 0.0526, while Tuesday is lowest at 0.0385. This indicates that controversy varies not only across communities but also across the weekly rhythm of participation.
+Taken together, the temporal results suggest that controversy is not random in time. It clusters more strongly in some periods than others, especially across months and between weekdays and weekends.
 
 ### Controversy over time by subreddit
+
 ```{python}
 #| echo: false
 cot = controversy_over_time_by_subreddit.copy()
@@ -197,54 +214,65 @@ fig = px.line(
 fig.update_layout(yaxis_tickformat=".1%", xaxis_tickangle=-45)
 fig
 ```
-The subreddit-by-month results reinforce two points. First, the broad temporal break between late 2023 and 2024 is visible across multiple subreddits rather than being isolated to just one community. Second, even when the temporal pattern moves in a similar direction across communities, the levels remain very different. `conspiracy` stays consistently elevated, while `WhitePeopleTwitter` remains much lower. This strengthens the interpretation that subreddit context matters beyond overall platform-level timing.
+
+The subreddit-by-month results reinforce two points. First, the broad temporal break between late 2023 and 2024 is visible across multiple subreddits rather than being isolated to one community. Second, even when the temporal pattern moves in a similar direction across communities, the levels remain very different. `conspiracy` stays consistently elevated, while `WhitePeopleTwitter` remains much lower. This strengthens the interpretation that subreddit context matters beyond overall platform-level timing.
 
 ## Cross-community user behavior
 
 A central question in the project is whether users who participate across multiple subreddits behave differently from users who remain within only one selected subreddit.
 
 ### User counts
+
 ```{python}
 #| echo: false
 user_type_counts
 ```
+
 There are 923,422 single-subreddit users and 427,776 multi-subreddit users. Even though single-subreddit users are more numerous, the next table shows that multi-subreddit users account for much more of the total comment activity.
 
 ### Comment-level comparison of user types
+
 ```{python}
 #| echo: false
 user_type_comment_summary
 ```
+
 Several descriptive patterns stand out:
 
-- Multi-subreddit users produce 14,406,074 comments, compared with 5,174,581 from single-subreddit users.
-- Multi-subreddit users have a higher average score (13.91 vs 11.10).
-- Multi-subreddit users have a slightly lower controversy rate overall (0.0466 vs 0.0480).
-- Single-subreddit users write longer comments on average (220.76 characters / 37.49 words) than multi-subreddit users (205.32 characters / 34.95 words).
+- **Multi-subreddit users produce 14,406,074 comments**, compared with **5,174,581** from single-subreddit users
+- **Multi-subreddit users have a higher average score** (**13.91** vs **11.10**)
+- **Multi-subreddit users have a slightly lower controversy rate overall** (**0.0466** vs **0.0480**)
+- **Single-subreddit users write longer comments on average** (**220.76 characters / 37.49 words**) than multi-subreddit users (**205.32 characters / 34.95 words**)
 
-This means that cross-community users are more active and more highly upvoted on average, but not uniformly more controversial overall.
+This is an important nuance. Cross-community users are clearly more active and more highly upvoted on average, but they are not uniformly more controversial when all comments are pooled together. That already suggests the relationship between cross-community behavior and controversy may depend on where those users are participating.
 
 ### User-level comparison
+
 ```{python}
 #| echo: false
 user_type_user_summary
 ```
+
 At the user level, multi-subreddit users are much more active. They post in 2.55 distinct subreddits on average and write 33.68 comments per user, compared with 5.60 comments per single-subreddit user. They also produce more controversial comments per user on average (1.57 vs 0.27), but this higher total reflects much higher overall activity rather than a universally higher controversy rate at the comment level.
+This distinction matters. Multi-subreddit users are central to the dataset structurally, but their effect is not simply that they make each individual comment more controversial.
 
 ### Community-specific user-type differences
+
 ```{python}
 #| echo: false
 subreddit_user_type_summary
 ```
+
 The relationship between cross-community participation and controversy depends on the subreddit:
 
-- In `WhitePeopleTwitter`, `changemyview`, `conspiracy`, and `news`, multi-subreddit users have higher controversy rates than single-subreddit users.
-- In `politics`, multi-subreddit users have a lower controversy rate than single-subreddit users.
-- The relationship is therefore context-dependent, not uniform across all communities.
+- In **`WhitePeopleTwitter`**, **`changemyview`**, **`conspiracy`**, and **`news`**, multi-subreddit users have higher controversy rates than single-subreddit users
+- In **`politics`**, multi-subreddit users have a lower controversy rate than single-subreddit users
+- In **`worldnews`**, the two groups are extremely close, with single-subreddit users slightly higher
 
-This is one of the project’s clearest descriptive findings: cross-community behavior matters, but it does not affect controversy the same way everywhere.
+This is one of the clearest descriptive findings in the project: **cross-community behavior matters, but its relationship to controversy is context-dependent rather than uniform across all communities**. That is analytically stronger than either of the two simplistic alternatives—namely, that multi-subreddit users are always more controversial or that they never matter.
 
 ### Cross-community participation over time
+
 ```{python}
 #| echo: false
 cct = cross_community_over_time.copy()
@@ -262,35 +290,42 @@ fig = px.line(
 fig.update_layout(xaxis_tickangle=-45)
 fig
 ```
+
 Multi-subreddit users account for the larger share of comment activity in every month shown. This indicates that cross-community participation is not marginal in this dataset; it is a central structural feature of the discourse across these six subreddits.
 
 ### Shared-user network
+
 ```{python}
 #| echo: false
 subreddit_pair_counts
 ```
+
 The strongest shared-user pairs are:
 
-- `politics` – `worldnews`
-- `news` – `worldnews`
-- `news` – `politics`
+- **`politics` – `worldnews`**
+- **`news` – `worldnews`**
+- **`news` – `politics`**
 
-This indicates especially dense overlap among the political and news-oriented communities, with `WhitePeopleTwitter` - which itself is somewhat news-/politically-adjacent - also strongly linked to that cluster. The user-overlap results support the project’s decision to treat these six subreddits as a coherent topical set rather than a random collection.
+This indicates especially dense overlap among the political and news-oriented communities, with `WhitePeopleTwitter` also strongly linked to that cluster through its substantial overlap with both `politics` and `worldnews`. The user-overlap results therefore support the project’s decision to treat these six subreddits as a coherent topical set rather than a random collection.
 
 ## Text descriptives
+
 ### Text length by controversy status
+
 ```{python}
 #| echo: false
 text_length_by_controversy
 ```
+
 Controversial comments are somewhat longer than non-controversial comments:
 
-- Non-controversial comments average 208.75 characters and 35.49 words
-- Controversial comments average 222.59 characters and 38.22 words
+- **Non-controversial comments average 208.75 characters and 35.49 words**
+- **Controversial comments average 222.59 characters and 38.22 words**
 
-Their medians are also higher. This supports the descriptive claim that controversial comments tend to be somewhat more elaborated rather than simply shorter or more abrupt.
+Their medians are also higher. This supports the descriptive claim that controversial comments tend to be somewhat more elaborated rather than simply shorter or more abrupt. The difference is not huge, but it is directionally consistent across both mean and median measures.
 
 ### Text length by subreddit
+
 ```{python}
 #| echo: false
 fig = px.bar(
@@ -309,33 +344,53 @@ fig
 #| echo: false
 text_length_by_subreddit
 ```
-Comment length varies sharply across communities. `changemyview` stands out by a large margin, averaging 70.54 words per comment and a median of 42 words. `WhitePeopleTwitter` is the shortest at 26.63 words on average. The other four communities cluster more closely together in the low-to-mid 30-word range. This pattern is consistent with subreddit norms: `changemyview` is structured around extended argument, while `WhitePeopleTwitter` is more compressed and meme-oriented.
+
+Comment length varies sharply across communities. `changemyview` stands out by a large margin, averaging 70.54 words per comment and a median of 42 words. `WhitePeopleTwitter` is the shortest at 26.63 words on average and a median of 16 words. The other four communities cluster more closely together in the low-to-mid 30-word range.
+This pattern is consistent with subreddit norms. `changemyview` is structured around extended argument and explicit reasoning, while `WhitePeopleTwitter` is much more compressed and meme-oriented. That difference matters because it shows that even within the same broad political-news ecosystem, the style of discourse varies substantially across communities.
 
 ### Most common terms by controversy status
+
 ```{python}
 #| echo: false
 top_terms_by_controversy.query("rank <= 10")
 ```
-The most common terms in both controversial and non-controversial comments overlap substantially, which indicates a shared political-news vocabulary across the dataset. At the same time, the frequency tables show that the discourse is strongly centered around recurring public-discourse language such as `people`, `like`, `one`, `think`, and `trump`. These are broad, high-frequency words rather than community-specific markers, so they mainly support the claim that the six selected subreddits operate inside a common discourse space.
+
+The most common terms in both controversial and non-controversial comments overlap substantially. This indicates that the six selected subreddits share a common political-news vocabulary. At the same time, the frequency tables show that the discourse is strongly centered around recurring public-discourse language such as `people`, `like`, `one`, `think`, `get`, and `trump`.
+These are broad, high-frequency words rather than community-specific markers, so this table is most useful for showing that the six communities operate inside a shared discourse space. It is less useful for isolating what makes controversial comments unique, which is why the later NLP section moves toward more targeted linguistic comparisons.
 
 ### Most common terms by subreddit
+
 ```{python}
 #| echo: false
 top_terms_by_subreddit.groupby("subreddit").head(10)
 ```
-The top-term tables show both overlap and divergence. All six subreddits share a common political-news vocabulary, but each subreddit also expresses that vocabulary through its own style and emphasis. For example, `WhitePeopleTwitter` prominently features `people`, `like`, `trump`, `one`, and `get`, while the full table also shows that it remains deeply embedded in a meme- and social-media discourse environment. These descriptive term-frequency patterns foreshadow the more targeted linguistic comparisons presented in the NLP section.
 
-EDA summary
+The top-term tables show both overlap and divergence. All six subreddits share a common political-news vocabulary, but each subreddit also expresses that vocabulary through its own style and emphasis.
+
+For example:
+
+- **`worldnews`** prominently features terms such as `israel`, `hamas`, `russia`, `war`, and `ukraine`, which aligns with its international and geopolitical emphasis
+- **`politics`** is more centered on domestic political names and institutions, with terms such as `trump`, `biden`, and `vote`
+- **`WhitePeopleTwitter`** shares some of the same broad political vocabulary, but its discourse appears more compressed and socially mediated
+- **`changemyview`** combines common public-discourse terms with a much longer average comment length, reinforcing its debate-oriented style
+- **`conspiracy`** shares some common vocabulary with the political/news cluster while also maintaining a distinctive alternative-discourse space
+
+These descriptive term-frequency patterns foreshadow the more targeted linguistic comparisons in the NLP section.
+
+## EDA summary
 
 The EDA produces four main conclusions.
 
-1. **Controversy is unevenly distributed across communities.**
-`conspiracy` is the most controversy-prone subreddit in the selected set, while `WhitePeopleTwitter` is by far the least.
-2. **Controversy also varies over time.**
-The monthly pattern shows a sharp discontinuity beginning in late 2023, controversy is somewhat higher on weekends than weekdays, and controversy tends to rise slightly later in the day.
-3. **Cross-community participation is central but context-dependent.**
-Multi-subreddit users drive most of the activity, but their relationship to controversy differs across subreddits rather than following one universal pattern.
-4. **Text-based descriptives reinforce the community story.**
-Controversial comments are modestly longer on average, and communities differ substantially in average comment length and common vocabulary.
+**1.** **Controversy is unevenly distributed across communities.**  
+   `conspiracy` is the most controversy-prone subreddit in the selected set, while `WhitePeopleTwitter` is by far the least.
 
-Together, these descriptive results justify the next two stages of the project. The NLP section asks whether controversial content is associated with more specific linguistic patterns, while the ML section asks whether controversy can be predicted from a combination of community, temporal, behavioral, and text-based features.
+**2.** **Controversy also varies over time.**  
+   The monthly pattern shows a sharp discontinuity beginning in late 2023, controversy is somewhat higher on weekends than weekdays, and controversy rises modestly late in the day.
+
+**3.** **Cross-community participation is central but context-dependent.**  
+   Multi-subreddit users drive most of the activity, but their relationship to controversy differs across subreddits rather than following one universal pattern.
+
+**4.** **Text-based descriptives reinforce the community story.**  
+   Controversial comments are modestly longer on average, and communities differ substantially in average comment length and common vocabulary.
+
+Together, these descriptive results justify the next two stages of the project. The **NLP section** asks whether controversial content is associated with more specific linguistic patterns, while the ML section asks whether controversy can be predicted from a combination of community, temporal, behavioral, and text-based features.
