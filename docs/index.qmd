@@ -8,7 +8,10 @@ title: "Home"
 
 This project examines how linguistic features and cross-community user behavior jointly shape controversial content across Reddit communities. Using a large Reddit comments dataset processed with Apache Spark on an EC2 cluster, we analyze whether controversy is associated more strongly with subreddit context, temporal patterns, language use, or cross-community participation.
 
+More specifically, the project asks whether controversial content is best explained by **where it appears**, **how users participate across communities**, or **what kinds of language and topics it contains**. 
+
 Our analysis focuses on six selected subreddits:
+
 - `politics`
 - `worldnews`
 - `news`
@@ -26,7 +29,7 @@ These communities were selected because they form a coherent political and publi
 
 Reddit is organized into distinct communities with different norms, topics, and styles of interaction. Controversial content is not distributed evenly across those communities. Some communities appear more conflict-prone than others, and users who move across multiple subreddits may help transmit language, topics, or behavioral patterns across community boundaries.
 
-This project investigates those differences at scale. Rather than treating controversy as a uniform platform-wide phenomenon, we ask whether it depends on the interaction between:
+This matters beyond Reddit itself. Understanding how controversy varies across online communities can help clarify broader questions about **platform moderation**, **community-level norms**, **polarized discourse**, and the ways users carry topics and styles of argument from one space to another. Rather than treating controversy as a uniform platform-wide phenomenon, this project asks whether it depends on the interaction between:
 
 - **community context**
 - **temporal structure**
@@ -35,21 +38,21 @@ This project investigates those differences at scale. Rather than treating contr
 
 ## Data and Scope
 
-The project uses the course-provided Reddit comments dataset covering June 2023 through July 2024. Because the full dataset is extremely large, we used Apache Spark on an EC2 cluster to process the data and filtered the analysis to the six selected subreddits listed above.
+The project uses the course-provided Reddit comments dataset covering **June 2023 through July 2024**. Because the full dataset is extremely large, we used **Apache Spark on an EC2 cluster** to process the data and filtered the analysis to the six selected subreddits listed above.
 
 The final analytical workflow proceeded in four major stages:
 
-1. **Exploratory Data Analysis (EDA)**  
-   We examined text features and controversy rates across communities, over time, and across user types.
+**1. Exploratory Data Analysis (EDA)**  
+We examined controversy rates, temporal patterns, cross-community participation, and text-based descriptives across the six selected subreddits.
 
-2. **Natural Language Processing (NLP)**  
-   We prepared a clean text-analysis base, compared simple sentiment patterns, and identified distinctive terms associated with controversy and with each subreddit.
+**2. Natural Language Processing (NLP)**  
+We prepared a clean text-analysis base, compared simple sentiment patterns, and identified distinctive terms associated with controversy and with each subreddit.
 
-3. **Machine Learning (ML)**  
-   We trained simple classification models to predict whether a comment was controversial using community, temporal, behavioral, and text-length features.
+**3. Machine Learning (ML)**  
+We trained simple classification models to predict whether a comment was controversial using community, temporal, behavioral, and text-length features.
 
-4. **Synthesis and Interpretation**  
-   We integrated the descriptive, linguistic, and predictive results into a single explanation of how controversial content varies across Reddit communities.
+**4. Synthesis and Interpretation**  
+We integrated the descriptive, linguistic, and predictive results into a single explanation of how controversial content varies across Reddit communities.
 
 ## Main Findings
 
@@ -65,6 +68,8 @@ Three core patterns emerged:
 
 - **Controversial comments are associated with distinctive language.**  
   They were somewhat longer on average and more strongly associated with conflict-heavy geopolitical and political vocabulary than non-controversial comments.
+
+Taken together, these findings suggest that controversial content is best understood not as a single Reddit-wide phenomenon, but as the product of **community-specific norms, topic-specific language, and cross-community participation patterns**.
 
 ## Site Structure
 

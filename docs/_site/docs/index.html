@@ -170,7 +170,16 @@ ul.task-list li input[type="checkbox"] {
 <section id="project-overview" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="project-overview"><span class="header-section-number">1.1</span> Project Overview</h2>
 <p>This project examines how linguistic features and cross-community user behavior jointly shape controversial content across Reddit communities. Using a large Reddit comments dataset processed with Apache Spark on an EC2 cluster, we analyze whether controversy is associated more strongly with subreddit context, temporal patterns, language use, or cross-community participation.</p>
-<p>Our analysis focuses on six selected subreddits: - <code>politics</code> - <code>worldnews</code> - <code>news</code> - <code>WhitePeopleTwitter</code> - <code>conspiracy</code> - <code>changemyview</code></p>
+<p>More specifically, the project asks whether controversial content is best explained by <strong>where it appears</strong>, <strong>how users participate across communities</strong>, or <strong>what kinds of language and topics it contains</strong>.</p>
+<p>Our analysis focuses on six selected subreddits:</p>
+<ul>
+<li><code>politics</code></li>
+<li><code>worldnews</code></li>
+<li><code>news</code></li>
+<li><code>WhitePeopleTwitter</code></li>
+<li><code>conspiracy</code></li>
+<li><code>changemyview</code></li>
+</ul>
 <p>These communities were selected because they form a coherent political and public-discourse cluster while still differing in tone, norms, and patterns of interaction.</p>
 </section>
 <section id="research-question" class="level2" data-number="1.2">
@@ -180,7 +189,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="why-this-question-matters" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="why-this-question-matters"><span class="header-section-number">1.3</span> Why This Question Matters</h2>
 <p>Reddit is organized into distinct communities with different norms, topics, and styles of interaction. Controversial content is not distributed evenly across those communities. Some communities appear more conflict-prone than others, and users who move across multiple subreddits may help transmit language, topics, or behavioral patterns across community boundaries.</p>
-<p>This project investigates those differences at scale. Rather than treating controversy as a uniform platform-wide phenomenon, we ask whether it depends on the interaction between:</p>
+<p>This matters beyond Reddit itself. Understanding how controversy varies across online communities can help clarify broader questions about <strong>platform moderation</strong>, <strong>community-level norms</strong>, <strong>polarized discourse</strong>, and the ways users carry topics and styles of argument from one space to another. Rather than treating controversy as a uniform platform-wide phenomenon, this project asks whether it depends on the interaction between:</p>
 <ul>
 <li><strong>community context</strong></li>
 <li><strong>temporal structure</strong></li>
@@ -190,18 +199,16 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="data-and-scope" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="data-and-scope"><span class="header-section-number">1.4</span> Data and Scope</h2>
-<p>The project uses the course-provided Reddit comments dataset covering June 2023 through July 2024. Because the full dataset is extremely large, we used Apache Spark on an EC2 cluster to process the data and filtered the analysis to the six selected subreddits listed above.</p>
+<p>The project uses the course-provided Reddit comments dataset covering <strong>June 2023 through July 2024</strong>. Because the full dataset is extremely large, we used <strong>Apache Spark on an EC2 cluster</strong> to process the data and filtered the analysis to the six selected subreddits listed above.</p>
 <p>The final analytical workflow proceeded in four major stages:</p>
-<ol type="1">
-<li><p><strong>Exploratory Data Analysis (EDA)</strong><br>
-We examined text features and controversy rates across communities, over time, and across user types.</p></li>
-<li><p><strong>Natural Language Processing (NLP)</strong><br>
-We prepared a clean text-analysis base, compared simple sentiment patterns, and identified distinctive terms associated with controversy and with each subreddit.</p></li>
-<li><p><strong>Machine Learning (ML)</strong><br>
-We trained simple classification models to predict whether a comment was controversial using community, temporal, behavioral, and text-length features.</p></li>
-<li><p><strong>Synthesis and Interpretation</strong><br>
-We integrated the descriptive, linguistic, and predictive results into a single explanation of how controversial content varies across Reddit communities.</p></li>
-</ol>
+<p><strong>1. Exploratory Data Analysis (EDA)</strong><br>
+We examined controversy rates, temporal patterns, cross-community participation, and text-based descriptives across the six selected subreddits.</p>
+<p><strong>2. Natural Language Processing (NLP)</strong><br>
+We prepared a clean text-analysis base, compared simple sentiment patterns, and identified distinctive terms associated with controversy and with each subreddit.</p>
+<p><strong>3. Machine Learning (ML)</strong><br>
+We trained simple classification models to predict whether a comment was controversial using community, temporal, behavioral, and text-length features.</p>
+<p><strong>4. Synthesis and Interpretation</strong><br>
+We integrated the descriptive, linguistic, and predictive results into a single explanation of how controversial content varies across Reddit communities.</p>
 </section>
 <section id="main-findings" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="main-findings"><span class="header-section-number">1.5</span> Main Findings</h2>
@@ -215,6 +222,7 @@ Multi-subreddit users contributed most of the activity in the dataset, but their
 <li><p><strong>Controversial comments are associated with distinctive language.</strong><br>
 They were somewhat longer on average and more strongly associated with conflict-heavy geopolitical and political vocabulary than non-controversial comments.</p></li>
 </ul>
+<p>Taken together, these findings suggest that controversial content is best understood not as a single Reddit-wide phenomenon, but as the product of <strong>community-specific norms, topic-specific language, and cross-community participation patterns</strong>.</p>
 </section>
 <section id="site-structure" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="site-structure"><span class="header-section-number">1.6</span> Site Structure</h2>
