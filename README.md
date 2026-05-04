@@ -95,6 +95,7 @@ Main website pages:
 To render the website locally from the repository root, run:
 ```bash
 quarto render
+```
 
 ## Team Workflow and Contributions
 Although this repository’s commit history primarily reflects work pushed from Chris’s GitHub/account and EC2 environment, this project was completed collaboratively by both team members.
