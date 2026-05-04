@@ -64,6 +64,7 @@ The workflow began with copying the Reddit data into a personal S3 bucket and th
 
 From there, we created a cleaned feature base table and then separate derived datasets for NLP and machine learning. The broad pipeline was:
 
+
 **1. Copy Reddit data to S3**
 **2. Filter to selected subreddits**
 **3. Build a cleaned feature base**
@@ -106,6 +107,7 @@ These were used to test whether controversial comments differed from non-controv
 
 ### Content Flags
 We also created indicator variables for:
+
 - removed/deleted comment bodies
 - deleted authors
 
